@@ -45,6 +45,38 @@ class HomePage extends StatelessWidget {
                     radius: 40.0,
                   ),
                 ),
+                ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    color: Colors.teal,
+                  ),
+                  title: Text("个人信息"),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.format_list_bulleted,
+                    color: Colors.teal,
+                  ),
+                  title: Text("订单查询"),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.settings,
+                    color: Colors.teal,
+                  ),
+                  title: Text("语言设置"),
+                  onTap: () {},
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.update,
+                    color: Colors.teal,
+                  ),
+                  title: Text("检查更新"),
+                  onTap: () {},
+                ),
                 //  占满剩余空间
                 Expanded(child: Container()),
                 Container(
@@ -148,14 +180,28 @@ class HomePage extends StatelessWidget {
                                         width: ScreenUtil().setWidth(300),
                                       ),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Text("客户姓名:  ${snapshot.data[index]['savername']}"),
-                                          Text("客户电话:  ${snapshot.data[index]['saverphonenumber']}"),
-                                          Text("寄存时间:  ${snapshot.data[index]['luggagesavetime']}"),
-                                          Text("预计领取:  ${snapshot.data[index]['luggagesaveforetime']}"),
-                                          snapshot.data[index]['luggageistoken'] == 1 ? Text("领取状态:  已领取") : Text("领取状态:  未领取"),
-                                          snapshot.data[index]['luggageistoken'] == 1 ? Text("领取时间:  ${snapshot.data[index]['luggagegettime']}") : Text("领取时间:"),
+                                          Text(
+                                              "客户姓名:  ${snapshot.data[index]['savername']}"),
+                                          Text(
+                                              "客户电话:  ${snapshot.data[index]['saverphonenumber']}"),
+                                          Text(
+                                              "寄存时间:  ${snapshot.data[index]['luggagesavetime']}"),
+                                          Text(
+                                              "预计领取:  ${snapshot.data[index]['luggagesaveforetime']}"),
+                                          snapshot.data[index]
+                                                      ['luggageistoken'] ==
+                                                  1
+                                              ? Text("领取状态:  已领取")
+                                              : Text("领取状态:  未领取"),
+                                          snapshot.data[index]
+                                                      ['luggageistoken'] ==
+                                                  1
+                                              ? Text(
+                                                  "领取时间:  ${snapshot.data[index]['luggagegettime']}")
+                                              : Text("领取时间:"),
                                         ],
                                       ),
                                     ],
