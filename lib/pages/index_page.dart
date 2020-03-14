@@ -53,6 +53,7 @@ class IndexPage extends StatelessWidget {
             },
           ),
           bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Colors.grey[200],
             items: bottomTabs,
             currentIndex: Provide.value<IndexProvider>(context).currentIndex,
             type: BottomNavigationBarType.fixed,
