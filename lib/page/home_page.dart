@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:luggagemanagementsystem/page/widget/swiperDiy.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
+import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -122,7 +123,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            _buttonRow(),
+            _buttonRow(context),
             Container(
               margin: EdgeInsets.all(10.0),
               child: Row(
@@ -373,7 +374,7 @@ class HomePage extends StatelessWidget {
   }
 
   //  寄存领取按钮栏
-  Widget _buttonRow() {
+  Widget _buttonRow(BuildContext context) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -387,7 +388,9 @@ class HomePage extends StatelessWidget {
             child: ListTile(
               leading: Icon(Icons.card_giftcard),
               title: Text("行李寄存"),
-              onTap: () {},
+              onTap: () {
+                Application.router.navigateTo(context, '/deposit');
+              },
             ),
           ),
         ),
@@ -402,7 +405,9 @@ class HomePage extends StatelessWidget {
             child: ListTile(
               leading: Icon(Icons.card_travel),
               title: Text("行李领取"),
-              onTap: () {},
+              onTap: () {
+                Application.router.navigateTo(context, '/receive');
+              },
             ),
           ),
         ),
