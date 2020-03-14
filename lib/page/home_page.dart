@@ -6,6 +6,7 @@ import 'package:provide/provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
+  //  轮播图片
   List _bannerList = [
     "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4107889869,778042762&fm=26&gp=0.jpg",
     "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2084372179,1304842980&fm=26&gp=0.jpg",
@@ -69,10 +70,178 @@ class HomePage extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             SwiperDiy(swiperDataList: _bannerList),
+            Card(
+              elevation: 10.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(5.0),
+                ),
+              ),
+              child: Column(
+                children: <Widget>[
+                  _hotelRow(),
+                  Divider(
+                    height: 1,
+                    color: Colors.grey[300],
+                  ),
+                  _clerkRow(),
+                ],
+              ),
+            ),
           ],
         ),
         onRefresh: _refresh,
       ),
+    );
+  }
+
+  //  酒店订单数据
+  Widget _hotelRow() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            height: ScreenUtil().setHeight(200.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.home,
+                  size: ScreenUtil().setSp(130),
+                  color: Colors.deepPurpleAccent[100],
+                ),
+                Text("酒店订单"),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "32",
+                style: TextStyle(
+                  color: Colors.amber,
+                  fontSize: ScreenUtil().setSp(100.0),
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(10),
+              ),
+              Text("总单数"),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "8",
+                style: TextStyle(
+                  color: Colors.redAccent[100],
+                  fontSize: ScreenUtil().setSp(100.0),
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(10),
+              ),
+              Text("今日寄存数"),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "6",
+                style: TextStyle(
+                  color: Colors.lightBlueAccent[100],
+                  fontSize: ScreenUtil().setSp(100.0),
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(10),
+              ),
+              Text("今日领取数"),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  //  行李员订单数据
+  Widget _clerkRow() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Container(
+            height: ScreenUtil().setHeight(200.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.person,
+                  size: ScreenUtil().setSp(130),
+                  color: Colors.deepPurpleAccent[100],
+                ),
+                Text("行李员订单"),
+              ],
+            ),
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "5",
+                style: TextStyle(
+                  color: Colors.amber,
+                  fontSize: ScreenUtil().setSp(100.0),
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(10),
+              ),
+              Text("总单数"),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "3",
+                style: TextStyle(
+                  color: Colors.redAccent[100],
+                  fontSize: ScreenUtil().setSp(100.0),
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(10),
+              ),
+              Text("今日寄存数"),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Column(
+            children: <Widget>[
+              Text(
+                "2",
+                style: TextStyle(
+                  color: Colors.lightBlueAccent[100],
+                  fontSize: ScreenUtil().setSp(100.0),
+                ),
+              ),
+              SizedBox(
+                height: ScreenUtil().setHeight(10),
+              ),
+              Text("今日领取数"),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
