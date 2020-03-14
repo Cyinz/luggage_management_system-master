@@ -7,10 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   List _bannerList = [
-    "http://fdfs.xmcdn.com/group62/M06/16/15/wKgMZ1z3KxLQ2dbFAAHjQHda8Wc760.jpg",
-    "http://fdfs.xmcdn.com/group55/M0B/24/C0/wKgLdVxr18TyJ2nlAAIJVSk2i_o322.jpg",
-    "http://fdfs.xmcdn.com/group63/M0A/99/95/wKgMaFz_RD-BDyFjAAIO0iRtj0U176.jpg",
-    "http://fdfs.xmcdn.com/group61/M00/DD/05/wKgMZl0DDduydvLKAAHuFI7s-2U365.jpg",
+    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4107889869,778042762&fm=26&gp=0.jpg",
+    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2084372179,1304842980&fm=26&gp=0.jpg",
+    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1998422375,2835855911&fm=26&gp=0.jpg",
+    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2541320403,1245867576&fm=26&gp=0.jpg",
   ];
 
   @override
@@ -75,8 +75,6 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
-  //  轮播图
 
   //  读取登陆行李员信息
   getClerk(BuildContext context) async {
