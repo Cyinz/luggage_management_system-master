@@ -6,8 +6,8 @@ import 'package:luggagemanagementsystem/page/login_page.dart';
 
 Handler rootHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LoginPage();
-//    return HomePage();
+//  return LoginPage();
+    return HomePage();
 });
 
 Handler indexHandler = Handler(
