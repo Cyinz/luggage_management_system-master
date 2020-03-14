@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:luggagemanagementsystem/pages/deposit_page.dart';
-import 'package:luggagemanagementsystem/pages/me_page.dart';
-import 'package:luggagemanagementsystem/pages/receive_page.dart';
+import 'package:luggagemanagementsystem/page/deposit_page.dart';
+import 'package:luggagemanagementsystem/page/me_page.dart';
+import 'package:luggagemanagementsystem/page/receive_page.dart';
 import 'package:luggagemanagementsystem/provide/index_provider.dart';
 import 'package:provide/provide.dart';
 

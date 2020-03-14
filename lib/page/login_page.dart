@@ -2,10 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:luggagemanagementsystem/model/clerk.dart';
 import 'package:luggagemanagementsystem/provide/login_form.dart';
-import 'package:luggagemanagementsystem/routers/application.dart';
+import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
+
+import '../service/service_method.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -189,51 +192,6 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  //  登陆方法
-  _login(String username, String password, BuildContext context) async {
-    FormData formData = FormData.fromMap({
-      'userloginname': username,
-      'password': password,
-    });
-    postRequest('login', formData: formData).then((data) {
-      //  登陆成功
-      if (data['status'] == 200) {
-        FormData formData2 = FormData.fromMap({
-          'token': data['data'],
-        });
-        postRequest('getuser', formData: formData2).then((data) {
-          if (data['status'] == 200) {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return _successDialog(data, context);
-              },
-            );
-          } else {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return _failureDialog("Token无效", context);
-              },
-            );
-          }
-        });
-      }
-      //  登陆失败
-      else {
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return _failureDialog(data['msg'], context);
-          },
-        );
-      }
-    });
-  }
-
   //  登陆成功弹窗
   Widget _successDialog(var data, BuildContext context) {
     return Container(
@@ -245,7 +203,7 @@ class LoginPage extends StatelessWidget {
             onPressed: () {
               Provide.value<LoginForm>(context).isDisabledChange();
 //              Navigator.pop(context);
-              Application.router.navigateTo(context, '/index',
+              Application.router.navigateTo(context, '/home',
                   replace: true, clearStack: true);
             },
             child: Text("确认"),
@@ -276,5 +234,54 @@ class LoginPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  //  登陆方法
+  _login(String username, String password, BuildContext context) async {
+    FormData formData = FormData.fromMap({
+      'userloginname': username,
+      'password': password,
+    });
+    postRequest('login', formData: formData).then((data) {
+      //  登陆成功
+      if (data['status'] == 200) {
+        //  保存token
+        saveToken(data['data']);
+        FormData formData2 = FormData.fromMap({
+          'token': data['data'],
+        });
+        postRequest('getuser', formData: formData2).then((data) {
+          if (data['status'] == 200) {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                Clerk clerk = Clerk.fromJson(data['data']);
+                saveClerk(clerk);
+                return _successDialog(data, context);
+              },
+            );
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return _failureDialog("Token无效", context);
+              },
+            );
+          }
+        });
+      }
+      //  登陆失败
+      else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return _failureDialog(data['msg'], context);
+          },
+        );
+      }
+    });
   }
 }

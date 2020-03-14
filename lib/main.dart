@@ -2,8 +2,8 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:luggagemanagementsystem/provide/index_provider.dart';
 import 'package:luggagemanagementsystem/provide/login_form.dart';
-import 'package:luggagemanagementsystem/routers/application.dart';
-import 'package:luggagemanagementsystem/routers/routes.dart';
+import 'package:luggagemanagementsystem/router/application.dart';
+import 'package:luggagemanagementsystem/router/routes.dart';
 import 'package:provide/provide.dart';
 
 void main() {
