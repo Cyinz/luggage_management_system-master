@@ -9,10 +9,10 @@ import 'package:provide/provide.dart';
 void main() {
   var providers = Providers();
   var loginForm = LoginForm();
-  var indexProvider = DepositProvider();
+  var indexProvider = IndexProvider();
   providers
     ..provide(Provider<LoginForm>.value(loginForm))
-    ..provide(Provider<DepositProvider>.value(indexProvider));
+    ..provide(Provider<IndexProvider>.value(indexProvider));
   runApp(
     ProviderNode(
       child: MyApp(),

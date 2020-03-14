@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DepositProvider with ChangeNotifier {
+class IndexProvider with ChangeNotifier {
   //  定义当前页面
   int currentIndex = 0;
 

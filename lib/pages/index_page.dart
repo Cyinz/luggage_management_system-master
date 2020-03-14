@@ -36,15 +36,15 @@ class IndexPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, width: 1080, height: 1980);
-    return Provide<DepositProvider>(
-      builder: (context, child, depositProvider) {
+    return Provide<IndexProvider>(
+      builder: (context, child, indexProvider) {
         return Scaffold(
           appBar: AppBar(
             title: Text('智能酒店行李管理'),
           ),
           body: PageView.builder(
             onPageChanged: (int index) {
-              Provide.value<DepositProvider>(context).indexChange(index);
+              Provide.value<IndexProvider>(context).indexChange(index);
             },
             controller: pageController,
             itemCount: tabPages.length,
@@ -54,7 +54,7 @@ class IndexPage extends StatelessWidget {
           ),
           bottomNavigationBar: BottomNavigationBar(
             items: bottomTabs,
-            currentIndex: Provide.value<DepositProvider>(context).currentIndex,
+            currentIndex: Provide.value<IndexProvider>(context).currentIndex,
             type: BottomNavigationBarType.fixed,
             fixedColor: Colors.teal,
             unselectedItemColor: Colors.black,
