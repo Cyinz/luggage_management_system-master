@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:luggagemanagementsystem/model/order.dart';
 import 'package:luggagemanagementsystem/page/widget/swiperDiy.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
+import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -71,7 +75,8 @@ class HomePage extends StatelessWidget {
           children: <Widget>[
             SwiperDiy(swiperDataList: _bannerList),
             Card(
-              elevation: 10.0,
+              margin: EdgeInsets.all(10.0),
+              elevation: 5.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(5.0),
@@ -88,6 +93,85 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
+            _buttonRow(),
+            Container(
+              margin: EdgeInsets.all(10.0),
+              child: Row(
+                children: <Widget>[
+                  Text("历史订单"),
+                ],
+              ),
+            ),
+            //  行李员历史订单列表
+            FutureBuilder(
+                future: postRequest('getClerkOrder'),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            margin: EdgeInsets.all(10.0),
+                            elevation: 5.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                            ),
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                top: 5,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        "订单编号:",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(snapshot.data[index]['orderid']),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Image.network(
+                                        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584214735946&di=68bf93a1c61da6e03c8b9bac9d6497da&imgtype=0&src=http%3A%2F%2Fimg.jk51.com%2Fimg_jk51%2F93051887.jpeg",
+                                        width: ScreenUtil().setWidth(300),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text("客户姓名:  ${snapshot.data[index]['savername']}"),
+                                          Text("客户电话:  ${snapshot.data[index]['saverphonenumber']}"),
+                                          Text("寄存时间:  ${snapshot.data[index]['luggagesavetime']}"),
+                                          Text("预计领取:  ${snapshot.data[index]['luggagesaveforetime']}"),
+                                          snapshot.data[index]['luggageistoken'] == 1 ? Text("领取状态:  已领取") : Text("领取状态:  未领取"),
+                                          snapshot.data[index]['luggageistoken'] == 1 ? Text("领取时间:  ${snapshot.data[index]['luggagegettime']}") : Text("领取时间:"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        });
+                  } else {
+                    return Text("error");
+                  }
+                }),
           ],
         ),
         onRefresh: _refresh,
@@ -239,6 +323,44 @@ class HomePage extends StatelessWidget {
               ),
               Text("今日领取数"),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  //  寄存领取按钮栏
+  Widget _buttonRow() {
+    return Row(
+      children: <Widget>[
+        Expanded(
+          child: Card(
+            elevation: 2.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5.0),
+              ),
+            ),
+            child: ListTile(
+              leading: Icon(Icons.card_giftcard),
+              title: Text("行李寄存"),
+              onTap: () {},
+            ),
+          ),
+        ),
+        Expanded(
+          child: Card(
+            elevation: 2.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(5.0),
+              ),
+            ),
+            child: ListTile(
+              leading: Icon(Icons.card_travel),
+              title: Text("行李领取"),
+              onTap: () {},
+            ),
           ),
         ),
       ],
