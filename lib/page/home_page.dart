@@ -386,8 +386,16 @@ class HomePage extends StatelessWidget {
               ),
             ),
             child: ListTile(
-              leading: Icon(Icons.card_giftcard),
-              title: Text("行李寄存"),
+              leading: Icon(
+                Icons.card_giftcard,
+                color: Colors.teal,
+              ),
+              title: Text(
+                "行李寄存",
+                style: TextStyle(
+                  color: Colors.teal,
+                ),
+              ),
               onTap: () {
                 Application.router.navigateTo(context, '/deposit');
               },
@@ -403,8 +411,16 @@ class HomePage extends StatelessWidget {
               ),
             ),
             child: ListTile(
-              leading: Icon(Icons.card_travel),
-              title: Text("行李领取"),
+              leading: Icon(
+                Icons.card_travel,
+                color: Colors.teal,
+              ),
+              title: Text(
+                "行李领取",
+                style: TextStyle(
+                  color: Colors.teal,
+                ),
+              ),
               onTap: () {
                 Application.router.navigateTo(context, '/receive');
               },

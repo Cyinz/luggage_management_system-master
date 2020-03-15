@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/provide/index_provider.dart';
 import 'package:luggagemanagementsystem/provide/login_form.dart';
@@ -12,10 +13,12 @@ void main() {
   var loginForm = LoginForm();
   var indexProvider = IndexProvider();
   var homeDrawer = HomeDrawer();
+  var depositForm = DepositForm();
   providers
     ..provide(Provider<LoginForm>.value(loginForm))
     ..provide(Provider<IndexProvider>.value(indexProvider))
-    ..provide(Provider<HomeDrawer>.value(homeDrawer));
+    ..provide(Provider<HomeDrawer>.value(homeDrawer))
+    ..provide(Provider<DepositForm>.value(depositForm));
   runApp(
     ProviderNode(
       child: MyApp(),
