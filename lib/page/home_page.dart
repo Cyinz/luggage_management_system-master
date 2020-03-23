@@ -238,7 +238,12 @@ class HomePage extends StatelessWidget {
                   size: ScreenUtil().setSp(130),
                   color: Colors.deepPurpleAccent[100],
                 ),
-                Text("酒店订单"),
+                Text(
+                  "酒店订单",
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(35),
+                  ),
+                ),
               ],
             ),
           ),
@@ -256,7 +261,12 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: ScreenUtil().setHeight(10),
               ),
-              Text("总单数"),
+              Text(
+                "总单数",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(35),
+                ),
+              ),
             ],
           ),
         ),
@@ -273,7 +283,12 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: ScreenUtil().setHeight(10),
               ),
-              Text("今日寄存数"),
+              Text(
+                "今日寄存数",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(35),
+                ),
+              ),
             ],
           ),
         ),
@@ -290,7 +305,12 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: ScreenUtil().setHeight(10),
               ),
-              Text("今日领取数"),
+              Text(
+                "今日领取数",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(35),
+                ),
+              ),
             ],
           ),
         ),
@@ -313,7 +333,12 @@ class HomePage extends StatelessWidget {
                   size: ScreenUtil().setSp(130),
                   color: Colors.deepPurpleAccent[100],
                 ),
-                Text("行李员订单"),
+                Text(
+                  "行李员订单",
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(35),
+                  ),
+                ),
               ],
             ),
           ),
@@ -331,7 +356,12 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: ScreenUtil().setHeight(10),
               ),
-              Text("总单数"),
+              Text(
+                "总单数",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(35),
+                ),
+              ),
             ],
           ),
         ),
@@ -348,7 +378,12 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: ScreenUtil().setHeight(10),
               ),
-              Text("今日寄存数"),
+              Text(
+                "今日寄存数",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(35),
+                ),
+              ),
             ],
           ),
         ),
@@ -365,7 +400,12 @@ class HomePage extends StatelessWidget {
               SizedBox(
                 height: ScreenUtil().setHeight(10),
               ),
-              Text("今日领取数"),
+              Text(
+                "今日领取数",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(35),
+                ),
+              ),
             ],
           ),
         ),

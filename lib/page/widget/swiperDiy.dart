@@ -21,7 +21,7 @@ class SwiperDiy extends StatelessWidget {
           return InkWell(
             onTap: () {
               Fluttertoast.showToast(
-                msg: "点了了${swiperDataList[index]}",
+                msg: "点击了${swiperDataList[index]}",
               );
             },
             child: Container(
