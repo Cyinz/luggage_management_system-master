@@ -213,7 +213,7 @@ class HomePage extends StatelessWidget {
                           );
                         });
                   } else {
-                    return Text("error");
+                    return Text("");
                   }
                 }),
           ],

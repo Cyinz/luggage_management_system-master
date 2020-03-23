@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:luggagemanagementsystem/page/widget/browser.dart';
+import 'package:luggagemanagementsystem/router/application.dart';
 
 //  轮播组件
 class SwiperDiy extends StatelessWidget {
@@ -20,9 +22,15 @@ class SwiperDiy extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
-              Fluttertoast.showToast(
-                msg: "点击了${swiperDataList[index]}",
-              );
+//              Fluttertoast.showToast(
+//                msg: "点击了${swiperDataList[index]}",
+//              );
+              Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
+                return new Browser(
+                  url: "http://www.baidu.com/",
+                  title: "WebView加载页面",
+                );
+              }));
             },
             child: Container(
               decoration: BoxDecoration(
