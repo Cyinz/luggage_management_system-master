@@ -203,8 +203,12 @@ class LoginPage extends StatelessWidget {
             onPressed: () {
               Provide.value<LoginForm>(context).isDisabledChange();
 //              Navigator.pop(context);
-              Application.router.navigateTo(context, '/home',
-                  replace: true, clearStack: true);
+              Application.router.navigateTo(
+                context,
+                '/home',
+                replace: true,
+                clearStack: true,
+              );
             },
             child: Text("确认"),
           ),

@@ -14,7 +14,6 @@ class Routes {
   static void configureRouters(Router router) {
     // 出现不存在的路径时
     router.notFoundHandler = new Handler(
-      // ignore: missing_return
       handlerFunc: (BuildContext context, Map<String, List<String>> params) {
         print("没有该路由");
       },
