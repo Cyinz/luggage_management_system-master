@@ -171,7 +171,12 @@ class HomePage extends StatelessWidget {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Text(snapshot.data[index]['orderid']),
+                                      Text(
+                                        snapshot.data[index]['orderid'],
+                                        style: TextStyle(
+                                          fontSize: ScreenUtil().setSp(40)
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   Row(
