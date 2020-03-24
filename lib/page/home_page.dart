@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:luggagemanagementsystem/page/widget/swiperDiy.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
+import 'package:luggagemanagementsystem/provide/home_order.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
@@ -20,216 +23,222 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenUtil.init(context, width: 1080, height: 1980);
     getClerk(context);
+    getOrderMsg(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text("智能酒店行李管理"),
-        centerTitle: true,
-      ),
-      drawer: Provide<HomeDrawer>(
-        builder: (context, child, homeDrawer) {
-          return Drawer(
-            child: Column(
-              children: <Widget>[
-                UserAccountsDrawerHeader(
-                  accountName: Text(
-                    Provide.value<HomeDrawer>(context).clerkName,
-                  ),
-                  accountEmail: Text(
-                    Provide.value<HomeDrawer>(context).clerkHotel,
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundImage: NetworkImage(
-//                      Provide.value<HomeDrawer>(context).clerkImg,
-                      "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=430089504,3674027973&fm=26&gp=0.jpg",
-                    ),
-                    backgroundColor: Colors.grey[400],
-                    radius: 40.0,
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.person,
-                    color: Colors.teal,
-                  ),
-                  title: Text("个人信息"),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.format_list_bulleted,
-                    color: Colors.teal,
-                  ),
-                  title: Text("订单查询"),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.settings,
-                    color: Colors.teal,
-                  ),
-                  title: Text("语言设置"),
-                  onTap: () {},
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.update,
-                    color: Colors.teal,
-                  ),
-                  title: Text("检查更新"),
-                  onTap: () {},
-                ),
-                //  占满剩余空间
-                Expanded(child: Container()),
-                Container(
-                  padding: EdgeInsets.only(left: 15, right: 15),
-                  child: Divider(
-                    height: 1,
-                    color: Colors.grey[500],
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.exit_to_app),
-                  title: Text("退出登陆"),
-                  onTap: () {},
-                ),
-                SizedBox(
-                  height: ScreenUtil().setHeight(ScreenUtil.bottomBarHeight),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-      body: RefreshIndicator(
-        child: ListView(
-          children: <Widget>[
-            SwiperDiy(swiperDataList: _bannerList),
-            Card(
-              margin: EdgeInsets.all(10.0),
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5.0),
-                ),
-              ),
+        appBar: AppBar(
+          title: Text("智能酒店行李管理"),
+          centerTitle: true,
+        ),
+        drawer: Provide<HomeDrawer>(
+          builder: (context, child, homeDrawer) {
+            return Drawer(
               child: Column(
                 children: <Widget>[
-                  _hotelRow(),
-                  Divider(
-                    height: 1,
-                    color: Colors.grey[300],
+                  UserAccountsDrawerHeader(
+                    accountName: Text(
+                      Provide.value<HomeDrawer>(context).clerkName,
+                    ),
+                    accountEmail: Text(
+                      Provide.value<HomeDrawer>(context).clerkHotel,
+                    ),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundImage: NetworkImage(
+//                      Provide.value<HomeDrawer>(context).clerkImg,
+                        "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=430089504,3674027973&fm=26&gp=0.jpg",
+                      ),
+                      backgroundColor: Colors.grey[400],
+                      radius: 40.0,
+                    ),
                   ),
-                  _clerkRow(),
+                  ListTile(
+                    leading: Icon(
+                      Icons.person,
+                      color: Colors.teal,
+                    ),
+                    title: Text("个人信息"),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.format_list_bulleted,
+                      color: Colors.teal,
+                    ),
+                    title: Text("订单查询"),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.settings,
+                      color: Colors.teal,
+                    ),
+                    title: Text("语言设置"),
+                    onTap: () {},
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.update,
+                      color: Colors.teal,
+                    ),
+                    title: Text("检查更新"),
+                    onTap: () {},
+                  ),
+                  //  占满剩余空间
+                  Expanded(child: Container()),
+                  Container(
+                    padding: EdgeInsets.only(left: 15, right: 15),
+                    child: Divider(
+                      height: 1,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.exit_to_app),
+                    title: Text("退出登陆"),
+                    onTap: () {},
+                  ),
+                  SizedBox(
+                    height: ScreenUtil().setHeight(ScreenUtil.bottomBarHeight),
+                  ),
                 ],
               ),
-            ),
-            _buttonRow(context),
-            Container(
-              margin: EdgeInsets.all(10.0),
-              child: Row(
-                children: <Widget>[
-                  Text("历史订单"),
-                ],
-              ),
-            ),
-            //  行李员历史订单列表
-            FutureBuilder(
-                future: postRequest('getClerkOrder'),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Card(
-                            margin: EdgeInsets.all(10.0),
-                            elevation: 5.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                            ),
-                            child: Container(
-                              padding: EdgeInsets.only(
-                                top: 5,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "订单编号:",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        snapshot.data[index]['orderid'],
-                                        style: TextStyle(
-                                          fontSize: ScreenUtil().setSp(40)
-                                        ),
-                                      ),
-                                    ],
+            );
+          },
+        ),
+        body: Provide<HomeOrder>(builder: (context, child, homeOrder) {
+          return EasyRefresh(
+            child: ListView(
+              children: <Widget>[
+                SwiperDiy(swiperDataList: _bannerList),
+                Card(
+                  margin: EdgeInsets.all(10.0),
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(5.0),
+                    ),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      _hotelRow(context),
+                      Divider(
+                        height: 1,
+                        color: Colors.grey[300],
+                      ),
+                      _clerkRow(context),
+                    ],
+                  ),
+                ),
+                _buttonRow(context),
+                Container(
+                  margin: EdgeInsets.all(10.0),
+                  child: Row(
+                    children: <Widget>[
+                      Text("历史订单"),
+                    ],
+                  ),
+                ),
+                //  行李员历史订单列表
+                FutureBuilder(
+                    future: postRequest('getClerkOrder'),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                margin: EdgeInsets.all(10.0),
+                                elevation: 5.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5.0),
                                   ),
-                                  Row(
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 5,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
-                                      Image.network(
-                                        "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584214735946&di=68bf93a1c61da6e03c8b9bac9d6497da&imgtype=0&src=http%3A%2F%2Fimg.jk51.com%2Fimg_jk51%2F93051887.jpeg",
-                                        width: ScreenUtil().setWidth(300),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                      Row(
                                         children: <Widget>[
+                                          SizedBox(
+                                            width: 5,
+                                          ),
                                           Text(
-                                              "客户姓名:  ${snapshot.data[index]['savername']}"),
+                                            "订单编号:",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
                                           Text(
-                                              "客户电话:  ${snapshot.data[index]['saverphonenumber']}"),
-                                          Text(
-                                              "寄存时间:  ${snapshot.data[index]['luggagesavetime']}"),
-                                          Text(
-                                              "预计领取:  ${snapshot.data[index]['luggagesaveforetime']}"),
-                                          snapshot.data[index]
-                                                      ['luggageistoken'] ==
-                                                  1
-                                              ? Text("领取状态:  已领取")
-                                              : Text("领取状态:  未领取"),
-                                          snapshot.data[index]
-                                                      ['luggageistoken'] ==
-                                                  1
-                                              ? Text(
-                                                  "领取时间:  ${snapshot.data[index]['luggagegettime']}")
-                                              : Text("领取时间:"),
+                                            snapshot.data[index]['orderid'],
+                                            style: TextStyle(
+                                                fontSize:
+                                                    ScreenUtil().setSp(40)),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Image.network(
+                                            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584214735946&di=68bf93a1c61da6e03c8b9bac9d6497da&imgtype=0&src=http%3A%2F%2Fimg.jk51.com%2Fimg_jk51%2F93051887.jpeg",
+                                            width: ScreenUtil().setWidth(300),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                  "客户姓名:  ${snapshot.data[index]['savername']}"),
+                                              Text(
+                                                  "客户电话:  ${snapshot.data[index]['saverphonenumber']}"),
+                                              Text(
+                                                  "寄存时间:  ${snapshot.data[index]['luggagesavetime']}"),
+                                              Text(
+                                                  "预计领取:  ${snapshot.data[index]['luggagesaveforetime']}"),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text("领取状态:  已领取")
+                                                  : Text("领取状态:  未领取"),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text(
+                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}")
+                                                  : Text("领取时间:"),
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          );
-                        });
-                  } else {
-                    return Text("");
-                  }
-                }),
-          ],
-        ),
-        onRefresh: _refresh,
-      ),
-    );
+                                ),
+                              );
+                            });
+                      } else {
+                        return Text("");
+                      }
+                    }),
+              ],
+            ),
+            onRefresh: () async {
+              print("下拉刷新");
+              getOrderMsg(context);
+            },
+          );
+        }));
   }
 
   //  酒店订单数据
-  Widget _hotelRow() {
+  Widget _hotelRow(BuildContext context) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -257,7 +266,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "32",
+                "${Provide.value<HomeOrder>(context).hotelWeekOrder}",
                 style: TextStyle(
                   color: Colors.amber,
                   fontSize: ScreenUtil().setSp(100.0),
@@ -279,7 +288,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "8",
+                "${Provide.value<HomeOrder>(context).hotelTodayDeposit}",
                 style: TextStyle(
                   color: Colors.redAccent[100],
                   fontSize: ScreenUtil().setSp(100.0),
@@ -301,7 +310,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "6",
+                "${Provide.value<HomeOrder>(context).hotelTodayReceive}",
                 style: TextStyle(
                   color: Colors.lightBlueAccent[100],
                   fontSize: ScreenUtil().setSp(100.0),
@@ -324,7 +333,7 @@ class HomePage extends StatelessWidget {
   }
 
   //  行李员订单数据
-  Widget _clerkRow() {
+  Widget _clerkRow(BuildContext context) {
     return Row(
       children: <Widget>[
         Expanded(
@@ -352,7 +361,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "5",
+                "${Provide.value<HomeOrder>(context).clerkWeekOrder}",
                 style: TextStyle(
                   color: Colors.amber,
                   fontSize: ScreenUtil().setSp(100.0),
@@ -374,7 +383,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "3",
+                "${Provide.value<HomeOrder>(context).clerkTodayDeposit}",
                 style: TextStyle(
                   color: Colors.redAccent[100],
                   fontSize: ScreenUtil().setSp(100.0),
@@ -396,7 +405,7 @@ class HomePage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Text(
-                "2",
+                "${Provide.value<HomeOrder>(context).clerkTodayReceive}",
                 style: TextStyle(
                   color: Colors.lightBlueAccent[100],
                   fontSize: ScreenUtil().setSp(100.0),
@@ -489,8 +498,23 @@ class HomePage extends StatelessWidget {
         .setClerkHotel(sharedPreferences.getString('clerkHotel'));
   }
 
-  //  下拉刷新方法
-  Future<Null> _refresh() async {
-    print("下拉刷新");
+  //  获取订单统计信息
+  getOrderMsg(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    // 取酒店订单统计数据
+    FormData formData1 = FormData.fromMap({
+      'hotel': Provide.value<HomeDrawer>(context)
+          .setClerkHotel(sharedPreferences.getString('clerkHotel')),
+    });
+    postRequest('hotelWeekOrder', formData: formData1).then((data) {
+      if (data['status'] == 200) {
+        Provide.value<HomeOrder>(context).setHotelWeekOrder(data['data']);
+      }
+    });
+
+    //  取行李员订单统计数据
+    FormData formData2 = FormData.fromMap({
+    });
   }
 }

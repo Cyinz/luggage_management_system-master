@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:luggagemanagementsystem/model/clerk.dart';
@@ -202,7 +201,6 @@ class LoginPage extends StatelessWidget {
           FlatButton(
             onPressed: () {
               Provide.value<LoginForm>(context).isDisabledChange();
-//              Navigator.pop(context);
               Application.router.navigateTo(
                 context,
                 '/home',
