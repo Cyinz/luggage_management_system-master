@@ -176,19 +176,11 @@ class HomePage extends StatelessWidget {
                                             width: 5,
                                           ),
                                           Text(
-                                            "订单编号:",
+                                            "订单编号:  ${snapshot.data[index]['orderid']}",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
+                                              fontSize: ScreenUtil().setSp(40),
                                             ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            snapshot.data[index]['orderid'],
-                                            style: TextStyle(
-                                                fontSize:
-                                                    ScreenUtil().setSp(40)),
                                           ),
                                         ],
                                       ),
@@ -198,29 +190,75 @@ class HomePage extends StatelessWidget {
                                             "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584214735946&di=68bf93a1c61da6e03c8b9bac9d6497da&imgtype=0&src=http%3A%2F%2Fimg.jk51.com%2Fimg_jk51%2F93051887.jpeg",
                                             width: ScreenUtil().setWidth(300),
                                           ),
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(20),
+                                          ),
                                           Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Text(
-                                                  "客户姓名:  ${snapshot.data[index]['savername']}"),
+                                                "客户姓名:  ${snapshot.data[index]['savername']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
                                               Text(
-                                                  "客户电话:  ${snapshot.data[index]['saverphonenumber']}"),
+                                                "客户电话:  ${snapshot.data[index]['saverphonenumber']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
                                               Text(
-                                                  "寄存时间:  ${snapshot.data[index]['luggagesavetime']}"),
+                                                "寄存时间:  ${snapshot.data[index]['luggagesavetime']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
                                               Text(
-                                                  "预计领取:  ${snapshot.data[index]['luggagesaveforetime']}"),
-                                              snapshot.data[index]
-                                                          ['luggageistoken'] ==
-                                                      1
-                                                  ? Text("领取状态:  已领取")
-                                                  : Text("领取状态:  未领取"),
+                                                "预计领取:  ${snapshot.data[index]['luggagesaveforetime']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
                                               snapshot.data[index]
                                                           ['luggageistoken'] ==
                                                       1
                                                   ? Text(
-                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}")
-                                                  : Text("领取时间:"),
+                                                      "领取状态:  已领取",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "领取状态:  未领取",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text(
+                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "领取时间:",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
                                             ],
                                           ),
                                         ],
