@@ -56,21 +56,8 @@ class DepositPage extends StatelessWidget {
           _genderRadio(context),
           _storeToTime(context),
           _number(context),
+          _pictureBtn(context),
           _picture(context),
-          Center(
-            child: Provide.value<DepositForm>(context).pic == null
-                ? SizedBox()
-                : Container(
-                    margin: EdgeInsets.only(
-                        left: ScreenUtil().setWidth(180), top: 5),
-                    height: ScreenUtil().setHeight(400),
-                    width: ScreenUtil().setWidth(600),
-                    child: Image.file(
-                      Provide.value<DepositForm>(context).pic,
-                      width: ScreenUtil().setWidth(500),
-                    ),
-                  ),
-          ),
           _describeField(context),
         ],
       ),
@@ -474,7 +461,7 @@ class DepositPage extends StatelessWidget {
   }
 
   //  图片上传按钮
-  Widget _picture(BuildContext context) {
+  Widget _pictureBtn(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
         top: ScreenUtil().setHeight(30.0),
@@ -536,6 +523,23 @@ class DepositPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  //  图片
+  Widget _picture(BuildContext context) {
+    return Center(
+      child: Provide.value<DepositForm>(context).pic == null
+          ? SizedBox()
+          : Container(
+              margin: EdgeInsets.only(left: ScreenUtil().setWidth(180), top: 5),
+              height: ScreenUtil().setHeight(400),
+              width: ScreenUtil().setWidth(600),
+              child: Image.file(
+                Provide.value<DepositForm>(context).pic,
+                width: ScreenUtil().setWidth(500),
+              ),
+            ),
     );
   }
 
@@ -621,7 +625,6 @@ class DepositPage extends StatelessWidget {
         daySuffix: "日",
         minValue: DateTime.now(),
         minuteInterval: 1,
-        // twoDigitYear: true,
       ),
       title: new Text("预计领取时间"),
       textAlign: TextAlign.right,
@@ -665,6 +668,7 @@ class DepositPage extends StatelessWidget {
     ).showModal(context);
   }
 
+  //  选择上传图片方式弹窗
   void showDemoActionSheet({BuildContext context, Widget child}) {
     showCupertinoModalPopup<String>(
       context: context,
@@ -680,11 +684,13 @@ class DepositPage extends StatelessWidget {
     });
   }
 
+  //  通过拍照获取图片
   Future getImageByCamera(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     Provide.value<DepositForm>(context).setPic(image);
   }
 
+  //  通过相册获取图片
   Future getImageByGallery(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     Provide.value<DepositForm>(context).setPic(image);
