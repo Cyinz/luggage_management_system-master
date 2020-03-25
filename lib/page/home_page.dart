@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:luggagemanagementsystem/page/widget/swiperDiy.dart';
+import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/provide/home_order.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
@@ -21,6 +22,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bool = ModalRoute.of(context).isCurrent;
+    if (bool) {
+      Provide.value<DepositForm>(context).clear();
+      print("返回到主页");
+    }
+
     ScreenUtil.init(context, width: 1080, height: 1980);
     getClerk(context);
     getOrderMsg(context);
@@ -249,7 +256,7 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 Icon(
                   Icons.home,
-                  size: ScreenUtil().setSp(130),
+                  size: ScreenUtil().setSp(125),
                   color: Colors.deepPurpleAccent[100],
                 ),
                 Text(
@@ -344,7 +351,7 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 Icon(
                   Icons.person,
-                  size: ScreenUtil().setSp(130),
+                  size: ScreenUtil().setSp(125),
                   color: Colors.deepPurpleAccent[100],
                 ),
                 Text(
@@ -514,7 +521,6 @@ class HomePage extends StatelessWidget {
     });
 
     //  取行李员订单统计数据
-    FormData formData2 = FormData.fromMap({
-    });
+    FormData formData2 = FormData.fromMap({});
   }
 }

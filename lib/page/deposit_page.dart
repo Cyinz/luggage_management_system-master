@@ -1,9 +1,13 @@
+import 'package:date_format/date_format.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:provide/provide.dart';
-import 'package:date_format/date_format.dart';
 
 class DepositPage extends StatelessWidget {
   @override
@@ -21,6 +25,10 @@ class DepositPage extends StatelessWidget {
                 _depositButton(),
               ],
             ),
+            // 点击空白处收回键盘
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
           );
         },
       ),
@@ -31,6 +39,7 @@ class DepositPage extends StatelessWidget {
   Widget _depositForm(BuildContext context) {
     return Form(
       child: ListView(
+        key: Provide.value<DepositForm>(context).depositFormKey,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.only(
@@ -43,10 +52,25 @@ class DepositPage extends StatelessWidget {
           _savernameField(context),
           _phoneField(context),
           _tagField(context),
+          _locationField(context),
           _genderRadio(context),
           _storeToTime(context),
           _number(context),
           _picture(context),
+          Center(
+            child: Provide.value<DepositForm>(context).pic == null
+                ? SizedBox()
+                : Container(
+                    margin: EdgeInsets.only(
+                        left: ScreenUtil().setWidth(180), top: 5),
+                    height: ScreenUtil().setHeight(400),
+                    width: ScreenUtil().setWidth(600),
+                    child: Image.file(
+                      Provide.value<DepositForm>(context).pic,
+                      width: ScreenUtil().setWidth(500),
+                    ),
+                  ),
+          ),
           _describeField(context),
         ],
       ),
@@ -56,7 +80,7 @@ class DepositPage extends StatelessWidget {
   //  表单标题
   Widget _formTitle() {
     return Container(
-      margin: EdgeInsets.only(top: ScreenUtil().setHeight(20.0)),
+      margin: EdgeInsets.only(top: ScreenUtil().setHeight(30.0)),
       child: Row(
         children: <Widget>[
           Icon(
@@ -91,7 +115,7 @@ class DepositPage extends StatelessWidget {
   Widget _savernameField(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: ScreenUtil().setHeight(200.0),
+        top: ScreenUtil().setHeight(50.0),
         right: ScreenUtil().setWidth(100.0),
       ),
       height: ScreenUtil().setHeight(80.0),
@@ -111,10 +135,21 @@ class DepositPage extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '请输入客户姓名',
+            child: Container(
+              margin: EdgeInsets.only(left: 25),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 2, left: 10),
+                  border: OutlineInputBorder(),
+                  hintText: '请输入客户姓名',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: ScreenUtil().setSp(40),
+                  ),
+                ),
+                onSaved: (value) {
+                  Provide.value<DepositForm>(context).setSaverName(value);
+                },
               ),
             ),
           ),
@@ -147,10 +182,21 @@ class DepositPage extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '请输入客户手机',
+            child: Container(
+              margin: EdgeInsets.only(left: 25),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 2, left: 10),
+                  border: OutlineInputBorder(),
+                  hintText: '请输入客户手机号',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: ScreenUtil().setSp(40),
+                  ),
+                ),
+                onSaved: (value) {
+                  Provide.value<DepositForm>(context).setPhone(value);
+                },
               ),
             ),
           ),
@@ -183,10 +229,68 @@ class DepositPage extends StatelessWidget {
           ),
           Expanded(
             flex: 3,
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: '请输入行李绑定标签号',
+            child: Container(
+              margin: EdgeInsets.only(left: 25),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 2, left: 10),
+                  border: OutlineInputBorder(),
+                  hintText: '请输入行李绑定标签号',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: ScreenUtil().setSp(40),
+                  ),
+                ),
+                onSaved: (value) {
+                  Provide.value<DepositForm>(context).setTag(value);
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //  行李位置输入框
+  Widget _locationField(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: ScreenUtil().setHeight(30.0),
+        right: ScreenUtil().setWidth(100.0),
+      ),
+      height: ScreenUtil().setHeight(80.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "行李位置:",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(40.0),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Container(
+              margin: EdgeInsets.only(left: 25),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 2, left: 10),
+                  border: OutlineInputBorder(),
+                  hintText: '请输入行李位置',
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: ScreenUtil().setSp(40),
+                  ),
+                ),
+                onSaved: (value) {
+                  Provide.value<DepositForm>(context).setLocation(value);
+                },
               ),
             ),
           ),
@@ -236,8 +340,10 @@ class DepositPage extends StatelessWidget {
                 ),
                 Radio(
                   value: 1,
-                  groupValue: 1,
-                  onChanged: (value) {},
+                  groupValue: Provide.value<DepositForm>(context).gender,
+                  onChanged: (value) {
+                    Provide.value<DepositForm>(context).setGender(value);
+                  },
                 ),
                 Icon(
                   FontAwesome.female,
@@ -253,8 +359,10 @@ class DepositPage extends StatelessWidget {
                 ),
                 Radio(
                   value: 2,
-                  groupValue: 0,
-                  onChanged: (value) {},
+                  groupValue: Provide.value<DepositForm>(context).gender,
+                  onChanged: (value) {
+                    Provide.value<DepositForm>(context).setGender(value);
+                  },
                 ),
               ],
             ),
@@ -291,14 +399,19 @@ class DepositPage extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(left: 25),
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  showPickerDateTime(context);
+                },
                 child: Row(
                   children: <Widget>[
                     Text(
-                      formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]),
+                      Provide.value<DepositForm>(context).storeToTime,
                       style: TextStyle(
                         color: Colors.grey[600],
                       ),
+                    ),
+                    Expanded(
+                      child: Container(),
                     ),
                     Icon(Icons.arrow_drop_down),
                   ],
@@ -337,19 +450,21 @@ class DepositPage extends StatelessWidget {
             flex: 3,
             child: Container(
               margin: EdgeInsets.only(left: 25),
-              child: InkWell(
-                onTap: () {},
-                child: Row(
-                  children: <Widget>[
-                    Text(
-                      "2件",
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                      ),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    width: ScreenUtil().setWidth(500),
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      inputFormatters: <TextInputFormatter>[
+                        WhitelistingTextInputFormatter.digitsOnly, //只输入数字
+                        LengthLimitingTextInputFormatter(2) //限制长度
+                      ],
                     ),
-                    Icon(Icons.arrow_drop_down),
-                  ],
-                ),
+                  ),
+                  Text("件")
+                ],
               ),
             ),
           ),
@@ -385,7 +500,36 @@ class DepositPage extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(left: 25),
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDemoActionSheet(
+                    context: context,
+                    child: CupertinoActionSheet(
+                      title: const Text('图片上传'),
+                      message: const Text('请选择提供行李图片'),
+                      actions: <Widget>[
+                        CupertinoActionSheetAction(
+                          child: const Text('图库选择'),
+                          onPressed: () {
+                            Navigator.pop(context, 'Gallery');
+                          },
+                        ),
+                        CupertinoActionSheetAction(
+                          child: const Text('拍照上传'),
+                          onPressed: () {
+                            Navigator.pop(context, 'Camera');
+                          },
+                        ),
+                      ],
+                      cancelButton: CupertinoActionSheetAction(
+                        child: const Text('取消'),
+                        isDefaultAction: true,
+                        onPressed: () {
+                          Navigator.pop(context, 'Cancel');
+                        },
+                      ),
+                    ),
+                  );
+                },
                 child: Text("图片上传"),
               ),
             ),
@@ -402,7 +546,7 @@ class DepositPage extends StatelessWidget {
         top: ScreenUtil().setHeight(30.0),
         right: ScreenUtil().setWidth(100.0),
       ),
-      height: ScreenUtil().setHeight(400.0),
+      height: ScreenUtil().setHeight(300.0),
       child: Row(
         children: <Widget>[
           Expanded(
@@ -423,9 +567,13 @@ class DepositPage extends StatelessWidget {
               margin: EdgeInsets.only(left: 25),
               child: TextFormField(
                 decoration: InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 5, left: 10),
                   border: OutlineInputBorder(),
-                  labelText: "请输入行李备注",
-                  alignLabelWithHint: true,
+                  hintText: "请输入行李备注",
+                  hintStyle: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: ScreenUtil().setSp(40),
+                  ),
                 ),
                 maxLength: 140,
                 maxLines: 100,
@@ -460,5 +608,85 @@ class DepositPage extends StatelessWidget {
         onPressed: () {},
       ),
     );
+  }
+
+  //  选择时间插件
+  showPickerDateTime(BuildContext context) {
+    new Picker(
+      adapter: new DateTimePickerAdapter(
+        type: PickerDateTimeType.kYMDHMS,
+        isNumberMonth: true,
+        yearSuffix: "年",
+        monthSuffix: "月",
+        daySuffix: "日",
+        minValue: DateTime.now(),
+        minuteInterval: 1,
+        // twoDigitYear: true,
+      ),
+      title: new Text("预计领取时间"),
+      textAlign: TextAlign.right,
+      selectedTextStyle: TextStyle(color: Colors.blue),
+      delimiter: [
+        PickerDelimiter(
+          column: 4,
+          child: Container(
+            width: 16.0,
+            alignment: Alignment.center,
+            child: Text(':', style: TextStyle(fontWeight: FontWeight.bold)),
+            color: Colors.white,
+          ),
+        ),
+        PickerDelimiter(
+          column: 6,
+          child: Container(
+            width: 16.0,
+            alignment: Alignment.center,
+            child: Text(':', style: TextStyle(fontWeight: FontWeight.bold)),
+            color: Colors.white,
+          ),
+        ),
+      ],
+//        footer: Container(
+//          height: 50.0,
+//          alignment: Alignment.center,
+//          child: Text('Footer'),
+//        ),
+      onConfirm: (Picker picker, List value) {
+        Provide.value<DepositForm>(context).setStoreToTime(formatDate(
+            DateTime.parse(picker.adapter.toString()),
+            [yyyy, '-', mm, '-', dd, " ", HH, ":", nn, ":", ss]));
+      },
+//        onSelect: (Picker picker, int index, List<int> selecteds) {
+////          this.setState(() {
+////            stateText = picker.adapter.toString();
+////          });
+//        Provide.value<DepositForm>(context).setStoreToTime(picker.adapter.text);
+//        }
+    ).showModal(context);
+  }
+
+  void showDemoActionSheet({BuildContext context, Widget child}) {
+    showCupertinoModalPopup<String>(
+      context: context,
+      builder: (BuildContext context) => child,
+    ).then((String value) {
+      if (value != null) {
+        if (value == "Camera") {
+          getImageByCamera(context);
+        } else if (value == "Gallery") {
+          getImageByGallery(context);
+        }
+      }
+    });
+  }
+
+  Future getImageByCamera(BuildContext context) async {
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    Provide.value<DepositForm>(context).setPic(image);
+  }
+
+  Future getImageByGallery(BuildContext context) async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    Provide.value<DepositForm>(context).setPic(image);
   }
 }
