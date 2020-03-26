@@ -7,6 +7,7 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
+import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:provide/provide.dart';
 
 class DepositPage extends StatelessWidget {
@@ -22,7 +23,7 @@ class DepositPage extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 _depositForm(context),
-                _depositButton(),
+                _depositButton(context),
               ],
             ),
             // 点击空白处收回键盘
@@ -590,7 +591,7 @@ class DepositPage extends StatelessWidget {
   }
 
   //  寄存按钮
-  Widget _depositButton() {
+  Widget _depositButton(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
         top: ScreenUtil().setHeight(50.0),
@@ -609,9 +610,13 @@ class DepositPage extends StatelessWidget {
             fontSize: ScreenUtil().setSp(60.0),
           ),
         ),
-        onPressed: () {
-
-        },
+        onPressed: Provide.value<DepositForm>(context).isDisabled
+            ? null
+            : () {
+                //  验证寄存表单数据
+                var flag = true;
+                print("行李员信息: ${Provide.value<HomeDrawer>(context).clerkName}");
+              },
       ),
     );
   }
@@ -696,5 +701,10 @@ class DepositPage extends StatelessWidget {
   Future getImageByGallery(BuildContext context) async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     Provide.value<DepositForm>(context).setPic(image);
+  }
+
+  //  验证寄存表单数据
+  Future<bool> checkDepositMsg(BuildContext context) async {
+    return true;
   }
 }

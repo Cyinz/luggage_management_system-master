@@ -27,6 +27,9 @@ class DepositForm with ChangeNotifier {
   //  行李图片
   File pic;
 
+  //  寄存按钮是否被禁用
+  bool isDisabled = false;
+
   setSaverName(value) {
     savername = value;
     notifyListeners();
@@ -57,12 +60,26 @@ class DepositForm with ChangeNotifier {
     notifyListeners();
   }
 
-  setPic(value){
+  setPic(value) {
     pic = value;
     notifyListeners();
   }
 
-  clear(){
+  //  改变寄存按钮是否被禁用状态
+  isDisabledChange() {
+    isDisabled = !isDisabled;
+    notifyListeners();
+  }
+
+  //  清空表单保存的内容，初始化寄存表单
+  clear() {
+    savername = null;
+    phone = null;
+    tag = null;
+    location = null;
+    gender = 1;
+    storeToTime = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
     pic = null;
+    isDisabled = false;
   }
 }
