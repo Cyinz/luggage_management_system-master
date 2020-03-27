@@ -4,6 +4,7 @@ import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/provide/home_order.dart';
 import 'package:luggagemanagementsystem/provide/login_form.dart';
+import 'package:luggagemanagementsystem/provide/receive_form.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/router/routes.dart';
 import 'package:provide/provide.dart';
@@ -14,11 +15,13 @@ void main() {
   var homeDrawer = HomeDrawer();
   var depositForm = DepositForm();
   var homeOrder = HomeOrder();
+  var receiveForm = ReceiveForm();
   providers
     ..provide(Provider<LoginForm>.value(loginForm))
     ..provide(Provider<HomeDrawer>.value(homeDrawer))
     ..provide(Provider<DepositForm>.value(depositForm))
-    ..provide(Provider<HomeOrder>.value(homeOrder));
+    ..provide(Provider<HomeOrder>.value(homeOrder))
+    ..provide(Provider<ReceiveForm>.value(receiveForm));
   runApp(
     ProviderNode(
       child: MyApp(),

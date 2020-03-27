@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
+import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -837,70 +838,88 @@ class DepositPage extends StatelessWidget {
 
   //  寄存方法
   deposit(BuildContext context) async {
-    bool flag = await checkToken(context);
-    if (flag) {
-      String path = Provide.value<DepositForm>(context).pic.path;
-      var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-      FormData formData = FormData.fromMap({
-        'savername': Provide.value<DepositForm>(context).savername,
-        'phonenumber': Provide.value<DepositForm>(context).phone,
-        'gender': Provide.value<DepositForm>(context).gender,
-        'recievername': Provide.value<HomeDrawer>(context).clerkName,
-        'hotel': Provide.value<HomeDrawer>(context).clerkHotel,
-        'luggagedescribe': Provide.value<DepositForm>(context).desc,
-        'saveforetime': Provide.value<DepositForm>(context).storeToTime,
-        'number': Provide.value<DepositForm>(context).number,
-        'location': Provide.value<DepositForm>(context).location,
-        'tag': Provide.value<DepositForm>(context).tag,
-        'picture': await MultipartFile.fromFile(path, filename: name),
-      });
-      postRequest('neworder', formData: formData).then((data) {
-        print(data);
-        if (data['status'] == 200) {
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return _successDialog(context);
-              });
-        } else {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return _failureDialog(data['msg'], context);
-            },
-          );
-        }
-      });
-    }
-    else{
-      //  清除所有，返回登陆界面
-    }
-  }
-
-  //  验证Token
-  Future<bool> checkToken(BuildContext context) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String token = sharedPreferences.getString('Token');
     FormData formData = FormData.fromMap({
       'token': token,
     });
-    postRequest('checkToken', formData: formData).then((data) {
-      if (data['status'] == 200) {
-        //  Token验证通过
-        return true;
-      } else {
-        //  Token已过期
+    postRequest('checkToken',formData: formData).then((data) async {
+      //  Token验证通过
+      if(data['status'] == 200){
+        String path = Provide.value<DepositForm>(context).pic.path;
+        var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+        FormData formData = FormData.fromMap({
+          'savername': Provide.value<DepositForm>(context).savername,
+          'phonenumber': Provide.value<DepositForm>(context).phone,
+          'gender': Provide.value<DepositForm>(context).gender,
+          'recievername': Provide.value<HomeDrawer>(context).clerkName,
+          'hotel': Provide.value<HomeDrawer>(context).clerkHotel,
+          'luggagedescribe': Provide.value<DepositForm>(context).desc,
+          'saveforetime': Provide.value<DepositForm>(context).storeToTime,
+          'number': Provide.value<DepositForm>(context).number,
+          'location': Provide.value<DepositForm>(context).location,
+          'tag': Provide.value<DepositForm>(context).tag,
+          'picture': await MultipartFile.fromFile(path, filename: name),
+        });
+        postRequest('neworder', formData: formData).then((data) {
+          print(data);
+          if (data['status'] == 200) {
+            showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return _successDialog(context);
+                });
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return _failureDialog(data['msg'], context);
+              },
+            );
+          }
+        });
+      }
+      else{
         showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return _failureDialog(data['msg'], context);
-          },
-        );
-        return false;
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return _failureTokenDialog(context);
+            });
       }
     });
+  }
+
+  //  验证Token失败弹窗
+  Widget _failureTokenDialog(BuildContext context) {
+    return Container(
+      child: AlertDialog(
+        title: Text(""),
+        content: Text("登陆已过期，请重新登陆!"),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              //  清空所有
+              clear(context);
+            },
+            child: Text("确认"),
+          )
+        ],
+      ),
+    );
+  }
+
+//  清空信息，重新登陆
+  clear(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+    Application.router.navigateTo(
+      context,
+      '/',
+      replace: true,
+      clearStack: true,
+    );
   }
 }
