@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ReceiveForm with ChangeNotifier {
-  String qrcodeMsg;
+  final receiveFormKey = GlobalKey<FormState>();
 
-  setQrcodeMsg(value) {
-    qrcodeMsg = value;
+  //  取行李码
+  String getNumber;
+
+  setGetNumber(value) {
+    getNumber = value;
     notifyListeners();
   }
 }
