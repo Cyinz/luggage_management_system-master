@@ -27,7 +27,7 @@ class SwiperDiy extends StatelessWidget {
 //              );
               Navigator.of(context).push(new MaterialPageRoute(builder: (_) {
                 return new Browser(
-                  url: "http://www.baidu.com/",
+                  url: "http://www.bnuz.edu.cn",
                   title: "WebView加载页面",
                 );
               }));

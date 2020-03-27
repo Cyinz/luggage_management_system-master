@@ -13,6 +13,7 @@ import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DepositPage extends StatelessWidget {
@@ -764,18 +765,57 @@ class DepositPage extends StatelessWidget {
 
   //  寄存成功弹窗
   Widget _successDialog(BuildContext context) {
-    return Container(
-      child: AlertDialog(
-        title: Text("寄存成功"),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () {
-              Provide.value<DepositForm>(context).isDisabledChange();
-              Navigator.pop(context);
-            },
-            child: Text("确认"),
-          ),
-        ],
+    return Dialog(
+      child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(
+                top: 30,
+                left: 30,
+                bottom: 20,
+              ),
+              child: Text(
+                "寄存成功",
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(70),
+                ),
+              ),
+            ),
+            Center(
+              child: QrImage(
+                data: "null",
+                size: 200,
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: FlatButton(
+                onPressed: () {
+                  Provide.value<DepositForm>(context).isDisabledChange();
+                  Navigator.pop(context);
+                  Application.router.navigateTo(
+                    context,
+                    '/home',
+                    replace: true,
+                    clearStack: true,
+                  );
+                },
+                child: Text(
+                  "确认",
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -838,58 +878,63 @@ class DepositPage extends StatelessWidget {
 
   //  寄存方法
   deposit(BuildContext context) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String token = sharedPreferences.getString('Token');
-    FormData formData = FormData.fromMap({
-      'token': token,
-    });
-    postRequest('checkToken',formData: formData).then((data) async {
-      //  Token验证通过
-      if(data['status'] == 200){
-        String path = Provide.value<DepositForm>(context).pic.path;
-        var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-        FormData formData = FormData.fromMap({
-          'savername': Provide.value<DepositForm>(context).savername,
-          'phonenumber': Provide.value<DepositForm>(context).phone,
-          'gender': Provide.value<DepositForm>(context).gender,
-          'recievername': Provide.value<HomeDrawer>(context).clerkName,
-          'hotel': Provide.value<HomeDrawer>(context).clerkHotel,
-          'luggagedescribe': Provide.value<DepositForm>(context).desc,
-          'saveforetime': Provide.value<DepositForm>(context).storeToTime,
-          'number': Provide.value<DepositForm>(context).number,
-          'location': Provide.value<DepositForm>(context).location,
-          'tag': Provide.value<DepositForm>(context).tag,
-          'picture': await MultipartFile.fromFile(path, filename: name),
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return _successDialog(context);
         });
-        postRequest('neworder', formData: formData).then((data) {
-          print(data);
-          if (data['status'] == 200) {
-            showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return _successDialog(context);
-                });
-          } else {
-            showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return _failureDialog(data['msg'], context);
-              },
-            );
-          }
-        });
-      }
-      else{
-        showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return _failureTokenDialog(context);
-            });
-      }
-    });
+//    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+//    String token = sharedPreferences.getString('Token');
+//    FormData formData = FormData.fromMap({
+//      'token': token,
+//    });
+//    postRequest('checkToken', formData: formData).then((data) async {
+//      //  Token验证通过
+//      if (data['status'] == 200) {
+//        String path = Provide.value<DepositForm>(context).pic.path;
+//        var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+//        FormData formData = FormData.fromMap({
+//          'savername': Provide.value<DepositForm>(context).savername,
+//          'phonenumber': Provide.value<DepositForm>(context).phone,
+//          'gender': Provide.value<DepositForm>(context).gender,
+//          'recievername': Provide.value<HomeDrawer>(context).clerkName,
+//          'hotel': Provide.value<HomeDrawer>(context).clerkHotel,
+//          'luggagedescribe': Provide.value<DepositForm>(context).desc,
+//          'saveforetime': Provide.value<DepositForm>(context).storeToTime,
+//          'number': Provide.value<DepositForm>(context).number,
+//          'location': Provide.value<DepositForm>(context).location,
+//          'tag': Provide.value<DepositForm>(context).tag,
+//          'picture': await MultipartFile.fromFile(path, filename: name),
+//        });
+//        postRequest('neworder', formData: formData).then((data) {
+//          print(data);
+//          if (data['status'] == 200) {
+//            showDialog(
+//                context: context,
+//                barrierDismissible: false,
+//                builder: (BuildContext context) {
+//                  return _successDialog(context);
+//                });
+//          } else {
+//            showDialog(
+//              context: context,
+//              barrierDismissible: false,
+//              builder: (BuildContext context) {
+//                return _failureDialog(data['msg'], context);
+//              },
+//            );
+//          }
+//        });
+//      } else {
+//        showDialog(
+//            context: context,
+//            barrierDismissible: false,
+//            builder: (BuildContext context) {
+//              return _failureTokenDialog(context);
+//            });
+//      }
+//    });
   }
 
   //  验证Token失败弹窗

@@ -517,8 +517,27 @@ class HomePage extends StatelessWidget {
                   color: Colors.teal,
                 ),
               ),
-              onTap: () {
-                Application.router.navigateTo(context, '/deposit');
+              onTap: () async {
+                SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                String token = sharedPreferences.getString('Token');
+                FormData formData = FormData.fromMap({
+                  'token': token,
+                });
+                postRequest('checkToken', formData: formData)
+                    .then((data) async {
+                  //  Token验证通过
+                  if (data['status'] == 200) {
+                    Application.router.navigateTo(context, '/deposit');
+                  } else {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return _failureTokenDialog(context);
+                        });
+                  }
+                });
               },
             ),
           ),
@@ -542,8 +561,27 @@ class HomePage extends StatelessWidget {
                   color: Colors.teal,
                 ),
               ),
-              onTap: () {
-                Application.router.navigateTo(context, '/receive');
+              onTap: () async {
+                SharedPreferences sharedPreferences =
+                await SharedPreferences.getInstance();
+                String token = sharedPreferences.getString('Token');
+                FormData formData = FormData.fromMap({
+                  'token': token,
+                });
+                postRequest('checkToken', formData: formData)
+                    .then((data) async {
+                  //  Token验证通过
+                  if (data['status'] == 200) {
+                    Application.router.navigateTo(context, '/receive');
+                  } else {
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return _failureTokenDialog(context);
+                        });
+                  }
+                });
               },
             ),
           ),
@@ -582,5 +620,36 @@ class HomePage extends StatelessWidget {
 
     //  取行李员订单统计数据
     FormData formData2 = FormData.fromMap({});
+  }
+
+  //  验证Token失败弹窗
+  Widget _failureTokenDialog(BuildContext context) {
+    return Container(
+      child: AlertDialog(
+        title: Text(""),
+        content: Text("登陆已过期，请重新登陆!"),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              //  清空所有
+              clear(context);
+            },
+            child: Text("确认"),
+          )
+        ],
+      ),
+    );
+  }
+
+//  清空信息，重新登陆
+  clear(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+    Application.router.navigateTo(
+      context,
+      '/',
+      replace: true,
+      clearStack: true,
+    );
   }
 }
