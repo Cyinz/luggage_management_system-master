@@ -764,7 +764,7 @@ class DepositPage extends StatelessWidget {
   }
 
   //  寄存成功弹窗
-  Widget _successDialog(BuildContext context) {
+  Widget _successDialog(BuildContext context, String codeMsg) {
     return Dialog(
       child: Container(
         child: Column(
@@ -786,7 +786,7 @@ class DepositPage extends StatelessWidget {
             ),
             Center(
               child: QrImage(
-                data: "null",
+                data: codeMsg,
                 size: 200,
               ),
             ),
@@ -878,63 +878,57 @@ class DepositPage extends StatelessWidget {
 
   //  寄存方法
   deposit(BuildContext context) async {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return _successDialog(context);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString('Token');
+    FormData formData = FormData.fromMap({
+      'token': token,
+    });
+    postRequest('checkToken', formData: formData).then((data) async {
+      //  Token验证通过
+      if (data['status'] == 200) {
+        String path = Provide.value<DepositForm>(context).pic.path;
+        var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+        FormData formData = FormData.fromMap({
+          'savername': Provide.value<DepositForm>(context).savername,
+          'phonenumber': Provide.value<DepositForm>(context).phone,
+          'gender': Provide.value<DepositForm>(context).gender,
+          'recievername': Provide.value<HomeDrawer>(context).clerkName,
+          'hotel': Provide.value<HomeDrawer>(context).clerkHotel,
+          'luggagedescribe': Provide.value<DepositForm>(context).desc,
+          'saveforetime': Provide.value<DepositForm>(context).storeToTime,
+          'number': Provide.value<DepositForm>(context).number,
+          'location': Provide.value<DepositForm>(context).location,
+          'tag': Provide.value<DepositForm>(context).tag,
+          'picture': await MultipartFile.fromFile(path, filename: name),
         });
-//    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-//    String token = sharedPreferences.getString('Token');
-//    FormData formData = FormData.fromMap({
-//      'token': token,
-//    });
-//    postRequest('checkToken', formData: formData).then((data) async {
-//      //  Token验证通过
-//      if (data['status'] == 200) {
-//        String path = Provide.value<DepositForm>(context).pic.path;
-//        var name = path.substring(path.lastIndexOf("/") + 1, path.length);
-//        FormData formData = FormData.fromMap({
-//          'savername': Provide.value<DepositForm>(context).savername,
-//          'phonenumber': Provide.value<DepositForm>(context).phone,
-//          'gender': Provide.value<DepositForm>(context).gender,
-//          'recievername': Provide.value<HomeDrawer>(context).clerkName,
-//          'hotel': Provide.value<HomeDrawer>(context).clerkHotel,
-//          'luggagedescribe': Provide.value<DepositForm>(context).desc,
-//          'saveforetime': Provide.value<DepositForm>(context).storeToTime,
-//          'number': Provide.value<DepositForm>(context).number,
-//          'location': Provide.value<DepositForm>(context).location,
-//          'tag': Provide.value<DepositForm>(context).tag,
-//          'picture': await MultipartFile.fromFile(path, filename: name),
-//        });
-//        postRequest('neworder', formData: formData).then((data) {
-//          print(data);
-//          if (data['status'] == 200) {
-//            showDialog(
-//                context: context,
-//                barrierDismissible: false,
-//                builder: (BuildContext context) {
-//                  return _successDialog(context);
-//                });
-//          } else {
-//            showDialog(
-//              context: context,
-//              barrierDismissible: false,
-//              builder: (BuildContext context) {
-//                return _failureDialog(data['msg'], context);
-//              },
-//            );
-//          }
-//        });
-//      } else {
-//        showDialog(
-//            context: context,
-//            barrierDismissible: false,
-//            builder: (BuildContext context) {
-//              return _failureTokenDialog(context);
-//            });
-//      }
-//    });
+        postRequest('neworder', formData: formData).then((data) {
+          print(data);
+          if (data['status'] == 200) {
+            showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return _successDialog(context, data['data']);
+                });
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return _failureDialog(data['msg'], context);
+              },
+            );
+          }
+        });
+      } else {
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return _failureTokenDialog(context);
+            });
+      }
+    });
   }
 
   //  验证Token失败弹窗
