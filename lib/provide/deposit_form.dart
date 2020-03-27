@@ -22,10 +22,17 @@ class DepositForm with ChangeNotifier {
   int gender = 1;
 
   // 行李预计领取时间
-  String storeToTime = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+  String storeToTime = formatDate(
+      DateTime.now(), [yyyy, '-', mm, '-', dd, " ", HH, ":", nn, ":", ss]);
+
+  //  行李件数
+  int number;
 
   //  行李图片
   File pic;
+
+  //行李备注
+  String desc;
 
   //  寄存按钮是否被禁用
   bool isDisabled = false;
@@ -60,8 +67,18 @@ class DepositForm with ChangeNotifier {
     notifyListeners();
   }
 
+  setNumber(value) {
+    number = value;
+    notifyListeners();
+  }
+
   setPic(value) {
     pic = value;
+    notifyListeners();
+  }
+
+  setDesc(value) {
+    desc = value;
     notifyListeners();
   }
 
@@ -78,7 +95,9 @@ class DepositForm with ChangeNotifier {
     tag = null;
     location = null;
     gender = 1;
-    storeToTime = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
+    storeToTime = formatDate(
+        DateTime.now(), [yyyy, '-', mm, '-', dd, " ", HH, ":", nn, ":", ss]);
+    number = null;
     pic = null;
     isDisabled = false;
   }

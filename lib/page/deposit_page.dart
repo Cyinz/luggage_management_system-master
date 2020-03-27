@@ -1,14 +1,18 @@
 import 'package:date_format/date_format.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
+import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DepositPage extends StatelessWidget {
   @override
@@ -39,8 +43,8 @@ class DepositPage extends StatelessWidget {
   //  寄存表单
   Widget _depositForm(BuildContext context) {
     return Form(
+      key: Provide.value<DepositForm>(context).depositFormKey,
       child: ListView(
-        key: Provide.value<DepositForm>(context).depositFormKey,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         padding: EdgeInsets.only(
@@ -161,7 +165,7 @@ class DepositPage extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                "客户手机:",
+                "联系电话:",
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(40.0),
                 ),
@@ -173,6 +177,11 @@ class DepositPage extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(left: 25),
               child: TextFormField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  WhitelistingTextInputFormatter.digitsOnly, //只输入数字
+                  LengthLimitingTextInputFormatter(11) //限制长度
+                ],
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(top: 2, left: 10),
                   border: OutlineInputBorder(),
@@ -449,6 +458,21 @@ class DepositPage extends StatelessWidget {
                         WhitelistingTextInputFormatter.digitsOnly, //只输入数字
                         LengthLimitingTextInputFormatter(2) //限制长度
                       ],
+                      decoration: InputDecoration(
+                        contentPadding:
+                            EdgeInsets.only(bottom: ScreenUtil().setHeight(25)),
+                        hintText: '请输入行李件数',
+                        hintStyle: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: ScreenUtil().setSp(40),
+                        ),
+                      ),
+                      onSaved: (value) {
+                        if (value != null && value != "") {
+                          Provide.value<DepositForm>(context)
+                              .setNumber(int.parse(value));
+                        }
+                      },
                     ),
                   ),
                   Text("件")
@@ -580,6 +604,9 @@ class DepositPage extends StatelessWidget {
                     fontSize: ScreenUtil().setSp(40),
                   ),
                 ),
+                onSaved: (value) {
+                  Provide.value<DepositForm>(context).setDesc(value);
+                },
                 maxLength: 140,
                 maxLines: 100,
               ),
@@ -613,9 +640,68 @@ class DepositPage extends StatelessWidget {
         onPressed: Provide.value<DepositForm>(context).isDisabled
             ? null
             : () {
-                //  验证寄存表单数据
-                var flag = true;
-                print("行李员信息: ${Provide.value<HomeDrawer>(context).clerkName}");
+                if (Provide.value<DepositForm>(context)
+                    .depositFormKey
+                    .currentState
+                    .validate()) {
+                  Provide.value<DepositForm>(context).isDisabledChange();
+                  Provide.value<DepositForm>(context)
+                      .depositFormKey
+                      .currentState
+                      .save();
+                  var flag = true;
+                  if (Provide.value<DepositForm>(context).savername == null ||
+                      Provide.value<DepositForm>(context).savername == "") {
+                    flag = false;
+                    Fluttertoast.showToast(
+                      msg: "客户名不能为空",
+                      gravity: ToastGravity.BOTTOM,
+                    );
+                  }
+                  if (Provide.value<DepositForm>(context).phone == null ||
+                      Provide.value<DepositForm>(context).phone == "") {
+                    flag = false;
+                    Fluttertoast.showToast(
+                      msg: "联系电话不能为空",
+                      gravity: ToastGravity.BOTTOM,
+                    );
+                  }
+                  if (Provide.value<DepositForm>(context).tag == null ||
+                      Provide.value<DepositForm>(context).tag == "") {
+                    flag = false;
+                    Fluttertoast.showToast(
+                      msg: "行李标签不能为空",
+                      gravity: ToastGravity.BOTTOM,
+                    );
+                  }
+                  if (Provide.value<DepositForm>(context).location == null ||
+                      Provide.value<DepositForm>(context).location == "") {
+                    flag = false;
+                    Fluttertoast.showToast(
+                      msg: "行李位置不能为空",
+                      gravity: ToastGravity.BOTTOM,
+                    );
+                  }
+                  if (Provide.value<DepositForm>(context).number == null) {
+                    flag = false;
+                    Fluttertoast.showToast(
+                      msg: "行李件数不能为空",
+                      gravity: ToastGravity.BOTTOM,
+                    );
+                  }
+                  if (Provide.value<DepositForm>(context).pic == null) {
+                    flag = false;
+                    Fluttertoast.showToast(
+                      msg: "请上传行李照片",
+                      gravity: ToastGravity.BOTTOM,
+                    );
+                  }
+                  if (flag == false) {
+                    Provide.value<DepositForm>(context).isDisabledChange();
+                  } else {
+                    deposit(context);
+                  }
+                }
               },
       ),
     );
@@ -675,6 +761,47 @@ class DepositPage extends StatelessWidget {
     ).showModal(context);
   }
 
+  //  寄存成功弹窗
+  Widget _successDialog(BuildContext context) {
+    return Container(
+      child: AlertDialog(
+        title: Text("寄存成功"),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              Provide.value<DepositForm>(context).isDisabledChange();
+              Navigator.pop(context);
+            },
+            child: Text("确认"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //  寄存失败弹窗
+  Widget _failureDialog(String msg, BuildContext context) {
+    return Container(
+      child: AlertDialog(
+        title: Text("寄存失败"),
+        content: Text(msg),
+        actions: <Widget>[
+          FlatButton(
+            onPressed: () {
+              Provide.value<DepositForm>(context)
+                  .depositFormKey
+                  .currentState
+                  .reset();
+              Provide.value<DepositForm>(context).isDisabledChange();
+              Navigator.pop(context);
+            },
+            child: Text("确认"),
+          ),
+        ],
+      ),
+    );
+  }
+
   //  选择上传图片方式弹窗
   void showDemoActionSheet({BuildContext context, Widget child}) {
     showCupertinoModalPopup<String>(
@@ -706,5 +833,74 @@ class DepositPage extends StatelessWidget {
   //  验证寄存表单数据
   Future<bool> checkDepositMsg(BuildContext context) async {
     return true;
+  }
+
+  //  寄存方法
+  deposit(BuildContext context) async {
+    bool flag = await checkToken(context);
+    if (flag) {
+      String path = Provide.value<DepositForm>(context).pic.path;
+      var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+      FormData formData = FormData.fromMap({
+        'savername': Provide.value<DepositForm>(context).savername,
+        'phonenumber': Provide.value<DepositForm>(context).phone,
+        'gender': Provide.value<DepositForm>(context).gender,
+        'recievername': Provide.value<HomeDrawer>(context).clerkName,
+        'hotel': Provide.value<HomeDrawer>(context).clerkHotel,
+        'luggagedescribe': Provide.value<DepositForm>(context).desc,
+        'saveforetime': Provide.value<DepositForm>(context).storeToTime,
+        'number': Provide.value<DepositForm>(context).number,
+        'location': Provide.value<DepositForm>(context).location,
+        'tag': Provide.value<DepositForm>(context).tag,
+        'picture': await MultipartFile.fromFile(path, filename: name),
+      });
+      postRequest('neworder', formData: formData).then((data) {
+        print(data);
+        if (data['status'] == 200) {
+          showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return _successDialog(context);
+              });
+        } else {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return _failureDialog(data['msg'], context);
+            },
+          );
+        }
+      });
+    }
+    else{
+      //  清除所有，返回登陆界面
+    }
+  }
+
+  //  验证Token
+  Future<bool> checkToken(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString('Token');
+    FormData formData = FormData.fromMap({
+      'token': token,
+    });
+    postRequest('checkToken', formData: formData).then((data) {
+      if (data['status'] == 200) {
+        //  Token验证通过
+        return true;
+      } else {
+        //  Token已过期
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return _failureDialog(data['msg'], context);
+          },
+        );
+        return false;
+      }
+    });
   }
 }

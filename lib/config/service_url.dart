@@ -11,4 +11,5 @@ const servicePath = {
   'getClerkOrder': testUrl + 'record/ByReceiverName',   //获取行李员历史订单
   'hotelWeekOrder': testUrl + 'statistics/weektog',   //酒店一周订单
   'clerkWeekOrder': testUrl + 'statistics/weekcount_tog',    //行李员一周订单
+  'neworder': serviceUrl + 'luggage/neworder',    //创建行李寄存订单
 };
