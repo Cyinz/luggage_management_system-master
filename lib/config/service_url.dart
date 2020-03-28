@@ -9,8 +9,10 @@ const servicePath = {
   'getuser': serviceUrl + 'user/getdata', //使用token获取用户信息
   'checkToken': serviceUrl + 'user/checkToken', //验证token是否过期
   'getClerkOrder': testUrl + 'record/ByReceiverName', //获取行李员历史订单
-  'hotelWeekOrder': testUrl + 'statistics/weektog', //酒店一周订单
+  'hotelWeekOrder': serviceUrl + 'statistics/weektog', //酒店一周订单
   'clerkWeekOrder': testUrl + 'statistics/weekcount_tog', //行李员一周订单
   'neworder': serviceUrl + 'luggage/neworder', //创建行李寄存订单
   'getluggage': serviceUrl + 'luggage/getluggage', //领取行李订单
+  'sendCode': serviceUrl + 'user/sendLoginMsg', //发送验证码(通过手机号登陆)
+  'codeLogin': serviceUrl + 'user/loginByMsg', //通过验证码登陆
 };

@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
+import 'package:luggagemanagementsystem/provide/forget_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/provide/home_order.dart';
 import 'package:luggagemanagementsystem/provide/login_form.dart';
@@ -12,12 +13,14 @@ import 'package:provide/provide.dart';
 void main() {
   var providers = Providers();
   var loginForm = LoginForm();
+  var forgetForm = ForgetForm();
   var homeDrawer = HomeDrawer();
   var depositForm = DepositForm();
   var homeOrder = HomeOrder();
   var receiveForm = ReceiveForm();
   providers
     ..provide(Provider<LoginForm>.value(loginForm))
+    ..provide(Provider<ForgetForm>.value(forgetForm))
     ..provide(Provider<HomeDrawer>.value(homeDrawer))
     ..provide(Provider<DepositForm>.value(depositForm))
     ..provide(Provider<HomeOrder>.value(homeOrder))

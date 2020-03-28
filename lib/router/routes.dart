@@ -5,6 +5,7 @@ import 'router_handler.dart';
 
 class Routes {
   static String root = "/";
+  static String forget = "/forget";
   static String home = "/home";
   static String deposit = "/deposit";
   static String receive = "/receive";
@@ -18,6 +19,7 @@ class Routes {
     );
 
     router.define(root, handler: rootHandler);
+    router.define(forget, handler: forgetHandler);
     router.define(home, handler: homeHandler);
     router.define(deposit, handler: depositHandler);
     router.define(receive, handler: receiveHandler);

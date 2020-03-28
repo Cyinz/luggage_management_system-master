@@ -26,6 +26,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
       Provide.value<DepositForm>(context).clearDepositForm();
@@ -345,7 +346,7 @@ class HomePage extends StatelessWidget {
                 height: ScreenUtil().setHeight(10),
               ),
               Text(
-                "总单数",
+                "一周总单数",
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(35),
                 ),
@@ -440,7 +441,7 @@ class HomePage extends StatelessWidget {
                 height: ScreenUtil().setHeight(10),
               ),
               Text(
-                "总单数",
+                "一周总单数",
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(35),
                 ),
@@ -608,11 +609,11 @@ class HomePage extends StatelessWidget {
   //  获取订单统计信息
   getOrderMsg(BuildContext context) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
+    String hotel = sharedPreferences.getString('clerkHotel');
+    print(hotel);
     // 取酒店订单统计数据
     FormData formData1 = FormData.fromMap({
-      'hotel': Provide.value<HomeDrawer>(context)
-          .setClerkHotel(sharedPreferences.getString('clerkHotel')),
+      'hotel': hotel,
     });
     postRequest('hotelWeekOrder', formData: formData1).then((data) {
       if (data['status'] == 200) {

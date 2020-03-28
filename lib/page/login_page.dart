@@ -141,7 +141,9 @@ class LoginPage extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: Container(
         child: FlatButton(
-          onPressed: null,
+          onPressed: () {
+            Application.router.navigateTo(context, '/forget');
+          },
           child: Text(
             "忘记密码",
             style: TextStyle(

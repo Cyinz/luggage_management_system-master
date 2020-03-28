@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:luggagemanagementsystem/page/deposit_page.dart';
+import 'package:luggagemanagementsystem/page/forget_page.dart';
 import 'package:luggagemanagementsystem/page/home_page.dart';
 import 'package:luggagemanagementsystem/page/login_page.dart';
 import 'package:luggagemanagementsystem/page/receive_page.dart';
@@ -10,6 +11,12 @@ Handler rootHandler = Handler(
   return LoginPage();
 //  return HomePage();
 });
+
+Handler forgetHandler = Handler(
+  handlerFunc: (BuildContext context, Map<String,List<String>> params){
+    return ForgetPage();
+  }
+);
 
 Handler homeHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
