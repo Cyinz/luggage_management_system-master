@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:luggagemanagementsystem/page/widget/browser.dart';
-import 'package:luggagemanagementsystem/router/application.dart';
 
 //  轮播组件
 class SwiperDiy extends StatelessWidget {
