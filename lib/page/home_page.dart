@@ -9,6 +9,7 @@ import 'package:luggagemanagementsystem/page/widget/swiperDiy.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/provide/home_order.dart';
+import 'package:luggagemanagementsystem/provide/receive_form.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
@@ -27,7 +28,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
-      Provide.value<DepositForm>(context).clear();
+      Provide.value<DepositForm>(context).clearDepositForm();
+      Provide.value<ReceiveForm>(context).clearReceiveForm();
       print("返回到主页");
     }
 
@@ -563,7 +565,7 @@ class HomePage extends StatelessWidget {
               ),
               onTap: () async {
                 SharedPreferences sharedPreferences =
-                await SharedPreferences.getInstance();
+                    await SharedPreferences.getInstance();
                 String token = sharedPreferences.getString('Token');
                 FormData formData = FormData.fromMap({
                   'token': token,

@@ -89,7 +89,7 @@ class DepositForm with ChangeNotifier {
   }
 
   //  清空表单保存的内容，初始化寄存表单
-  clear() {
+  clearDepositForm() {
     savername = null;
     phone = null;
     tag = null;

@@ -48,51 +48,59 @@ class ReceivePage extends StatelessWidget {
 
   //  搜索栏
   Widget _searchBar(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(right: 15),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          IconButton(
-            icon: Icon(MaterialCommunityIcons.qrcode_scan),
-            onPressed: () {
-              scan(context);
-            },
-          ),
-          Expanded(
-            child: Container(
-              height: ScreenUtil().setHeight(100),
-              child: TextFormField(
-                decoration: InputDecoration(
-                  contentPadding: EdgeInsets.only(top: 2, left: 10),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  hintText: "请输入取行李码",
-                  suffixIcon: IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      if (Provide.value<ReceiveForm>(context)
-                          .receiveFormKey
-                          .currentState
-                          .validate()) {
-                        Provide.value<ReceiveForm>(context)
+    return Card(
+      elevation: 5.0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.0),
+        ),
+      ),
+      child: Container(
+        padding: EdgeInsets.only(right: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(MaterialCommunityIcons.qrcode_scan),
+              onPressed: () {
+                scan(context);
+              },
+            ),
+            Expanded(
+              child: Container(
+                height: ScreenUtil().setHeight(100),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(top: 2, left: 10),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    hintText: "请输入取行李码",
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.search),
+                      onPressed: () {
+                        if (Provide.value<ReceiveForm>(context)
                             .receiveFormKey
                             .currentState
-                            .save();
-                        //  领取
-                        checkReceiveOrder(context);
-                      }
-                    },
+                            .validate()) {
+                          Provide.value<ReceiveForm>(context)
+                              .receiveFormKey
+                              .currentState
+                              .save();
+                          //  领取
+                          checkReceiveOrder(context);
+                        }
+                      },
+                    ),
                   ),
+                  onSaved: (value) {
+                    Provide.value<ReceiveForm>(context).setGetNumber(value);
+                  },
                 ),
-                onSaved: (value) {
-                  Provide.value<ReceiveForm>(context).setGetNumber(value);
-                },
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -101,7 +109,7 @@ class ReceivePage extends StatelessWidget {
   Widget _orderMsg(BuildContext context) {
     if (Provide.value<ReceiveForm>(context).isSerach) {
       return Card(
-        margin: EdgeInsets.fromLTRB(5, 100, 5, 0),
+        margin: EdgeInsets.fromLTRB(5, 20, 5, 20),
         elevation: 5.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -143,11 +151,11 @@ class ReceivePage extends StatelessWidget {
                     Expanded(
                         child: Align(
                       alignment: Alignment.center,
-                      child: Text("客户电话:"),
+                      child: Text("客户性别:"),
                     )),
                     Expanded(
                       child:
-                          Text(Provide.value<ReceiveForm>(context).phonenumber),
+                          Text(Provide.value<ReceiveForm>(context).saverGender),
                     ),
                   ],
                 ),
@@ -156,12 +164,11 @@ class ReceivePage extends StatelessWidget {
                     Expanded(
                         child: Align(
                       alignment: Alignment.center,
-                      child: Text("行李件数:"),
+                      child: Text("客户电话:"),
                     )),
                     Expanded(
-                      child: Text(Provide.value<ReceiveForm>(context)
-                          .number
-                          .toString()),
+                      child:
+                          Text(Provide.value<ReceiveForm>(context).phonenumber),
                     ),
                   ],
                 ),
@@ -187,6 +194,44 @@ class ReceivePage extends StatelessWidget {
                     Expanded(
                       child:
                           Text(Provide.value<ReceiveForm>(context).storeToTime),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Align(
+                      alignment: Alignment.center,
+                      child: Text("行李标签:"),
+                    )),
+                    Expanded(
+                      child: Text(Provide.value<ReceiveForm>(context).tag),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Align(
+                      alignment: Alignment.center,
+                      child: Text("行李位置:"),
+                    )),
+                    Expanded(
+                      child: Text(Provide.value<ReceiveForm>(context).location),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Align(
+                      alignment: Alignment.center,
+                      child: Text("行李件数:"),
+                    )),
+                    Expanded(
+                      child: Text(Provide.value<ReceiveForm>(context)
+                          .number
+                          .toString()),
                     ),
                   ],
                 ),
@@ -242,7 +287,9 @@ class ReceivePage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            receive(context);
+                          },
                           child: Text(
                             "确认领取",
                             style: TextStyle(
@@ -316,6 +363,8 @@ class ReceivePage extends StatelessWidget {
               Provide.value<ReceiveForm>(context)
                   .setPhoneNumber(data['data']['phonenumber']);
               Provide.value<ReceiveForm>(context)
+                  .setSaverGender(data['data']['savergender']);
+              Provide.value<ReceiveForm>(context)
                   .setSaveTime(data['data']['savetime']);
               Provide.value<ReceiveForm>(context)
                   .setStoreToTime(data['data']['saveforetime']);
@@ -325,12 +374,15 @@ class ReceivePage extends StatelessWidget {
                   .setPicture(data['data']['picture']);
               Provide.value<ReceiveForm>(context)
                   .setNumber(data['data']['number']);
+              Provide.value<ReceiveForm>(context).setTag(data['data']['tag']);
+              Provide.value<ReceiveForm>(context)
+                  .setLocation(data['data']['location']);
               Provide.value<ReceiveForm>(context)
                   .setIsReceive(data['data']['istoken']);
               Provide.value<ReceiveForm>(context)
                   .setGetTime(data['data']['gettime']);
               Provide.value<ReceiveForm>(context)
-                  .setReceiverName(data['data']['savergender']);
+                  .setReceiverName(data['data']['receivername']);
               Provide.value<ReceiveForm>(context).changeIsSearch(true);
             } else {
               showDialog(
@@ -371,7 +423,86 @@ class ReceivePage extends StatelessWidget {
   }
 
   //  确认领取
-  receive() {}
+  receive(BuildContext context) async {
+    print("确认领取");
+    //  验证Token
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString('Token');
+    FormData formData = FormData.fromMap({
+      'token': token,
+    });
+    postRequest('checkToken', formData: formData).then((data) async {
+      //  Token验证通过
+      if (data['status'] == 200) {
+        String clerkName = sharedPreferences.getString('clerkUserName');
+        FormData formData2 = FormData.fromMap({
+          'getcode': Provide.value<ReceiveForm>(context).getNumber,
+          'state': 1,
+          'giver': clerkName,
+        });
+        postRequest('getluggage', formData: formData2).then((data) {
+          if (data['status'] == 200) {
+            //  领取成功
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return Container(
+                  child: AlertDialog(
+                    title: Text("领取成功"),
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Application.router.navigateTo(
+                            context,
+                            '/home',
+                            replace: true,
+                            clearStack: true,
+                          );
+                        },
+                        child: Text("确认"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          } else {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return Container(
+                  child: AlertDialog(
+                    title: Text("领取失败"),
+                    content: Text("请检查取行李码是否正确"),
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("确认"),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+        });
+      }
+      //  Token过期
+      else {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return _failureTokenDialog(context);
+          },
+        );
+      }
+    });
+  }
 
   //  验证Token失败弹窗
   Widget _failureTokenDialog(BuildContext context) {

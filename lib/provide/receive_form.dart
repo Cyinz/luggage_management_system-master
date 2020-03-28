@@ -12,8 +12,17 @@ class ReceiveForm with ChangeNotifier {
   //  客户电话
   String phonenumber;
 
+  //  客户性别
+  String saverGender;
+
   //  行李描述
   String describe;
+
+  //  行李标签
+  String tag;
+
+  //  行李位置
+  String location;
 
   //  行李件数
   int number;
@@ -49,6 +58,11 @@ class ReceiveForm with ChangeNotifier {
     notifyListeners();
   }
 
+  setSaverGender(value) {
+    saverGender = value;
+    notifyListeners();
+  }
+
   setPhoneNumber(value) {
     phonenumber = value;
     notifyListeners();
@@ -59,7 +73,17 @@ class ReceiveForm with ChangeNotifier {
     notifyListeners();
   }
 
-  setNumber(value){
+  setTag(value) {
+    tag = value;
+    notifyListeners();
+  }
+
+  setLocation(value) {
+    location = value;
+    notifyListeners();
+  }
+
+  setNumber(value) {
     number = value;
     notifyListeners();
   }
@@ -89,7 +113,7 @@ class ReceiveForm with ChangeNotifier {
     notifyListeners();
   }
 
-  setPicture(value){
+  setPicture(value) {
     picture = value;
     notifyListeners();
   }
@@ -97,5 +121,24 @@ class ReceiveForm with ChangeNotifier {
   changeIsSearch(value) {
     isSerach = value;
     notifyListeners();
+  }
+
+  //  清空表单保存的内容，初始化领取表单
+  clearReceiveForm() {
+    getNumber = null;
+    savername = null;
+    phonenumber = null;
+    saverGender = null;
+    describe = null;
+    tag = null;
+    location = null;
+    number = null;
+    savetime = null;
+    storeToTime = null;
+    gettime = null;
+    isReceive = null;
+    receivername = null;
+    picture = null;
+    isSerach = false;
   }
 }
