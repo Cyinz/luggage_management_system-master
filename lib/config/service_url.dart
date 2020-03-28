@@ -12,4 +12,5 @@ const servicePath = {
   'hotelWeekOrder': testUrl + 'statistics/weektog',   //酒店一周订单
   'clerkWeekOrder': testUrl + 'statistics/weekcount_tog',    //行李员一周订单
   'neworder': serviceUrl + 'luggage/neworder',    //创建行李寄存订单
+  'getluggage': serviceUrl + 'luggage/getluggage',    //领取行李订单
 };
