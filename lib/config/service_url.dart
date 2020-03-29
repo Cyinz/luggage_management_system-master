@@ -9,8 +9,16 @@ const servicePath = {
   'getuser': serviceUrl + 'user/getdata', //使用token获取用户信息
   'checkToken': serviceUrl + 'user/checkToken', //验证token是否过期
   'getClerkOrder': testUrl + 'record/ByReceiverName', //获取行李员历史订单
+  'addHotelDeposit': serviceUrl + 'statistics/Addhotelweeksave', //添加酒店寄存数据
+  'addHotelReceive': serviceUrl + 'statistics/Addhotelweekgiver', //添加酒店领取数据
+  'addClerkDeposit': serviceUrl + 'statistics/AddrecData', //添加行李员寄存数据
+  'addClerkReceive': serviceUrl + 'statistics/AddGiverdata', //添加行李员领取数据
   'hotelWeekOrder': serviceUrl + 'statistics/weektog', //酒店一周订单
-  'clerkWeekOrder': testUrl + 'statistics/weekcount_tog', //行李员一周订单
+  'getHotelDeposit': serviceUrl + 'statistics/gethotelrecdata', //获取酒店每日寄存数
+  'getHotelReceive': serviceUrl + 'statistics/gethotelgivdata', //获取酒店每日领取数
+  'clerkWeekOrder': serviceUrl + 'statistics/weekcount_tog', //行李员一周订单
+  'getClerkDeposit': serviceUrl + 'statistics/getrecdata', //获取行李员每日寄存数
+  'getClerkReceive': serviceUrl + 'statistics/getgivdata', //获取行李员每日领取数
   'neworder': serviceUrl + 'luggage/neworder', //创建行李寄存订单
   'getluggage': serviceUrl + 'luggage/getluggage', //领取行李订单
   'sendCode': serviceUrl + 'user/sendLoginMsg', //发送验证码(通过手机号登陆)

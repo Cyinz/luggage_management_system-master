@@ -26,7 +26,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     var bool = ModalRoute.of(context).isCurrent;
     if (bool) {
       Provide.value<DepositForm>(context).clearDepositForm();
@@ -607,22 +606,21 @@ class HomePage extends StatelessWidget {
   }
 
   //  获取订单统计信息
-  getOrderMsg(BuildContext context) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String hotel = sharedPreferences.getString('clerkHotel');
-    print(hotel);
-    // 取酒店订单统计数据
-    FormData formData1 = FormData.fromMap({
-      'hotel': hotel,
-    });
-    postRequest('hotelWeekOrder', formData: formData1).then((data) {
-      if (data['status'] == 200) {
-        Provide.value<HomeOrder>(context).setHotelWeekOrder(data['data']);
-      }
-    });
-
-    //  取行李员订单统计数据
-    FormData formData2 = FormData.fromMap({});
+  getOrderMsg(BuildContext context) {
+    //  添加酒店订单数据
+    addHotelDeposit();
+    addHotelReceive();
+    //  取酒店订单统计数据
+    hotelWeekOrder(context);
+    getHotelDeposit(context);
+    getHotelReceive(context);
+    //  添加行李员订单数据
+    addClerkDeposit();
+    addClerkReceive();
+    //  取行李员订单数据
+    clerkWeekOrder(context);
+    getClerkDeposit(context);
+    getClerkReceive(context);
   }
 
   //  验证Token失败弹窗
@@ -654,5 +652,155 @@ class HomePage extends StatelessWidget {
       replace: true,
       clearStack: true,
     );
+  }
+
+  //  酒店业务-添加前七天每日寄存数据
+  addHotelDeposit() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String hotel = sharedPreferences.getString('clerkHotel');
+    FormData formData = FormData.fromMap({
+      'hotel': hotel,
+    });
+    postRequest('addHotelDeposit', formData: formData).then((data) {
+      if (data['status'] == 200) {
+        print("添加酒店寄存数据成功");
+      } else {
+        print("添加酒店寄存数据失败");
+      }
+    });
+  }
+
+  //  酒店业务-添加前七天每日领取数据
+  addHotelReceive() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String hotel = sharedPreferences.getString('clerkHotel');
+    FormData formData = FormData.fromMap({
+      'hotel': hotel,
+    });
+    postRequest('addHotelReceive', formData: formData).then((data) {
+      if (data['status'] == 200) {
+        print("添加酒店领取数据成功");
+      } else {
+        print("添加酒店领取数据失败");
+      }
+    });
+  }
+
+  //  酒店业务-一周总数
+  hotelWeekOrder(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String hotel = sharedPreferences.getString('clerkHotel');
+    FormData formData = FormData.fromMap({
+      'hotel': hotel,
+    });
+    postRequest('hotelWeekOrder', formData: formData).then((data) {
+      if (data['status'] == 200) {
+        print("获取酒店订单一周总数");
+        Provide.value<HomeOrder>(context).setHotelWeekOrder(data['data']);
+      }
+    });
+  }
+
+  //  酒店业务-获取每日寄存数
+  getHotelDeposit(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String hotel = sharedPreferences.getString('clerkHotel');
+    FormData formData = FormData.fromMap({
+      'hotel': hotel,
+    });
+    postRequest('getHotelDeposit', formData: formData).then((data) {
+      print(data);
+      print("获取酒店订单每日寄存数");
+      Provide.value<HomeOrder>(context).setHotelTodayDeposit(data['day1']);
+    });
+  }
+
+  //  酒店业务-获取每日领取数
+  getHotelReceive(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String hotel = sharedPreferences.getString('clerkHotel');
+    FormData formData = FormData.fromMap({
+      'hotel': hotel,
+    });
+    postRequest('getHotelReceive', formData: formData).then((data) {
+      print(data);
+      print("获取酒店订单每日领取数");
+      Provide.value<HomeOrder>(context).setHotelTodayReceive(data['day1']);
+    });
+  }
+
+  //  个人业务-添加前七天每日寄存数
+  addClerkDeposit() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String name = sharedPreferences.getString('clerkUserName');
+    FormData formData = FormData.fromMap({
+      'name': name,
+    });
+    postRequest('addClerkDeposit', formData: formData).then((data) {
+      if (data['status'] == 200) {
+        print("添加行李员寄存数据成功");
+      } else {
+        print("添加行李员寄存数据失败");
+      }
+    });
+  }
+
+  //  个人业务-添加前七天每日领取数
+  addClerkReceive() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String name = sharedPreferences.getString('clerkUserName');
+    FormData formData = FormData.fromMap({
+      'name': name,
+    });
+    postRequest('addClerkReceive', formData: formData).then((data) {
+      if (data['status'] == 200) {
+        print("添加行李员领取数据成功");
+      } else {
+        print("添加行李员领取数据失败");
+      }
+    });
+  }
+
+  //  个人业务-一周总数
+  clerkWeekOrder(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String name = sharedPreferences.getString('clerkUserName');
+    FormData formData = FormData.fromMap({
+      'name': name,
+    });
+    postRequest('clerkWeekOrder', formData: formData).then((data) {
+      if (data['status'] == 200) {
+        print("获取行李员订单一周总数");
+        Provide.value<HomeOrder>(context).setClerkWeekOrder(data['data']);
+      }
+    });
+  }
+
+  //  酒店业务-获取每日寄存数
+  getClerkDeposit(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String name = sharedPreferences.getString('clerkUserName');
+    FormData formData = FormData.fromMap({
+      'name': name,
+    });
+    postRequest('getClerkDeposit', formData: formData).then((data) {
+      print(data);
+      print("获取行李员订单每日寄存数");
+      Provide.value<HomeOrder>(context).setClerkTodayDeposit(data['day1']);
+    });
+  }
+
+  //  酒店业务-获取每日领取数
+  getClerkReceive(BuildContext context) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String name = sharedPreferences.getString('clerkUserName');
+    FormData formData = FormData.fromMap({
+      'name': name,
+    });
+    postRequest('getClerkReceive', formData: formData).then((data) {
+      print(data);
+      print("获取行李员订单每日领取数");
+      Provide.value<HomeOrder>(context).setClerkTodayReceive(data['day1']);
+    });
   }
 }
