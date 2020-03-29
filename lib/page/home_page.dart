@@ -57,7 +57,8 @@ class HomePage extends StatelessWidget {
                   currentAccountPicture: CircleAvatar(
                     backgroundImage: NetworkImage(
 //                      Provide.value<HomeDrawer>(context).clerkImg,
-                      "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=430089504,3674027973&fm=26&gp=0.jpg",
+//                      "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=430089504,3674027973&fm=26&gp=0.jpg",
+                      "http://www.51yuansu.com/pic2/cover/00/39/51/5812ec5184228_610.jpg",
                     ),
                     backgroundColor: Colors.grey[400],
                     radius: 40.0,
@@ -69,7 +70,9 @@ class HomePage extends StatelessWidget {
                     color: Colors.teal,
                   ),
                   title: Text("个人信息"),
-                  onTap: () {},
+                  onTap: () {
+                    Application.router.navigateTo(context, "/me");
+                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -156,7 +159,7 @@ class HomePage extends StatelessWidget {
                 ),
                 //  行李员历史订单列表
                 FutureBuilder(
-                    future: postRequest('getClerkOrder',formData: formData),
+                    future: postRequest('getClerkOrder', formData: formData),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         print("历史订单");
@@ -238,7 +241,7 @@ class HomePage extends StatelessWidget {
                                                 "寄存客服:  ${snapshot.data[index]['recievername']}",
                                                 style: TextStyle(
                                                   fontSize:
-                                                  ScreenUtil().setSp(40),
+                                                      ScreenUtil().setSp(40),
                                                 ),
                                               ),
                                               Text(
@@ -283,22 +286,22 @@ class HomePage extends StatelessWidget {
                                                       ),
                                                     ),
                                               snapshot.data[index]
-                                              ['luggageistoken'] ==
-                                                  1
+                                                          ['luggageistoken'] ==
+                                                      1
                                                   ? Text(
-                                                "领取客服:  ${snapshot.data[index]['givername']}",
-                                                style: TextStyle(
-                                                  fontSize: ScreenUtil()
-                                                      .setSp(40),
-                                                ),
-                                              )
+                                                      "领取客服:  ${snapshot.data[index]['givername']}",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
                                                   : Text(
-                                                "领取客服:",
-                                                style: TextStyle(
-                                                  fontSize: ScreenUtil()
-                                                      .setSp(40),
-                                                ),
-                                              ),
+                                                      "领取客服:",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
                                             ],
                                           ),
                                         ],
