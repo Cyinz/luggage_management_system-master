@@ -8,8 +8,8 @@ import 'package:luggagemanagementsystem/page/receive_page.dart';
 
 Handler rootHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LoginPage();
-//  return HomePage();
+//  return LoginPage();
+  return HomePage();
 });
 
 Handler forgetHandler = Handler(

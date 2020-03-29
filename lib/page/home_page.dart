@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +119,9 @@ class HomePage extends StatelessWidget {
       ),
       body: Provide<HomeOrder>(
         builder: (context, child, homeOrder) {
+          FormData formData = FormData.fromMap({
+            'recievername': Provide.value<HomeDrawer>(context).clerkName,
+          });
           return EasyRefresh(
             child: ListView(
               children: <Widget>[
@@ -152,7 +156,7 @@ class HomePage extends StatelessWidget {
                 ),
                 //  行李员历史订单列表
                 FutureBuilder(
-                    future: postRequest('getClerkOrder'),
+                    future: postRequest('getClerkOrder',formData: formData),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         print("历史订单");
@@ -210,7 +214,7 @@ class HomePage extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Text(
-                                                "客户姓名:  ${snapshot.data[index]['savername']}",
+                                                "客户姓名:  ${snapshot.data[index]['saverid']}",
                                                 style: TextStyle(
                                                   fontSize:
                                                       ScreenUtil().setSp(40),
@@ -231,7 +235,14 @@ class HomePage extends StatelessWidget {
                                                 ),
                                               ),
                                               Text(
-                                                "预计领取:  ${snapshot.data[index]['luggagesaveforetime']}",
+                                                "寄存客服:  ${snapshot.data[index]['recievername']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                  ScreenUtil().setSp(40),
+                                                ),
+                                              ),
+                                              Text(
+                                                "预计领取:  ${snapshot.data[index]['luggagesavefortime']}",
                                                 style: TextStyle(
                                                   fontSize:
                                                       ScreenUtil().setSp(40),
@@ -271,6 +282,23 @@ class HomePage extends StatelessWidget {
                                                             .setSp(40),
                                                       ),
                                                     ),
+                                              snapshot.data[index]
+                                              ['luggageistoken'] ==
+                                                  1
+                                                  ? Text(
+                                                "领取客服:  ${snapshot.data[index]['givername']}",
+                                                style: TextStyle(
+                                                  fontSize: ScreenUtil()
+                                                      .setSp(40),
+                                                ),
+                                              )
+                                                  : Text(
+                                                "领取客服:",
+                                                style: TextStyle(
+                                                  fontSize: ScreenUtil()
+                                                      .setSp(40),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -802,5 +830,15 @@ class HomePage extends StatelessWidget {
       print("获取行李员订单每日领取数");
       Provide.value<HomeOrder>(context).setClerkTodayReceive(data['day1']);
     });
+  }
+
+  //  获取行李员历史订单
+  getOrderByClerk() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String name = sharedPreferences.getString("clerkUserName");
+    FormData formData = FormData.fromMap({
+      'recievername': name,
+    });
+    return formData;
   }
 }
