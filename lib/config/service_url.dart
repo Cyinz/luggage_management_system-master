@@ -25,4 +25,5 @@ const servicePath = {
   'codeLogin': serviceUrl + 'user/loginByMsg', //通过验证码登陆
   'getSaver': serviceUrl + 'record/BySaverid',  //通过ID获取寄存者信息
   'getLuggage': serviceUrl + 'record/ByLuggageid',  //通过ID获取行李信息
+  'resetPassword': serviceUrl + 'user/updatepassword',  //修改密码接口
 };

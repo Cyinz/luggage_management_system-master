@@ -652,8 +652,8 @@ class DepositPage extends StatelessWidget {
                       .currentState
                       .save();
                   var flag = true;
-                  if (Provide.value<DepositForm>(context).savername == null ||
-                      Provide.value<DepositForm>(context).savername == "") {
+                  if (Provide.value<DepositForm>(context).saverName == null ||
+                      Provide.value<DepositForm>(context).saverName == "") {
                     flag = false;
                     Fluttertoast.showToast(
                       msg: "客户名不能为空",
@@ -890,7 +890,7 @@ class DepositPage extends StatelessWidget {
           String path = Provide.value<DepositForm>(context).pic.path;
           var name = path.substring(path.lastIndexOf("/") + 1, path.length);
           FormData formData = FormData.fromMap({
-            'savername': Provide.value<DepositForm>(context).savername,
+            'savername': Provide.value<DepositForm>(context).saverName,
             'phonenumber': Provide.value<DepositForm>(context).phone,
             'gender':
                 Provide.value<DepositForm>(context).gender == 1 ? "男" : "女",

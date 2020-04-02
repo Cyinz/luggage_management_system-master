@@ -9,6 +9,7 @@ import 'package:luggagemanagementsystem/provide/home_order.dart';
 import 'package:luggagemanagementsystem/provide/login_form.dart';
 import 'package:luggagemanagementsystem/provide/me_form.dart';
 import 'package:luggagemanagementsystem/provide/receive_form.dart';
+import 'package:luggagemanagementsystem/provide/reset_form.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/router/routes.dart';
 import 'package:provide/provide.dart';
@@ -22,6 +23,7 @@ void main() {
   var homeOrder = HomeOrder();
   var receiveForm = ReceiveForm();
   var meForm = MeForm();
+  var resetForm = ResetForm();
   providers
     ..provide(Provider<LoginForm>.value(loginForm))
     ..provide(Provider<ForgetForm>.value(forgetForm))
@@ -29,7 +31,8 @@ void main() {
     ..provide(Provider<DepositForm>.value(depositForm))
     ..provide(Provider<HomeOrder>.value(homeOrder))
     ..provide(Provider<ReceiveForm>.value(receiveForm))
-    ..provide(Provider<MeForm>.value(meForm));
+    ..provide(Provider<MeForm>.value(meForm))
+    ..provide(Provider<ResetForm>.value(resetForm));
   runApp(
     ProviderNode(
       child: MyApp(),

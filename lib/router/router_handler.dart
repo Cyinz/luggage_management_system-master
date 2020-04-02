@@ -7,11 +7,13 @@ import 'package:luggagemanagementsystem/page/language_page.dart';
 import 'package:luggagemanagementsystem/page/login_page.dart';
 import 'package:luggagemanagementsystem/page/me_page.dart';
 import 'package:luggagemanagementsystem/page/receive_page.dart';
+import 'package:luggagemanagementsystem/page/reset_password_page.dart';
+import 'package:luggagemanagementsystem/page/update_me_page.dart';
 
 Handler rootHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return LoginPage();
-//  return HomePage();
+//  return LoginPage();
+  return HomePage();
 });
 
 Handler forgetHandler = Handler(
@@ -42,4 +44,14 @@ Handler meHandler = Handler(
 Handler languageHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return LanguagePage();
+});
+
+Handler updateHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return UpdateMePage();
+});
+
+Handler resetHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return ResetPasswordPage();
 });

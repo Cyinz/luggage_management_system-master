@@ -6,7 +6,7 @@ class DepositForm with ChangeNotifier {
   final depositFormKey = GlobalKey<FormState>();
 
   //  客户姓名
-  String savername;
+  String saverName;
 
   //  客户手机号
   String phone;
@@ -37,7 +37,7 @@ class DepositForm with ChangeNotifier {
   bool isDisabled = false;
 
   setSaverName(value) {
-    savername = value;
+    saverName = value;
     notifyListeners();
   }
 
@@ -89,7 +89,7 @@ class DepositForm with ChangeNotifier {
 
   //  清空表单保存的内容，初始化寄存表单
   clearDepositForm() {
-    savername = null;
+    saverName = null;
     phone = null;
     tag = null;
     location = null;

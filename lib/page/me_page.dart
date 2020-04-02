@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:luggagemanagementsystem/provide/me_form.dart';
+import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:provide/provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -80,7 +81,8 @@ class MePage extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),Row(
+              ),
+              Row(
                 children: <Widget>[
                   Expanded(
                     flex: 1,
@@ -92,15 +94,44 @@ class MePage extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: Align(
-                      child: Text("${Provide.value<MeForm>(context).phonenumber}"),
+                      child:
+                          Text("${Provide.value<MeForm>(context).phonenumber}"),
                     ),
                   ),
                 ],
               ),
-//              Text("用户编号:    ${Provide.value<MeForm>(context).id}"),
-//              Text("用户姓名:    ${Provide.value<MeForm>(context).username}"),
-//              Text("所属酒店:    ${Provide.value<MeForm>(context).hotel}"),
-//              Text("联系方式:    ${Provide.value<MeForm>(context).phonenumber}"),
+              Expanded(child: Container()),
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    RaisedButton(
+                      color: Colors.teal,
+                      onPressed: () {
+                        Application.router.navigateTo(context, '/update');
+                      },
+                      child: Text(
+                        "修改个人资料",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    RaisedButton(
+                      color: Colors.redAccent,
+                      onPressed: () {
+                        Application.router.navigateTo(context, '/reset');
+                      },
+                      child: Text(
+                        "修改登陆密码",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           );
         },
