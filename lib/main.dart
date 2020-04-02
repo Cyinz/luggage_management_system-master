@@ -1,5 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:luggagemanagementsystem/local/my_localizations_delegate.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/forget_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
@@ -36,7 +38,49 @@ void main() {
   );
 }
 
-class MyApp extends StatelessWidget {
+class AppSetting {
+  AppSetting();
+
+  Null Function(Locale locale) changeLocale;
+  Locale locale;
+  List<Locale> supportedLocales = [
+    Locale('zh', 'CN'), //简体中文
+    Locale('zh', 'HK'), //繁体中文
+    Locale('en', "US"), //美国英语
+  ];
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return MyAppState();
+  }
+}
+
+class MyAppState extends State<MyApp> {
+  static AppSetting setting = AppSetting();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    setting.locale = Locale('zh', 'CN');
+    setting.changeLocale = (Locale locale) {
+      if (setting.supportedLocales
+          .map((locale) {
+            return locale.toString();
+          })
+          .toSet()
+          .contains(locale?.toString())) {
+        setState(() {
+          setting.locale = locale;
+        });
+      }
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     //初始化路由
@@ -46,6 +90,16 @@ class MyApp extends StatelessWidget {
 
     return Container(
       child: MaterialApp(
+        locale: Locale('zh', 'CN'),
+        //本地化
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          MyLocalizationsDelegate(),
+        ],
+        //本地化支持的语言
+        supportedLocales: setting.supportedLocales,
+
         title: '智能酒店行李管理',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: Colors.blueGrey),

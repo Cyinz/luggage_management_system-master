@@ -5,6 +5,8 @@ import 'package:flutter_easyrefresh/ball_pulse_footer.dart';
 import 'package:flutter_easyrefresh/ball_pulse_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:luggagemanagementsystem/local/my_localizations.dart';
+import 'package:luggagemanagementsystem/main.dart';
 import 'package:luggagemanagementsystem/page/widget/swiperDiy.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
@@ -40,7 +42,7 @@ class HomePage extends StatelessWidget {
     getOrderByClerk(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("智能酒店管理系统"),
+        title: Text(MyLocalizations(MyAppState.setting.locale).DemoName),
         centerTitle: true,
       ),
       drawer: Provide<HomeDrawer>(
@@ -57,8 +59,6 @@ class HomePage extends StatelessWidget {
                   ),
                   currentAccountPicture: CircleAvatar(
                     backgroundImage: NetworkImage(
-//                      Provide.value<HomeDrawer>(context).clerkImg,
-//                      "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=430089504,3674027973&fm=26&gp=0.jpg",
                       "http://www.51yuansu.com/pic2/cover/00/39/51/5812ec5184228_610.jpg",
                     ),
                     backgroundColor: Colors.grey[400],
@@ -161,314 +161,335 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 //  行李员历史订单列表
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: Provide.value<HomeOrder>(context)
-                      .clerkHistoryOrder
-                      .length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      margin: EdgeInsets.all(10.0),
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(5.0),
-                        ),
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.only(
-                          top: 5,
-                        ),
-                        child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    "订单编号:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['orderid']}",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize:
-                                      ScreenUtil().setSp(38),
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: <Widget>[
-                                Image.network(
-                                  "http://luggage.vipgz2.idcfengye.com/luggage/image/${Provide.value<HomeOrder>(context).luggagePic[index]}",
-                                  width: ScreenUtil().setWidth(300),
-                                ),
-                                SizedBox(
-                                  width: ScreenUtil().setWidth(20),
-                                ),
-                                Column(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "客户姓名:  ${Provide.value<HomeOrder>(context).saverName[index]}",
-                                      style: TextStyle(
-                                        fontSize:
-                                        ScreenUtil().setSp(40),
-                                      ),
-                                    ),
-                                    Text(
-                                      "客户电话:  ${Provide.value<HomeOrder>(context).saverPhone[index]}",
-                                      style: TextStyle(
-                                        fontSize:
-                                        ScreenUtil().setSp(40),
-                                      ),
-                                    ),
-                                    Text(
-                                      "寄存时间:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagesavetime']}",
-                                      style: TextStyle(
-                                        fontSize:
-                                        ScreenUtil().setSp(40),
-                                      ),
-                                    ),
-                                    Text(
-                                      "寄存客服:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['recievername']}",
-                                      style: TextStyle(
-                                        fontSize:
-                                        ScreenUtil().setSp(40),
-                                      ),
-                                    ),
-                                    Text(
-                                      "预计领取:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagesavefortime']}",
-                                      style: TextStyle(
-                                        fontSize:
-                                        ScreenUtil().setSp(40),
-                                      ),
-                                    ),
-                                    Provide.value<HomeOrder>(context).clerkHistoryOrder[index]
-                                    ['luggageistoken'] ==
-                                        1
-                                        ? Text(
-                                      "领取状态:  已领取",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil()
-                                            .setSp(40),
-                                      ),
-                                    )
-                                        : Text(
-                                      "领取状态:  未领取",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil()
-                                            .setSp(40),
-                                      ),
-                                    ),
-                                    Provide.value<HomeOrder>(context).clerkHistoryOrder[index]
-                                    ['luggageistoken'] ==
-                                        1
-                                        ? Text(
-                                      "领取时间:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagegettime']}",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil()
-                                            .setSp(40),
-                                      ),
-                                    )
-                                        : Text(
-                                      "领取时间:",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil()
-                                            .setSp(40),
-                                      ),
-                                    ),
-                                    Provide.value<HomeOrder>(context).clerkHistoryOrder[index]
-                                    ['luggageistoken'] ==
-                                        1
-                                        ? Text(
-                                      "领取客服:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['givername']}",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil()
-                                            .setSp(40),
-                                      ),
-                                    )
-                                        : Text(
-                                      "领取客服:",
-                                      style: TextStyle(
-                                        fontSize: ScreenUtil()
-                                            .setSp(40),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-//                FutureBuilder(
-//                    future: postRequest('getClerkOrder', formData: formData),
-//                    builder: (context, snapshot) {
-//                      if (snapshot.hasData) {
-//                        print("历史订单");
-//                        return ListView.builder(
-//                            shrinkWrap: true,
-//                            physics: const NeverScrollableScrollPhysics(),
-//                            itemCount: snapshot.data.length,
-//                            itemBuilder: (BuildContext context, int index) {
-//                              return Card(
-//                                margin: EdgeInsets.all(10.0),
-//                                elevation: 5.0,
-//                                shape: RoundedRectangleBorder(
-//                                  borderRadius: BorderRadius.all(
-//                                    Radius.circular(5.0),
-//                                  ),
-//                                ),
-//                                child: Container(
-//                                  padding: EdgeInsets.only(
-//                                    top: 5,
-//                                  ),
-//                                  child: Column(
-//                                    crossAxisAlignment:
-//                                        CrossAxisAlignment.start,
+//                (Provide.value<HomeOrder>(context).clerkHistoryOrder.length !=
+//                            0 &&
+//                        Provide.value<
+//                                    HomeOrder>(context)
+//                                .saverName
+//                                .length !=
+//                            0 &&
+//                        Provide.value<HomeOrder>(context).saverPhone.length !=
+//                            0 &&
+//                        Provide.value<HomeOrder>(context).luggagePic.length !=
+//                            0)
+//                    ? ListView.builder(
+//                        shrinkWrap: true,
+//                        physics: const NeverScrollableScrollPhysics(),
+//                        itemCount: Provide.value<HomeOrder>(context)
+//                            .clerkHistoryOrder
+//                            .length,
+//                        itemBuilder: (BuildContext context, int index) {
+//                          return Card(
+//                            margin: EdgeInsets.all(10.0),
+//                            elevation: 5.0,
+//                            shape: RoundedRectangleBorder(
+//                              borderRadius: BorderRadius.all(
+//                                Radius.circular(5.0),
+//                              ),
+//                            ),
+//                            child: Container(
+//                              padding: EdgeInsets.only(
+//                                top: 5,
+//                              ),
+//                              child: Column(
+//                                crossAxisAlignment: CrossAxisAlignment.start,
+//                                children: <Widget>[
+//                                  Row(
 //                                    children: <Widget>[
-//                                      Row(
-//                                        children: <Widget>[
-//                                          SizedBox(
-//                                            width: 5,
+//                                      SizedBox(
+//                                        width: 5,
+//                                      ),
+//                                      Expanded(
+//                                        child: Text(
+//                                          "订单编号:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['orderid']}",
+//                                          style: TextStyle(
+//                                            fontWeight: FontWeight.bold,
+//                                            fontSize: ScreenUtil().setSp(38),
 //                                          ),
-//                                          Expanded(
-//                                            child: Text(
-//                                              "订单编号:  ${snapshot.data[index]['orderid']}",
-//                                              style: TextStyle(
-//                                                fontWeight: FontWeight.bold,
-//                                                fontSize:
-//                                                    ScreenUtil().setSp(38),
-//                                              ),
-//                                              overflow: TextOverflow.ellipsis,
-//                                              maxLines: 1,
+//                                          overflow: TextOverflow.ellipsis,
+//                                          maxLines: 1,
+//                                        ),
+//                                      ),
+//                                    ],
+//                                  ),
+//                                  Row(
+//                                    children: <Widget>[
+//                                      Image.network(
+//                                        "http://luggage.vipgz2.idcfengye.com/luggage/image/${Provide.value<HomeOrder>(context).luggagePic[index]}",
+//                                        width: ScreenUtil().setWidth(300),
+//                                      ),
+//                                      SizedBox(
+//                                        width: ScreenUtil().setWidth(20),
+//                                      ),
+//                                      Column(
+//                                        crossAxisAlignment:
+//                                            CrossAxisAlignment.start,
+//                                        children: <Widget>[
+//                                          Text(
+//                                            "客户姓名:  ${Provide.value<HomeOrder>(context).saverName[index]}",
+//                                            style: TextStyle(
+//                                              fontSize: ScreenUtil().setSp(40),
 //                                            ),
 //                                          ),
-//                                        ],
-//                                      ),
-//                                      Row(
-//                                        children: <Widget>[
-//                                          Image.network(
-//                                            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584214735946&di=68bf93a1c61da6e03c8b9bac9d6497da&imgtype=0&src=http%3A%2F%2Fimg.jk51.com%2Fimg_jk51%2F93051887.jpeg",
-//                                            width: ScreenUtil().setWidth(300),
+//                                          Text(
+//                                            "客户电话:  ${Provide.value<HomeOrder>(context).saverPhone[index]}",
+//                                            style: TextStyle(
+//                                              fontSize: ScreenUtil().setSp(40),
+//                                            ),
 //                                          ),
-//                                          SizedBox(
-//                                            width: ScreenUtil().setWidth(20),
+//                                          Text(
+//                                            "寄存时间:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagesavetime']}",
+//                                            style: TextStyle(
+//                                              fontSize: ScreenUtil().setSp(40),
+//                                            ),
 //                                          ),
-//                                          Column(
-//                                            crossAxisAlignment:
-//                                                CrossAxisAlignment.start,
-//                                            children: <Widget>[
-//                                              Text(
-//                                                "客户姓名:  ${snapshot.data[index]['saverid']}",
-//                                                style: TextStyle(
-//                                                  fontSize:
-//                                                      ScreenUtil().setSp(40),
-//                                                ),
-//                                              ),
-//                                              Text(
-//                                                "客户电话:  ${snapshot.data[index]['saverphonenumber']}",
-//                                                style: TextStyle(
-//                                                  fontSize:
-//                                                      ScreenUtil().setSp(40),
-//                                                ),
-//                                              ),
-//                                              Text(
-//                                                "寄存时间:  ${snapshot.data[index]['luggagesavetime']}",
-//                                                style: TextStyle(
-//                                                  fontSize:
-//                                                      ScreenUtil().setSp(40),
-//                                                ),
-//                                              ),
-//                                              Text(
-//                                                "寄存客服:  ${snapshot.data[index]['recievername']}",
-//                                                style: TextStyle(
-//                                                  fontSize:
-//                                                      ScreenUtil().setSp(40),
-//                                                ),
-//                                              ),
-//                                              Text(
-//                                                "预计领取:  ${snapshot.data[index]['luggagesavefortime']}",
-//                                                style: TextStyle(
-//                                                  fontSize:
-//                                                      ScreenUtil().setSp(40),
-//                                                ),
-//                                              ),
-//                                              snapshot.data[index]
-//                                                          ['luggageistoken'] ==
-//                                                      1
-//                                                  ? Text(
-//                                                      "领取状态:  已领取",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    )
-//                                                  : Text(
-//                                                      "领取状态:  未领取",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    ),
-//                                              snapshot.data[index]
-//                                                          ['luggageistoken'] ==
-//                                                      1
-//                                                  ? Text(
-//                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    )
-//                                                  : Text(
-//                                                      "领取时间:",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    ),
-//                                              snapshot.data[index]
-//                                                          ['luggageistoken'] ==
-//                                                      1
-//                                                  ? Text(
-//                                                      "领取客服:  ${snapshot.data[index]['givername']}",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    )
-//                                                  : Text(
-//                                                      "领取客服:",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    ),
-//                                            ],
+//                                          Text(
+//                                            "寄存客服:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['recievername']}",
+//                                            style: TextStyle(
+//                                              fontSize: ScreenUtil().setSp(40),
+//                                            ),
 //                                          ),
+//                                          Text(
+//                                            "预计领取:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagesavefortime']}",
+//                                            style: TextStyle(
+//                                              fontSize: ScreenUtil().setSp(40),
+//                                            ),
+//                                          ),
+//                                          Provide.value<HomeOrder>(context)
+//                                                          .clerkHistoryOrder[
+//                                                      index]['luggageistoken'] ==
+//                                                  1
+//                                              ? Text(
+//                                                  "领取状态:  已领取",
+//                                                  style: TextStyle(
+//                                                    fontSize:
+//                                                        ScreenUtil().setSp(40),
+//                                                  ),
+//                                                )
+//                                              : Text(
+//                                                  "领取状态:  未领取",
+//                                                  style: TextStyle(
+//                                                    fontSize:
+//                                                        ScreenUtil().setSp(40),
+//                                                  ),
+//                                                ),
+//                                          Provide.value<HomeOrder>(context)
+//                                                          .clerkHistoryOrder[
+//                                                      index]['luggageistoken'] ==
+//                                                  1
+//                                              ? Text(
+//                                                  "领取时间:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagegettime']}",
+//                                                  style: TextStyle(
+//                                                    fontSize:
+//                                                        ScreenUtil().setSp(40),
+//                                                  ),
+//                                                )
+//                                              : Text(
+//                                                  "领取时间:",
+//                                                  style: TextStyle(
+//                                                    fontSize:
+//                                                        ScreenUtil().setSp(40),
+//                                                  ),
+//                                                ),
+//                                          Provide.value<HomeOrder>(context)
+//                                                          .clerkHistoryOrder[
+//                                                      index]['luggageistoken'] ==
+//                                                  1
+//                                              ? Text(
+//                                                  "领取客服:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['givername']}",
+//                                                  style: TextStyle(
+//                                                    fontSize:
+//                                                        ScreenUtil().setSp(40),
+//                                                  ),
+//                                                )
+//                                              : Text(
+//                                                  "领取客服:",
+//                                                  style: TextStyle(
+//                                                    fontSize:
+//                                                        ScreenUtil().setSp(40),
+//                                                  ),
+//                                                ),
 //                                        ],
 //                                      ),
 //                                    ],
 //                                  ),
-//                                ),
-//                              );
-//                            });
-//                      } else {
-//                        return Text("");
-//                      }
-//                    }),
+//                                ],
+//                              ),
+//                            ),
+//                          );
+//                        },
+//                      )
+//                    : Text("加载中..."),
+                FutureBuilder(
+                    future: postRequest('getClerkOrder', formData: formData),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        print("历史订单");
+                        return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                margin: EdgeInsets.all(10.0),
+                                elevation: 5.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5.0),
+                                  ),
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 5,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              "订单编号:  ${snapshot.data[index]['orderid']}",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    ScreenUtil().setSp(38),
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Image.network(
+                                            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584214735946&di=68bf93a1c61da6e03c8b9bac9d6497da&imgtype=0&src=http%3A%2F%2Fimg.jk51.com%2Fimg_jk51%2F93051887.jpeg",
+                                            width: ScreenUtil().setWidth(300),
+                                          ),
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(20),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Provide.value<HomeOrder>(context)
+                                                          .saverName
+                                                          .length !=
+                                                      0
+                                                  ? Text(
+//                                                "客户姓名:  ${snapshot.data[index]['saverid']}",
+                                                      "客户姓名:  ${Provide.value<HomeOrder>(context).saverName[index]}",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "客户姓名:  ${snapshot.data[index]['saverid']}",
+//                                                "客户姓名:  ${Provide.value<HomeOrder>(context).saverName[index]}",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
+                                              Text(
+                                                "客户电话:  ${snapshot.data[index]['saverphonenumber']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
+                                              Text(
+                                                "寄存时间:  ${snapshot.data[index]['luggagesavetime']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
+                                              Text(
+                                                "寄存客服:  ${snapshot.data[index]['recievername']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
+                                              Text(
+                                                "预计领取:  ${snapshot.data[index]['luggagesavefortime']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text(
+                                                      "领取状态:  已领取",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "领取状态:  未领取",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text(
+                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "领取时间:",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text(
+                                                      "领取客服:  ${snapshot.data[index]['givername']}",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "领取客服:",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      } else {
+                        return Text("");
+                      }
+                    }),
               ],
             ),
             onRefresh: () async {
