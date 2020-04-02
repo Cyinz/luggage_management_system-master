@@ -3,7 +3,6 @@ import 'package:luggagemanagementsystem/main.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 
 class LanguagePage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class LanguagePage extends StatelessWidget {
             child: OutlineButton(
               highlightedBorderColor: Colors.blueGrey,
               onPressed: () {
-                MyAppState.setting.changeLocale(Locale('zh','CN'));
+                MyAppState.setting.changeLocale(Locale('zh', 'CN'));
                 Application.router.navigateTo(context, '/home');
               },
               child: Text("简体中文"),
@@ -31,8 +30,9 @@ class LanguagePage extends StatelessWidget {
             child: OutlineButton(
               highlightedBorderColor: Colors.blueGrey,
               onPressed: () {
-                MyAppState.setting.changeLocale(Locale('zh','HK'));
-                Application.router.navigateTo(context, '/home');              },
+                MyAppState.setting.changeLocale(Locale('zh', 'HK'));
+                Application.router.navigateTo(context, '/home');
+              },
               child: Text("繁體中文"),
             ),
           ),
@@ -42,8 +42,9 @@ class LanguagePage extends StatelessWidget {
             child: OutlineButton(
               highlightedBorderColor: Colors.blueGrey,
               onPressed: () {
-                MyAppState.setting.changeLocale(Locale('en','US'));
-                Application.router.navigateTo(context, '/home');              },
+                MyAppState.setting.changeLocale(Locale('en', 'US'));
+                Application.router.navigateTo(context, '/home');
+              },
               child: Text("English"),
             ),
           ),

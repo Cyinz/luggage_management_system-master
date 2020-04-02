@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/ball_pulse_footer.dart';
 import 'package:flutter_easyrefresh/ball_pulse_header.dart';
@@ -39,7 +38,6 @@ class HomePage extends StatelessWidget {
     ScreenUtil.init(context, width: 1080, height: 1980);
     getClerk(context);
     getOrderMsg(context);
-    getOrderByClerk(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(MyLocalizations(MyAppState.setting.locale).DemoName),
@@ -161,171 +159,13 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 //  行李员历史订单列表
-//                (Provide.value<HomeOrder>(context).clerkHistoryOrder.length !=
-//                            0 &&
-//                        Provide.value<
-//                                    HomeOrder>(context)
-//                                .saverName
-//                                .length !=
-//                            0 &&
-//                        Provide.value<HomeOrder>(context).saverPhone.length !=
-//                            0 &&
-//                        Provide.value<HomeOrder>(context).luggagePic.length !=
-//                            0)
-//                    ? ListView.builder(
-//                        shrinkWrap: true,
-//                        physics: const NeverScrollableScrollPhysics(),
-//                        itemCount: Provide.value<HomeOrder>(context)
-//                            .clerkHistoryOrder
-//                            .length,
-//                        itemBuilder: (BuildContext context, int index) {
-//                          return Card(
-//                            margin: EdgeInsets.all(10.0),
-//                            elevation: 5.0,
-//                            shape: RoundedRectangleBorder(
-//                              borderRadius: BorderRadius.all(
-//                                Radius.circular(5.0),
-//                              ),
-//                            ),
-//                            child: Container(
-//                              padding: EdgeInsets.only(
-//                                top: 5,
-//                              ),
-//                              child: Column(
-//                                crossAxisAlignment: CrossAxisAlignment.start,
-//                                children: <Widget>[
-//                                  Row(
-//                                    children: <Widget>[
-//                                      SizedBox(
-//                                        width: 5,
-//                                      ),
-//                                      Expanded(
-//                                        child: Text(
-//                                          "订单编号:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['orderid']}",
-//                                          style: TextStyle(
-//                                            fontWeight: FontWeight.bold,
-//                                            fontSize: ScreenUtil().setSp(38),
-//                                          ),
-//                                          overflow: TextOverflow.ellipsis,
-//                                          maxLines: 1,
-//                                        ),
-//                                      ),
-//                                    ],
-//                                  ),
-//                                  Row(
-//                                    children: <Widget>[
-//                                      Image.network(
-//                                        "http://luggage.vipgz2.idcfengye.com/luggage/image/${Provide.value<HomeOrder>(context).luggagePic[index]}",
-//                                        width: ScreenUtil().setWidth(300),
-//                                      ),
-//                                      SizedBox(
-//                                        width: ScreenUtil().setWidth(20),
-//                                      ),
-//                                      Column(
-//                                        crossAxisAlignment:
-//                                            CrossAxisAlignment.start,
-//                                        children: <Widget>[
-//                                          Text(
-//                                            "客户姓名:  ${Provide.value<HomeOrder>(context).saverName[index]}",
-//                                            style: TextStyle(
-//                                              fontSize: ScreenUtil().setSp(40),
-//                                            ),
-//                                          ),
-//                                          Text(
-//                                            "客户电话:  ${Provide.value<HomeOrder>(context).saverPhone[index]}",
-//                                            style: TextStyle(
-//                                              fontSize: ScreenUtil().setSp(40),
-//                                            ),
-//                                          ),
-//                                          Text(
-//                                            "寄存时间:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagesavetime']}",
-//                                            style: TextStyle(
-//                                              fontSize: ScreenUtil().setSp(40),
-//                                            ),
-//                                          ),
-//                                          Text(
-//                                            "寄存客服:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['recievername']}",
-//                                            style: TextStyle(
-//                                              fontSize: ScreenUtil().setSp(40),
-//                                            ),
-//                                          ),
-//                                          Text(
-//                                            "预计领取:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagesavefortime']}",
-//                                            style: TextStyle(
-//                                              fontSize: ScreenUtil().setSp(40),
-//                                            ),
-//                                          ),
-//                                          Provide.value<HomeOrder>(context)
-//                                                          .clerkHistoryOrder[
-//                                                      index]['luggageistoken'] ==
-//                                                  1
-//                                              ? Text(
-//                                                  "领取状态:  已领取",
-//                                                  style: TextStyle(
-//                                                    fontSize:
-//                                                        ScreenUtil().setSp(40),
-//                                                  ),
-//                                                )
-//                                              : Text(
-//                                                  "领取状态:  未领取",
-//                                                  style: TextStyle(
-//                                                    fontSize:
-//                                                        ScreenUtil().setSp(40),
-//                                                  ),
-//                                                ),
-//                                          Provide.value<HomeOrder>(context)
-//                                                          .clerkHistoryOrder[
-//                                                      index]['luggageistoken'] ==
-//                                                  1
-//                                              ? Text(
-//                                                  "领取时间:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['luggagegettime']}",
-//                                                  style: TextStyle(
-//                                                    fontSize:
-//                                                        ScreenUtil().setSp(40),
-//                                                  ),
-//                                                )
-//                                              : Text(
-//                                                  "领取时间:",
-//                                                  style: TextStyle(
-//                                                    fontSize:
-//                                                        ScreenUtil().setSp(40),
-//                                                  ),
-//                                                ),
-//                                          Provide.value<HomeOrder>(context)
-//                                                          .clerkHistoryOrder[
-//                                                      index]['luggageistoken'] ==
-//                                                  1
-//                                              ? Text(
-//                                                  "领取客服:  ${Provide.value<HomeOrder>(context).clerkHistoryOrder[index]['givername']}",
-//                                                  style: TextStyle(
-//                                                    fontSize:
-//                                                        ScreenUtil().setSp(40),
-//                                                  ),
-//                                                )
-//                                              : Text(
-//                                                  "领取客服:",
-//                                                  style: TextStyle(
-//                                                    fontSize:
-//                                                        ScreenUtil().setSp(40),
-//                                                  ),
-//                                                ),
-//                                        ],
-//                                      ),
-//                                    ],
-//                                  ),
-//                                ],
-//                              ),
-//                            ),
-//                          );
-//                        },
-//                      )
-//                    : Text("加载中..."),
                 FutureBuilder(
                     future: postRequest('getClerkOrder', formData: formData),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         print("历史订单");
                         return ListView.builder(
+                            reverse: true,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: snapshot.data.length,
@@ -367,10 +207,26 @@ class HomePage extends StatelessWidget {
                                       ),
                                       Row(
                                         children: <Widget>[
-                                          Image.network(
-                                            "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1584214735946&di=68bf93a1c61da6e03c8b9bac9d6497da&imgtype=0&src=http%3A%2F%2Fimg.jk51.com%2Fimg_jk51%2F93051887.jpeg",
-                                            width: ScreenUtil().setWidth(300),
-                                          ),
+                                          FutureBuilder(
+                                              future: postRequest('getLuggage',
+                                                  formData:
+                                                      new FormData.fromMap({
+                                                    'luggageid':
+                                                        snapshot.data[index]
+                                                            ['luggageid'],
+                                                  })),
+                                              builder: (context, luggage) {
+                                                if (luggage.hasData) {
+                                                  return Image.network(
+                                                    "http://luggage.vipgz2.idcfengye.com/luggage/image/${luggage.data['picture']}",
+                                                    width: ScreenUtil()
+                                                        .setWidth(300),
+                                                  );
+                                                }
+                                                else{
+                                                  return Text("");
+                                                }
+                                              }),
                                           SizedBox(
                                             width: ScreenUtil().setWidth(20),
                                           ),
@@ -378,33 +234,43 @@ class HomePage extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Provide.value<HomeOrder>(context)
-                                                          .saverName
-                                                          .length !=
-                                                      0
-                                                  ? Text(
-//                                                "客户姓名:  ${snapshot.data[index]['saverid']}",
-                                                      "客户姓名:  ${Provide.value<HomeOrder>(context).saverName[index]}",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40),
-                                                      ),
-                                                    )
-                                                  : Text(
-                                                      "客户姓名:  ${snapshot.data[index]['saverid']}",
-//                                                "客户姓名:  ${Provide.value<HomeOrder>(context).saverName[index]}",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40),
-                                                      ),
-                                                    ),
-                                              Text(
-                                                "客户电话:  ${snapshot.data[index]['saverphonenumber']}",
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      ScreenUtil().setSp(40),
-                                                ),
-                                              ),
+                                              FutureBuilder(
+                                                  future: postRequest(
+                                                      'getSaver',
+                                                      formData:
+                                                          new FormData.fromMap({
+                                                        'saverid':
+                                                            snapshot.data[index]
+                                                                ['saverid']
+                                                      })),
+                                                  builder: (context, saver) {
+                                                    if(saver.hasData){
+                                                      return Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            "客户姓名:  ${saver.data['saverName']}",
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                              ScreenUtil()
+                                                                  .setSp(40),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "客户电话:  ${saver.data['phonenumber']}",
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                              ScreenUtil()
+                                                                  .setSp(40),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    }
+                                                    else{
+                                                      return Text("");
+                                                    }
+                                                  }),
                                               Text(
                                                 "寄存时间:  ${snapshot.data[index]['luggagesavetime']}",
                                                 style: TextStyle(
@@ -1008,55 +874,5 @@ class HomePage extends StatelessWidget {
       print("获取行李员订单每日领取数");
       Provide.value<HomeOrder>(context).setClerkTodayReceive(data['day1']);
     });
-  }
-
-  //  获取行李员历史订单
-  getOrderByClerk(BuildContext context) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String name = sharedPreferences.getString("clerkUserName");
-    FormData formData = FormData.fromMap({
-      'recievername': name,
-    });
-    postRequest('getClerkOrder', formData: formData).then((data) {
-      print("history Order: $data");
-      List<Map> newList = (data as List).cast();
-      Provide.value<HomeOrder>(context).addOrderList(newList);
-      getSaver(context);
-      getLuggage(context);
-    });
-  }
-
-  //  获取客户信息
-  getSaver(BuildContext context) {
-    print("列表长度 ${Provide.value<HomeOrder>(context).clerkHistoryOrder.length}");
-    for (int i = 0;
-        i < Provide.value<HomeOrder>(context).clerkHistoryOrder.length;
-        i++) {
-      FormData formData = FormData.fromMap({
-        'saverid': Provide.value<HomeOrder>(context).clerkHistoryOrder[i]
-            ['saverid'],
-      });
-      postRequest('getSaver', formData: formData).then((data) {
-        print(data);
-        Provide.value<HomeOrder>(context).addSaverName(data['saverName']);
-        Provide.value<HomeOrder>(context).addSaverPhone(data['phonenumber']);
-      });
-    }
-  }
-
-  //  获取行李信息
-  getLuggage(BuildContext context) {
-    for (int i = 0;
-        i < Provide.value<HomeOrder>(context).clerkHistoryOrder.length;
-        i++) {
-      FormData formData = FormData.fromMap({
-        'luggageid': Provide.value<HomeOrder>(context).clerkHistoryOrder[i]
-            ['luggageid'],
-      });
-      postRequest('getLuggage', formData: formData).then((data) {
-        print(data);
-        Provide.value<HomeOrder>(context).addLuggagePic(data['picture']);
-      });
-    }
   }
 }
