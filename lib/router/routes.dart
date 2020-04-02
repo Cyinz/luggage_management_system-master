@@ -10,6 +10,7 @@ class Routes {
   static String deposit = "/deposit";
   static String receive = "/receive";
   static String me = "/me";
+  static String language = '/language';
 
   static void configureRouters(Router router) {
     // 出现不存在的路径时
@@ -25,5 +26,6 @@ class Routes {
     router.define(deposit, handler: depositHandler);
     router.define(receive, handler: receiveHandler);
     router.define(me, handler: meHandler);
+    router.define(language, handler: languageHandler);
   }
 }

@@ -23,4 +23,6 @@ const servicePath = {
   'getluggage': serviceUrl + 'luggage/getluggage', //领取行李订单
   'sendCode': serviceUrl + 'user/sendLoginMsg', //发送验证码(通过手机号登陆)
   'codeLogin': serviceUrl + 'user/loginByMsg', //通过验证码登陆
+  'getSaver': serviceUrl + 'record/BySaverid',  //通过ID获取寄存者信息
+  'getLuggage': serviceUrl + 'record/ByLuggageid',  //通过ID获取行李信息
 };

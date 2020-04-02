@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:luggagemanagementsystem/page/deposit_page.dart';
 import 'package:luggagemanagementsystem/page/forget_page.dart';
 import 'package:luggagemanagementsystem/page/home_page.dart';
+import 'package:luggagemanagementsystem/page/language_page.dart';
 import 'package:luggagemanagementsystem/page/login_page.dart';
 import 'package:luggagemanagementsystem/page/me_page.dart';
 import 'package:luggagemanagementsystem/page/receive_page.dart';
@@ -14,10 +15,9 @@ Handler rootHandler = Handler(
 });
 
 Handler forgetHandler = Handler(
-  handlerFunc: (BuildContext context, Map<String,List<String>> params){
-    return ForgetPage();
-  }
-);
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return ForgetPage();
+});
 
 Handler homeHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -36,5 +36,10 @@ Handler receiveHandler = Handler(
 
 Handler meHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-      return MePage();
-    });
+  return MePage();
+});
+
+Handler languageHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return LanguagePage();
+});
