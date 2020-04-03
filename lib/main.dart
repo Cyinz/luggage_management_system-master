@@ -109,7 +109,7 @@ class MyAppState extends State<MyApp> {
         //本地化支持的语言
         supportedLocales: setting.supportedLocales,
 
-        title: '智能酒店行李管理',
+        title: '行李管家',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: Colors.blueGrey),
         onGenerateRoute: Application.router.generator,
