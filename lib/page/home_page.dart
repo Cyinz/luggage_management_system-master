@@ -11,6 +11,8 @@ import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/provide/home_order.dart';
 import 'package:luggagemanagementsystem/provide/receive_form.dart';
+import 'package:luggagemanagementsystem/provide/reset_form.dart';
+import 'package:luggagemanagementsystem/provide/update_form.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
@@ -31,10 +33,10 @@ class HomePage extends StatelessWidget {
     if (bool) {
       Provide.value<DepositForm>(context).clearDepositForm();
       Provide.value<ReceiveForm>(context).clearReceiveForm();
+      Provide.value<ResetForm>(context).initResetForm();
+      Provide.value<UpdateForm>(context).initUpdateForm();
       print("返回到主页");
     }
-    Provide.value<HomeOrder>(context).initHomeOrder();
-
     ScreenUtil.init(context, width: 1080, height: 1980);
     getClerk(context);
     getOrderMsg(context);
@@ -111,7 +113,14 @@ class HomePage extends StatelessWidget {
                 ListTile(
                   leading: Icon(Icons.exit_to_app),
                   title: Text("退出登陆"),
-                  onTap: () {},
+                  onTap: () {
+                    Application.router.navigateTo(
+                      context,
+                      '/',
+                      replace: true,
+                      clearStack: true,
+                    );
+                  },
                 ),
                 SizedBox(
                   height: ScreenUtil().setHeight(ScreenUtil.bottomBarHeight),

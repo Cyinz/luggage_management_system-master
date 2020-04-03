@@ -75,4 +75,16 @@ class UpdateForm with ChangeNotifier {
     isDisabled = value;
     notifyListeners();
   }
+
+  initUpdateForm(){
+    username = null;
+    userLoginName = null;
+    right = null;
+    image = null;
+    hotel = null;
+    id = null;
+    state = null;
+    phone = null;
+    isDisabled = false;
+  }
 }

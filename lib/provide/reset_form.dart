@@ -34,4 +34,11 @@ class ResetForm with ChangeNotifier {
     isDisabled = value;
     notifyListeners();
   }
+
+  initResetForm(){
+    userLoginName = null;
+    password = null;
+    newPassword = null;
+    isDisabled = false;
+  }
 }
