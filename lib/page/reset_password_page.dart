@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:luggagemanagementsystem/provide/reset_form.dart';
+import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:provide/provide.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordPage extends StatelessWidget {
   @override
@@ -49,7 +49,7 @@ class ResetPasswordPage extends StatelessWidget {
           _userLoginName(context),
           _password(context),
           _newPassword(context),
-          resetBtn(context),
+          _resetBtn(context),
         ],
       ),
     );
@@ -182,7 +182,7 @@ class ResetPasswordPage extends StatelessWidget {
   }
 
   //  修改按钮
-  Widget resetBtn(BuildContext context) {
+  Widget _resetBtn(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
         top: ScreenUtil().setHeight(80.0),
@@ -190,14 +190,7 @@ class ResetPasswordPage extends StatelessWidget {
         right: ScreenUtil().setWidth(30.0),
       ),
       child: RaisedButton(
-        color: Colors.teal,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: Text(
-          "确认修改",
-          style: TextStyle(color: Colors.white),
-        ),
+        color: Colors.redAccent,
         onPressed: Provide.value<ResetForm>(context).isDisabled
             ? null
             : () {
@@ -254,6 +247,66 @@ class ResetPasswordPage extends StatelessWidget {
       'password': Provide.value<ResetForm>(context).password,
       'newpassword': Provide.value<ResetForm>(context).newPassword,
     });
-    postRequest('resetPassword', formData: formData).then((data) {});
+    postRequest('resetPassword', formData: formData).then(
+      (data) {
+        //  修改成功
+        if (data['status'] == 200) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Container(
+                child: AlertDialog(
+                  title: Text("修改成功"),
+                  content: Text("修改成功，请重新登陆"),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Provide.value<ResetForm>(context).setIsDisabled(false);
+                        Application.router.navigateTo(
+                          context,
+                          '/',
+                          replace: true,
+                          clearStack: true,
+                        );
+                      },
+                      child: Text("确认"),
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        }
+        //  修改失败
+        else {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Container(
+                child: AlertDialog(
+                  title: Text("修改失败"),
+                  content: Text(data['msg'].toString()),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Provide.value<ResetForm>(context)
+                            .resetFormKey
+                            .currentState
+                            .reset();
+                        Provide.value<ResetForm>(context).setIsDisabled(false);
+                        Navigator.pop(context);
+                      },
+                      child: Text("确认"),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
   }
 }
