@@ -8,7 +8,8 @@ const servicePath = {
   'login': serviceUrl + 'user/userLogin', //用户登陆接口
   'getuser': serviceUrl + 'user/getdata', //使用token获取用户信息
   'checkToken': serviceUrl + 'user/checkToken', //验证token是否过期
-  'getClerkOrder': serviceUrl + 'record/ByReceiverName', //获取行李员历史订单
+  'getClerkOrder': serviceUrl + 'record/ByReceiverName', //通过行李员姓名获取所有订单
+  'getOrderByPhone': serviceUrl + 'record/ByPhonenumber', //通过客户手机号获取所有订单
   'addHotelDeposit': serviceUrl + 'statistics/Addhotelweeksave', //添加酒店寄存数据
   'addHotelReceive': serviceUrl + 'statistics/Addhotelweekgiver', //添加酒店领取数据
   'addClerkDeposit': serviceUrl + 'statistics/AddrecData', //添加行李员寄存数据

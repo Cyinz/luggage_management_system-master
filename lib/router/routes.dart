@@ -13,6 +13,7 @@ class Routes {
   static String language = '/language';
   static String update = '/update';
   static String reset = '/reset';
+  static String search = '/search';
 
   static void configureRouters(Router router) {
     // 出现不存在的路径时
@@ -31,5 +32,6 @@ class Routes {
     router.define(language, handler: languageHandler);
     router.define(update, handler: updateHandler);
     router.define(reset, handler: resetHandler);
+    router.define(search, handler: searchHandler);
   }
 }

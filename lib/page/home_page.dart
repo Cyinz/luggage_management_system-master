@@ -12,6 +12,7 @@ import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/provide/home_order.dart';
 import 'package:luggagemanagementsystem/provide/receive_form.dart';
 import 'package:luggagemanagementsystem/provide/reset_form.dart';
+import 'package:luggagemanagementsystem/provide/search_form.dart';
 import 'package:luggagemanagementsystem/provide/update_form.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
@@ -35,6 +36,7 @@ class HomePage extends StatelessWidget {
       Provide.value<ReceiveForm>(context).clearReceiveForm();
       Provide.value<ResetForm>(context).initResetForm();
       Provide.value<UpdateForm>(context).initUpdateForm();
+      Provide.value<SearchForm>(context).initSearchForm();
       print("返回到主页");
     }
     ScreenUtil.init(context, width: 1080, height: 1980);
@@ -81,7 +83,9 @@ class HomePage extends StatelessWidget {
                     color: Colors.teal,
                   ),
                   title: Text("订单查询"),
-                  onTap: () {},
+                  onTap: () {
+                    Application.router.navigateTo(context, '/search');
+                  },
                 ),
                 ListTile(
                   leading: Icon(
@@ -168,203 +172,205 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 //  行李员历史订单列表
-//                FutureBuilder(
-//                    future: postRequest('getClerkOrder', formData: formData),
-//                    builder: (context, snapshot) {
-//                      if (snapshot.hasData) {
-//                        print("历史订单");
-//                        return ListView.builder(
-//                            reverse: true,
-//                            shrinkWrap: true,
-//                            physics: const NeverScrollableScrollPhysics(),
-//                            itemCount: snapshot.data.length,
-//                            itemBuilder: (BuildContext context, int index) {
-//                              return Card(
-//                                margin: EdgeInsets.all(10.0),
-//                                elevation: 5.0,
-//                                shape: RoundedRectangleBorder(
-//                                  borderRadius: BorderRadius.all(
-//                                    Radius.circular(5.0),
-//                                  ),
-//                                ),
-//                                child: Container(
-//                                  padding: EdgeInsets.only(
-//                                    top: 5,
-//                                  ),
-//                                  child: Column(
-//                                    crossAxisAlignment:
-//                                        CrossAxisAlignment.start,
-//                                    children: <Widget>[
-//                                      Row(
-//                                        children: <Widget>[
-//                                          SizedBox(
-//                                            width: 5,
-//                                          ),
-//                                          Expanded(
-//                                            child: Text(
-//                                              "订单编号:  ${snapshot.data[index]['orderid']}",
-//                                              style: TextStyle(
-//                                                fontWeight: FontWeight.bold,
-//                                                fontSize:
-//                                                    ScreenUtil().setSp(38),
-//                                              ),
-//                                              overflow: TextOverflow.ellipsis,
-//                                              maxLines: 1,
-//                                            ),
-//                                          ),
-//                                        ],
-//                                      ),
-//                                      Row(
-//                                        children: <Widget>[
-//                                          FutureBuilder(
-//                                              future: postRequest('getLuggage',
-//                                                  formData:
-//                                                      new FormData.fromMap({
-//                                                    'luggageid':
-//                                                        snapshot.data[index]
-//                                                            ['luggageid'],
-//                                                  })),
-//                                              builder: (context, luggage) {
-//                                                if (luggage.hasData) {
-//                                                  return Image.network(
-//                                                    "http://luggage.vipgz2.idcfengye.com/luggage/image/${luggage.data['picture']}",
-//                                                    width: ScreenUtil()
-//                                                        .setWidth(300),
-//                                                  );
-//                                                }
-//                                                else{
-//                                                  return Text("");
-//                                                }
-//                                              }),
-//                                          SizedBox(
-//                                            width: ScreenUtil().setWidth(20),
-//                                          ),
-//                                          Column(
-//                                            crossAxisAlignment:
-//                                                CrossAxisAlignment.start,
-//                                            children: <Widget>[
-//                                              FutureBuilder(
-//                                                  future: postRequest(
-//                                                      'getSaver',
-//                                                      formData:
-//                                                          new FormData.fromMap({
-//                                                        'saverid':
-//                                                            snapshot.data[index]
-//                                                                ['saverid']
-//                                                      })),
-//                                                  builder: (context, saver) {
-//                                                    if(saver.hasData){
-//                                                      return Column(
-//                                                        crossAxisAlignment: CrossAxisAlignment.start,
-//                                                        children: <Widget>[
-//                                                          Text(
-//                                                            "客户姓名:  ${saver.data['saverName']}",
-//                                                            style: TextStyle(
-//                                                              fontSize:
-//                                                              ScreenUtil()
-//                                                                  .setSp(40),
-//                                                            ),
-//                                                          ),
-//                                                          Text(
-//                                                            "客户电话:  ${saver.data['phonenumber']}",
-//                                                            style: TextStyle(
-//                                                              fontSize:
-//                                                              ScreenUtil()
-//                                                                  .setSp(40),
-//                                                            ),
-//                                                          ),
-//                                                        ],
-//                                                      );
-//                                                    }
-//                                                    else{
-//                                                      return Text("");
-//                                                    }
-//                                                  }),
-//                                              Text(
-//                                                "寄存时间:  ${snapshot.data[index]['luggagesavetime']}",
-//                                                style: TextStyle(
-//                                                  fontSize:
-//                                                      ScreenUtil().setSp(40),
-//                                                ),
-//                                              ),
-//                                              Text(
-//                                                "寄存客服:  ${snapshot.data[index]['recievername']}",
-//                                                style: TextStyle(
-//                                                  fontSize:
-//                                                      ScreenUtil().setSp(40),
-//                                                ),
-//                                              ),
-//                                              Text(
-//                                                "预计领取:  ${snapshot.data[index]['luggagesavefortime']}",
-//                                                style: TextStyle(
-//                                                  fontSize:
-//                                                      ScreenUtil().setSp(40),
-//                                                ),
-//                                              ),
-//                                              snapshot.data[index]
-//                                                          ['luggageistoken'] ==
-//                                                      1
-//                                                  ? Text(
-//                                                      "领取状态:  已领取",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    )
-//                                                  : Text(
-//                                                      "领取状态:  未领取",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    ),
-//                                              snapshot.data[index]
-//                                                          ['luggageistoken'] ==
-//                                                      1
-//                                                  ? Text(
-//                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    )
-//                                                  : Text(
-//                                                      "领取时间:",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    ),
-//                                              snapshot.data[index]
-//                                                          ['luggageistoken'] ==
-//                                                      1
-//                                                  ? Text(
-//                                                      "领取客服:  ${snapshot.data[index]['givername']}",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    )
-//                                                  : Text(
-//                                                      "领取客服:",
-//                                                      style: TextStyle(
-//                                                        fontSize: ScreenUtil()
-//                                                            .setSp(40),
-//                                                      ),
-//                                                    ),
-//                                            ],
-//                                          ),
-//                                        ],
-//                                      ),
-//                                    ],
-//                                  ),
-//                                ),
-//                              );
-//                            });
-//                      } else {
-//                        return Text("");
-//                      }
-//                    }),
+                FutureBuilder(
+                    future: postRequest('getClerkOrder', formData: formData),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        print("历史订单");
+                        return ListView.builder(
+                            reverse: true,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Card(
+                                margin: EdgeInsets.all(10.0),
+                                elevation: 5.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(5.0),
+                                  ),
+                                ),
+                                child: Container(
+                                  padding: EdgeInsets.only(
+                                    top: 5,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              "订单编号:  ${snapshot.data[index]['orderid']}",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize:
+                                                    ScreenUtil().setSp(38),
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          FutureBuilder(
+                                              future: postRequest('getLuggage',
+                                                  formData:
+                                                      new FormData.fromMap({
+                                                    'luggageid':
+                                                        snapshot.data[index]
+                                                            ['luggageid'],
+                                                  })),
+                                              builder: (context, luggage) {
+                                                if (luggage.hasData) {
+                                                  return Image.network(
+                                                    "http://luggage.vipgz2.idcfengye.com/luggage/image/${luggage.data['picture']}",
+                                                    width: ScreenUtil()
+                                                        .setWidth(300),
+                                                  );
+                                                } else {
+                                                  return Text("");
+                                                }
+                                              }),
+                                          SizedBox(
+                                            width: ScreenUtil().setWidth(20),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              FutureBuilder(
+                                                  future: postRequest(
+                                                      'getSaver',
+                                                      formData:
+                                                          new FormData.fromMap({
+                                                        'saverid':
+                                                            snapshot.data[index]
+                                                                ['saverid']
+                                                      })),
+                                                  builder: (context, saver) {
+                                                    if (saver.hasData) {
+                                                      return Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            "客户姓名:  ${saver.data['saverName']}",
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          40),
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            "客户电话:  ${saver.data['phonenumber']}",
+                                                            style: TextStyle(
+                                                              fontSize:
+                                                                  ScreenUtil()
+                                                                      .setSp(
+                                                                          40),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    } else {
+                                                      return Text("");
+                                                    }
+                                                  }),
+                                              Text(
+                                                "寄存时间:  ${snapshot.data[index]['luggagesavetime']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
+                                              Text(
+                                                "寄存客服:  ${snapshot.data[index]['recievername']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
+                                              Text(
+                                                "预计领取:  ${snapshot.data[index]['luggagesavefortime']}",
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      ScreenUtil().setSp(40),
+                                                ),
+                                              ),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text(
+                                                      "领取状态:  已领取",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "领取状态:  未领取",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text(
+                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "领取时间:",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
+                                              snapshot.data[index]
+                                                          ['luggageistoken'] ==
+                                                      1
+                                                  ? Text(
+                                                      "领取客服:  ${snapshot.data[index]['givername']}",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      "领取客服:",
+                                                      style: TextStyle(
+                                                        fontSize: ScreenUtil()
+                                                            .setSp(40),
+                                                      ),
+                                                    ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      } else {
+                        return Text("");
+                      }
+                    }),
               ],
             ),
             onRefresh: () async {

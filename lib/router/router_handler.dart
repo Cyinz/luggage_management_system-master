@@ -8,12 +8,13 @@ import 'package:luggagemanagementsystem/page/login_page.dart';
 import 'package:luggagemanagementsystem/page/me_page.dart';
 import 'package:luggagemanagementsystem/page/receive_page.dart';
 import 'package:luggagemanagementsystem/page/reset_password_page.dart';
+import 'package:luggagemanagementsystem/page/search_order_page.dart';
 import 'package:luggagemanagementsystem/page/update_me_page.dart';
 
 Handler rootHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-//  return LoginPage();
-  return HomePage();
+  return LoginPage();
+//  return HomePage();
 });
 
 Handler forgetHandler = Handler(
@@ -54,4 +55,9 @@ Handler updateHandler = Handler(
 Handler resetHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return ResetPasswordPage();
+});
+
+Handler searchHandler = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SearchOrderPage();
 });
