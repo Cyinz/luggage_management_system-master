@@ -137,7 +137,7 @@ class SearchOrderPage extends StatelessWidget {
           ),
           builder: (context, order) {
             if (order.hasData) {
-              return Text(order.data.toString());
+              return Text("");
             } else {
               return Text("");
             }
