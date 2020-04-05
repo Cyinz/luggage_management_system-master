@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:luggagemanagementsystem/local/my_localizations_delegate.dart';
+import 'package:luggagemanagementsystem/provide/check_update.dart';
 import 'package:luggagemanagementsystem/provide/deposit_form.dart';
 import 'package:luggagemanagementsystem/provide/forget_form.dart';
 import 'package:luggagemanagementsystem/provide/home_drawer.dart';
@@ -28,6 +29,7 @@ void main() {
   var resetForm = ResetForm();
   var updateForm = UpdateForm();
   var searchForm = SearchForm();
+  var checkUpdate = CheckUpdate();
   providers
     ..provide(Provider<LoginForm>.value(loginForm))
     ..provide(Provider<ForgetForm>.value(forgetForm))
@@ -38,7 +40,8 @@ void main() {
     ..provide(Provider<MeForm>.value(meForm))
     ..provide(Provider<ResetForm>.value(resetForm))
     ..provide(Provider<UpdateForm>.value(updateForm))
-    ..provide(Provider<SearchForm>.value(searchForm));
+    ..provide(Provider<SearchForm>.value(searchForm))
+    ..provide(Provider<CheckUpdate>.value(checkUpdate));
   runApp(
     ProviderNode(
       child: MyApp(),

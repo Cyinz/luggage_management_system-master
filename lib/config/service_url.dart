@@ -28,4 +28,5 @@ const servicePath = {
   'getLuggage': serviceUrl + 'record/ByLuggageid',  //通过ID获取行李信息
   'resetPassword': serviceUrl + 'user/updatepassword',  //修改密码接口
   'updateMsg': serviceUrl + 'user/update',  //用户修改信息接口
+  'getApk': serviceUrl + 'ota/getOta',  //获取apk接口
 };

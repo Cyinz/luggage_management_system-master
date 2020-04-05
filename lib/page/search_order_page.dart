@@ -60,7 +60,7 @@ class SearchOrderPage extends StatelessWidget {
     return Container(
       child: DropdownButton(
         items: _getListData(),
-        hint: Text("请选择查找方式"),
+        hint: Text("请选择查找方式",style: TextStyle(fontSize: ScreenUtil().setSp(40)),),
         onChanged: (value) {
           print(value);
           Provide.value<SearchForm>(context).setSearchType(value);
@@ -77,12 +77,12 @@ class SearchOrderPage extends StatelessWidget {
   List<DropdownMenuItem> _getListData() {
     List<DropdownMenuItem> items = new List();
     DropdownMenuItem dropdownMenuItem1 = new DropdownMenuItem(
-      child: Text("按客户手机号查找"),
+      child: Text("按客户手机号查找",style: TextStyle(fontSize: ScreenUtil().setSp(40)),),
       value: 1,
     );
     items.add(dropdownMenuItem1);
     DropdownMenuItem dropdownMenuItem2 = new DropdownMenuItem(
-      child: Text("按行李员姓名查找"),
+      child: Text("按行李员姓名查找",style: TextStyle(fontSize: ScreenUtil().setSp(40)),),
       value: 2,
     );
     items.add(dropdownMenuItem2);
@@ -95,6 +95,7 @@ class SearchOrderPage extends StatelessWidget {
       child: TextFormField(
         decoration: InputDecoration(
           hintText: '请输入搜索内容',
+          hintStyle: TextStyle(fontSize: ScreenUtil().setSp(40)),
         ),
         onSaved: (value) {
           Provide.value<SearchForm>(context).setSearchMsg(value);
@@ -381,7 +382,7 @@ class SearchOrderPage extends StatelessWidget {
             }
           });
     } else {
-      return Text("null");
+      return Text("");
     }
   }
 }

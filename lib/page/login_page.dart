@@ -254,6 +254,7 @@ class LoginPage extends StatelessWidget {
         FormData formData2 = FormData.fromMap({
           'token': data['data'],
         });
+        //  通过token获取登陆用户信息
         postRequest('getuser', formData: formData2).then((data) {
           if (data['status'] == 200) {
             showDialog(
@@ -261,7 +262,9 @@ class LoginPage extends StatelessWidget {
               barrierDismissible: false,
               builder: (BuildContext context) {
                 Clerk clerk = Clerk.fromJson(data['data']);
+                //  保存行李员信息
                 saveClerk(clerk);
+                //  登陆成功
                 return _successDialog(data, context);
               },
             );

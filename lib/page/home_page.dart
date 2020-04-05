@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/ball_pulse_footer.dart';
 import 'package:flutter_easyrefresh/ball_pulse_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:install_plugin/install_plugin.dart';
 import 'package:luggagemanagementsystem/local/my_localizations.dart';
 import 'package:luggagemanagementsystem/main.dart';
 import 'package:luggagemanagementsystem/page/widget/swiperDiy.dart';
@@ -16,6 +20,9 @@ import 'package:luggagemanagementsystem/provide/search_form.dart';
 import 'package:luggagemanagementsystem/provide/update_form.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
+import 'package:package_info/package_info.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provide/provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -103,7 +110,9 @@ class HomePage extends StatelessWidget {
                     color: Colors.teal,
                   ),
                   title: Text("检查更新"),
-                  onTap: () {},
+                  onTap: () {
+                    getVersion(context);
+                  },
                 ),
                 //  占满剩余空间
                 Expanded(child: Container()),
@@ -167,7 +176,7 @@ class HomePage extends StatelessWidget {
                   margin: EdgeInsets.all(10.0),
                   child: Row(
                     children: <Widget>[
-                      Text("历史订单"),
+                      Text(MyLocalizations(MyAppState.setting.locale).HistoryOrder),
                     ],
                   ),
                 ),
@@ -409,7 +418,7 @@ class HomePage extends StatelessWidget {
                   color: Colors.deepPurpleAccent[100],
                 ),
                 Text(
-                  "酒店订单",
+                  MyLocalizations(MyAppState.setting.locale).HotelOrder,
                   style: TextStyle(
                     fontSize: ScreenUtil().setSp(35),
                   ),
@@ -432,7 +441,7 @@ class HomePage extends StatelessWidget {
                 height: ScreenUtil().setHeight(10),
               ),
               Text(
-                "一周总单数",
+                MyLocalizations(MyAppState.setting.locale).WeekOrders,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(35),
                 ),
@@ -454,7 +463,7 @@ class HomePage extends StatelessWidget {
                 height: ScreenUtil().setHeight(10),
               ),
               Text(
-                "今日寄存数",
+                MyLocalizations(MyAppState.setting.locale).TodayDeposit,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(35),
                 ),
@@ -476,7 +485,7 @@ class HomePage extends StatelessWidget {
                 height: ScreenUtil().setHeight(10),
               ),
               Text(
-                "今日领取数",
+                MyLocalizations(MyAppState.setting.locale).TodayReceive,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(35),
                 ),
@@ -504,7 +513,7 @@ class HomePage extends StatelessWidget {
                   color: Colors.deepPurpleAccent[100],
                 ),
                 Text(
-                  "行李员订单",
+                  MyLocalizations(MyAppState.setting.locale).ClerkOrder,
                   style: TextStyle(
                     fontSize: ScreenUtil().setSp(35),
                   ),
@@ -527,7 +536,7 @@ class HomePage extends StatelessWidget {
                 height: ScreenUtil().setHeight(10),
               ),
               Text(
-                "一周总单数",
+                MyLocalizations(MyAppState.setting.locale).WeekOrders,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(35),
                 ),
@@ -549,7 +558,7 @@ class HomePage extends StatelessWidget {
                 height: ScreenUtil().setHeight(10),
               ),
               Text(
-                "今日寄存数",
+                MyLocalizations(MyAppState.setting.locale).TodayDeposit,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(35),
                 ),
@@ -571,7 +580,7 @@ class HomePage extends StatelessWidget {
                 height: ScreenUtil().setHeight(10),
               ),
               Text(
-                "今日领取数",
+                MyLocalizations(MyAppState.setting.locale).TodayReceive,
                 style: TextStyle(
                   fontSize: ScreenUtil().setSp(35),
                 ),
@@ -601,7 +610,7 @@ class HomePage extends StatelessWidget {
                 color: Colors.teal,
               ),
               title: Text(
-                "行李寄存",
+                MyLocalizations(MyAppState.setting.locale).Deposit,
                 style: TextStyle(
                   color: Colors.teal,
                 ),
@@ -645,7 +654,7 @@ class HomePage extends StatelessWidget {
                 color: Colors.teal,
               ),
               title: Text(
-                "行李领取",
+                MyLocalizations(MyAppState.setting.locale).Receive,
                 style: TextStyle(
                   color: Colors.teal,
                 ),
@@ -889,5 +898,136 @@ class HomePage extends StatelessWidget {
       print("获取行李员订单每日领取数");
       Provide.value<HomeOrder>(context).setClerkTodayReceive(data['day1']);
     });
+  }
+
+  //  获取版本号
+  getVersion(BuildContext context) async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    print(packageInfo.version);
+
+    postRequest('getApk').then(
+      (data) {
+        print(data);
+        if (packageInfo.version == data['version']) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Container(
+                child: AlertDialog(
+                  title: Text("检查更新"),
+                  content: Text("当前应用已是最新版本"),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("确认"),
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        } else {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return Container(
+                child: AlertDialog(
+                  title: Text("检查更新"),
+                  content: Text("检测到新版本，确认更新"),
+                  actions: <Widget>[
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text("取消"),
+                    ),
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return Container(
+                              child: Dialog(
+                                child: Container(
+                                  padding: EdgeInsets.all(5),
+                                  height: 100,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Center(
+                                          child: SizedBox(
+                                            height: 6.0,
+                                            child: LinearProgressIndicator(),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        child: FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            "返回后台下载",
+                                            style: TextStyle(
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                        //  下载
+                        download(
+                          context,
+                          "http://luggage.vipgz2.idcfengye.com/luggage/image/${data['url']}",
+                        );
+                      },
+                      child: Text("下载"),
+                    )
+                  ],
+                ),
+              );
+            },
+          );
+        }
+      },
+    );
+  }
+
+  //  下载文件
+  download(BuildContext context, String urlPath) async {
+    Response response;
+    Dio dio = Dio();
+    Directory externalDir;
+    externalDir = await getExternalStorageDirectory();
+    print(externalDir);
+    InstallPlugin.installApk( externalDir.path + "my.apk", "appId").then((result){
+      print('install apk $result');
+    });
+    response = await dio.download(
+      urlPath,
+      externalDir.path + "my.apk",
+      onReceiveProgress: (int count, int total) {
+        print("$count / $total");
+      },
+    );
+    print("下载结果: ${response.statusCode}");
+    if(response.statusCode == 200){
+      print("下载完成");
+      InstallPlugin.installApk( externalDir.path + "my.apk", "com.example.luggagemanagementsystem").then((result){
+        print('install apk $result');
+      });
+    }
   }
 }
