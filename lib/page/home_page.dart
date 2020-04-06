@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_easyrefresh/ball_pulse_footer.dart';
 import 'package:flutter_easyrefresh/ball_pulse_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
@@ -22,7 +20,6 @@ import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:luggagemanagementsystem/service/service_method.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provide/provide.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -68,7 +65,7 @@ class HomePage extends StatelessWidget {
                   ),
                   currentAccountPicture: CircleAvatar(
                     backgroundImage: NetworkImage(
-                      "http://www.51yuansu.com/pic2/cover/00/39/51/5812ec5184228_610.jpg",
+                      "http://luggage.vipgz2.idcfengye.com/luggage/image/${Provide.value<HomeDrawer>(context).clerkImg}",
                     ),
                     backgroundColor: Colors.grey[400],
                     radius: 40.0,
@@ -79,7 +76,7 @@ class HomePage extends StatelessWidget {
                     Icons.person,
                     color: Colors.teal,
                   ),
-                  title: Text("个人信息"),
+                  title: Text(MyLocalizations(MyAppState.setting.locale).Me),
                   onTap: () {
                     Application.router.navigateTo(context, "/me");
                   },
@@ -89,7 +86,8 @@ class HomePage extends StatelessWidget {
                     Icons.format_list_bulleted,
                     color: Colors.teal,
                   ),
-                  title: Text("订单查询"),
+                  title: Text(
+                      MyLocalizations(MyAppState.setting.locale).SearchOrder),
                   onTap: () {
                     Application.router.navigateTo(context, '/search');
                   },
@@ -99,7 +97,8 @@ class HomePage extends StatelessWidget {
                     Icons.settings,
                     color: Colors.teal,
                   ),
-                  title: Text("语言设置"),
+                  title: Text(MyLocalizations(MyAppState.setting.locale)
+                      .LanguageSetting),
                   onTap: () {
                     Application.router.navigateTo(context, 'language');
                   },
@@ -109,7 +108,8 @@ class HomePage extends StatelessWidget {
                     Icons.update,
                     color: Colors.teal,
                   ),
-                  title: Text("检查更新"),
+                  title: Text(
+                      MyLocalizations(MyAppState.setting.locale).CheckUpdate),
                   onTap: () {
                     getVersion(context);
                   },
@@ -125,7 +125,7 @@ class HomePage extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.exit_to_app),
-                  title: Text("退出登陆"),
+                  title: Text(MyLocalizations(MyAppState.setting.locale).SignOut),
                   onTap: () {
                     Application.router.navigateTo(
                       context,
@@ -145,9 +145,6 @@ class HomePage extends StatelessWidget {
       ),
       body: Provide<HomeOrder>(
         builder: (context, child, homeOrder) {
-          FormData formData = FormData.fromMap({
-            'recievername': Provide.value<HomeDrawer>(context).clerkName,
-          });
           return EasyRefresh(
             child: ListView(
               children: <Widget>[
@@ -176,13 +173,18 @@ class HomePage extends StatelessWidget {
                   margin: EdgeInsets.all(10.0),
                   child: Row(
                     children: <Widget>[
-                      Text(MyLocalizations(MyAppState.setting.locale).HistoryOrder),
+                      Text(MyLocalizations(MyAppState.setting.locale)
+                          .HistoryOrder),
                     ],
                   ),
                 ),
-                //  行李员历史订单列表
+                //行李员历史订单列表
                 FutureBuilder(
-                    future: postRequest('getClerkOrder', formData: formData),
+                    future: postRequest('getClerkOrder',
+                        formData: FormData.fromMap({
+                          'recievername':
+                              Provide.value<HomeDrawer>(context).clerkName,
+                        })),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         print("历史订单");
@@ -1005,16 +1007,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  //  下载文件
+  //  下载安装apk
   download(BuildContext context, String urlPath) async {
     Response response;
     Dio dio = Dio();
     Directory externalDir;
     externalDir = await getExternalStorageDirectory();
-    print(externalDir);
-    InstallPlugin.installApk( externalDir.path + "my.apk", "appId").then((result){
-      print('install apk $result');
-    });
     response = await dio.download(
       urlPath,
       externalDir.path + "my.apk",
@@ -1023,9 +1021,11 @@ class HomePage extends StatelessWidget {
       },
     );
     print("下载结果: ${response.statusCode}");
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       print("下载完成");
-      InstallPlugin.installApk( externalDir.path + "my.apk", "com.example.luggagemanagementsystem").then((result){
+      InstallPlugin.installApk(externalDir.path + "my.apk",
+              "com.example.luggagemanagementsystem")
+          .then((result) {
         print('install apk $result');
       });
     }

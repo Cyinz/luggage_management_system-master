@@ -871,11 +871,6 @@ class DepositPage extends StatelessWidget {
     Provide.value<DepositForm>(context).setPic(image);
   }
 
-  //  验证寄存表单数据
-  Future<bool> checkDepositMsg(BuildContext context) async {
-    return true;
-  }
-
   //  寄存方法
   deposit(BuildContext context) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

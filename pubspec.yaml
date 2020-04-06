@@ -43,7 +43,6 @@ dependencies:
   fl_chart: ^0.8.7
   package_info: ^0.4.0+16
   path_provider: ^1.6.5
-  permission_handler: ^4.0.0
   install_plugin: ^2.0.1
 
 dev_dependencies:

@@ -124,6 +124,7 @@ class ResetPasswordPage extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(left: 25),
               child: TextFormField(
+                obscureText: true,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(top: 2, left: 10),
                   border: OutlineInputBorder(),
@@ -166,6 +167,7 @@ class ResetPasswordPage extends StatelessWidget {
             child: Container(
               margin: EdgeInsets.only(left: 25),
               child: TextFormField(
+                obscureText: true,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.only(top: 2, left: 10),
                   border: OutlineInputBorder(),
@@ -191,6 +193,10 @@ class ResetPasswordPage extends StatelessWidget {
       ),
       child: RaisedButton(
         color: Colors.redAccent,
+        child: Text(
+          "确认修改",
+          style: TextStyle(color: Colors.white),
+        ),
         onPressed: Provide.value<ResetForm>(context).isDisabled
             ? null
             : () {

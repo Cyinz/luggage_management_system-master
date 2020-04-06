@@ -16,6 +16,11 @@ class MyLocalizations {
       'Deposit': 'DEPOSIT',
       'Receive': 'RECEIVE',
       'HistoryOrder': 'histroy orders',
+      'Me': 'Personal information',
+      'SearchOrder': 'Search order',
+      'LanguageSetting': 'Language setting',
+      'CheckUpdate': 'Check update',
+      'SignOut': 'Sing out',
     },
     'zh_CN': {
       'DemoName': '智能酒店行李管理',
@@ -27,6 +32,11 @@ class MyLocalizations {
       'Deposit': '行李寄存',
       'Receive': '行李领取',
       'HistoryOrder': '历史订单',
+      'Me': '个人信息',
+      'SearchOrder': '订单查询',
+      'LanguageSetting': '语言设置',
+      'CheckUpdate': '检查更新',
+      'SignOut': '退出登陆',
     },
     'zh_HK': {
       'DemoName': '智能酒店行李管理',
@@ -38,6 +48,11 @@ class MyLocalizations {
       'Deposit': '行李寄存',
       'Receive': '行李領取',
       'HistoryOrder': '歷史訂單',
+      'Me': '個人信息',
+      'SearchOrder': '訂單查詢',
+      'LanguageSetting': '語言設置',
+      'CheckUpdate': '檢查更新',
+      'SignOut': '退出登陸',
     }
   };
 
@@ -75,6 +90,26 @@ class MyLocalizations {
 
   get HistoryOrder {
     return localizedValuesMap[locale.toString()]['HistoryOrder'];
+  }
+
+  get Me {
+    return localizedValuesMap[locale.toString()]['Me'];
+  }
+
+  get SearchOrder {
+    return localizedValuesMap[locale.toString()]['SearchOrder'];
+  }
+
+  get LanguageSetting {
+    return localizedValuesMap[locale.toString()]['LanguageSetting'];
+  }
+
+  get CheckUpdate {
+    return localizedValuesMap[locale.toString()]['CheckUpdate'];
+  }
+
+  get SignOut {
+    return localizedValuesMap[locale.toString()]['SignOut'];
   }
 
   static MyLocalizations of(BuildContext context) {

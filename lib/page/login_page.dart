@@ -88,7 +88,7 @@ class LoginPage extends StatelessWidget {
           labelText: "请输入用户名",
           helperText: '',
         ),
-        keyboardType: TextInputType.number,
+        keyboardType: TextInputType.text,
         validator: (value) {
           if (value.isEmpty) {
             return "用户名不能为空";

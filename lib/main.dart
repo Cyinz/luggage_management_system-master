@@ -103,7 +103,7 @@ class MyAppState extends State<MyApp> {
     return Container(
       child: MaterialApp(
         locale: Locale('zh', 'CN'),
-        //本地化
+        //本地化配置
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -111,7 +111,6 @@ class MyAppState extends State<MyApp> {
         ],
         //本地化支持的语言
         supportedLocales: setting.supportedLocales,
-
         title: '行李管家',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(primaryColor: Colors.blueGrey),

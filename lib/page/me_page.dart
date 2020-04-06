@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:luggagemanagementsystem/provide/home_drawer.dart';
 import 'package:luggagemanagementsystem/provide/me_form.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
 import 'package:provide/provide.dart';
@@ -22,7 +23,7 @@ class MePage extends StatelessWidget {
                   margin: EdgeInsets.only(top: 30),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                        "http://www.51yuansu.com/pic2/cover/00/39/51/5812ec5184228_610.jpg"),
+                        "http://luggage.vipgz2.idcfengye.com/luggage/image/${Provide.value<HomeDrawer>(context).clerkImg}"),
                     backgroundColor: Colors.grey[400],
                     radius: 100.0,
                   ),
