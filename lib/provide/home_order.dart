@@ -19,6 +19,11 @@ class HomeOrder with ChangeNotifier {
   //  行李员当天领取数
   int clerkTodayReceive = 0;
 
+  List hotelDepositList = [0, 0, 0, 0, 0, 0, 0];
+  List hotelReceiveList = [0, 0, 0, 0, 0, 0, 0];
+  List clerkDepositList = [0, 0, 0, 0, 0, 0, 0];
+  List clerkReceiveList = [0, 0, 0, 0, 0, 0, 0];
+
   setHotelWeekOrder(value) {
     hotelWeekOrder = value;
     notifyListeners();
@@ -49,6 +54,26 @@ class HomeOrder with ChangeNotifier {
     notifyListeners();
   }
 
+  setHotelDepositList(value) {
+    hotelDepositList = value;
+    notifyListeners();
+  }
+
+  setHotelReceiveList(value) {
+    hotelReceiveList = value;
+    notifyListeners();
+  }
+
+  setClerkDepositList(value) {
+    clerkDepositList = value;
+    notifyListeners();
+  }
+
+  setClerkReceiveList(value) {
+    clerkReceiveList = value;
+    notifyListeners();
+  }
+
   initHomeOrder() {
     hotelWeekOrder = 0;
     hotelTodayDeposit = 0;
@@ -56,5 +81,9 @@ class HomeOrder with ChangeNotifier {
     clerkWeekOrder = 0;
     clerkTodayDeposit = 0;
     clerkTodayReceive = 0;
+    hotelDepositList = [0, 0, 0, 0, 0, 0, 0];
+    hotelReceiveList = [0, 0, 0, 0, 0, 0, 0];
+    clerkDepositList = [0, 0, 0, 0, 0, 0, 0];
+    clerkReceiveList = [0, 0, 0, 0, 0, 0, 0];
   }
 }

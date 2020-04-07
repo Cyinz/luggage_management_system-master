@@ -1,7 +1,8 @@
 import 'dart:io';
+import 'package:date_format/date_format.dart';
 import 'package:dio/dio.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/ball_pulse_footer.dart';
 import 'package:flutter_easyrefresh/ball_pulse_header.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -45,7 +46,8 @@ class HomePage extends StatelessWidget {
     }
     ScreenUtil.init(context, width: 1080, height: 1980);
     getClerk(context);
-    getOrderMsg(context);
+//    getOrderMsg(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(MyLocalizations(MyAppState.setting.locale).DemoName),
@@ -125,7 +127,8 @@ class HomePage extends StatelessWidget {
                 ),
                 ListTile(
                   leading: Icon(Icons.exit_to_app),
-                  title: Text(MyLocalizations(MyAppState.setting.locale).SignOut),
+                  title:
+                      Text(MyLocalizations(MyAppState.setting.locale).SignOut),
                   onTap: () {
                     Application.router.navigateTo(
                       context,
@@ -149,8 +152,9 @@ class HomePage extends StatelessWidget {
             child: ListView(
               children: <Widget>[
                 SwiperDiy(swiperDataList: _bannerList),
+                _buttonRow(context),
                 Card(
-                  margin: EdgeInsets.all(10.0),
+                  margin: EdgeInsets.all(5.0),
                   elevation: 5.0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
@@ -168,236 +172,899 @@ class HomePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                _buttonRow(context),
-                Container(
-                  margin: EdgeInsets.all(10.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text(MyLocalizations(MyAppState.setting.locale)
-                          .HistoryOrder),
-                    ],
+                AspectRatio(
+                  aspectRatio: 1.2,
+                  child: Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    color: const Color(0xff2c4260),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "酒店寄存订单数据",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        BarChart(
+                          BarChartData(
+                            alignment: BarChartAlignment.spaceBetween,
+                            maxY: 10,
+                            barTouchData: BarTouchData(
+                              enabled: false,
+                              touchTooltipData: BarTouchTooltipData(
+                                tooltipBgColor: Colors.transparent,
+                                tooltipPadding: const EdgeInsets.all(0),
+                                tooltipBottomMargin: 8,
+                                getTooltipItem: (
+                                  BarChartGroupData group,
+                                  int groupIndex,
+                                  BarChartRodData rod,
+                                  int rodIndex,
+                                ) {
+                                  return BarTooltipItem(
+                                    rod.y.round().toString(),
+                                    TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            titlesData: FlTitlesData(
+                              show: true,
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                textStyle: TextStyle(
+                                    color: const Color(0xff7589a2),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                                margin: 20,
+                                getTitles: (double value) {
+                                  switch (value.toInt()) {
+                                    case 0:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 6)),
+                                          [m, '.', d]);
+                                    case 1:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 5)),
+                                          [m, '.', d]);
+                                    case 2:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 4)),
+                                          [m, '.', d]);
+                                    case 3:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 3)),
+                                          [m, '.', d]);
+                                    case 4:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 2)),
+                                          [m, '.', d]);
+                                    case 5:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 1)),
+                                          [m, '.', d]);
+                                    case 6:
+                                      return formatDate(
+                                          DateTime.now(), [m, '.', d]);
+                                    default:
+                                      return '';
+                                  }
+                                },
+                              ),
+                              leftTitles: const SideTitles(showTitles: false),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            barGroups: [
+                              BarChartGroupData(x: 0, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                            .hotelDepositList[6] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 1, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                            .hotelDepositList[5] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 2, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                            .hotelDepositList[4] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                            .hotelDepositList[3] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                            .hotelDepositList[2] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                            .hotelDepositList[1] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .hotelDepositList[0] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                //行李员历史订单列表
-                FutureBuilder(
-                    future: postRequest('getClerkOrder',
-                        formData: FormData.fromMap({
-                          'recievername':
-                              Provide.value<HomeDrawer>(context).clerkName,
-                        })),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        print("历史订单");
-                        return ListView.builder(
-                            reverse: true,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                margin: EdgeInsets.all(10.0),
-                                elevation: 5.0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(5.0),
-                                  ),
-                                ),
-                                child: Container(
-                                  padding: EdgeInsets.only(
-                                    top: 5,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Row(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Expanded(
-                                            child: Text(
-                                              "订单编号:  ${snapshot.data[index]['orderid']}",
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize:
-                                                    ScreenUtil().setSp(38),
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: <Widget>[
-                                          FutureBuilder(
-                                              future: postRequest('getLuggage',
-                                                  formData:
-                                                      new FormData.fromMap({
-                                                    'luggageid':
-                                                        snapshot.data[index]
-                                                            ['luggageid'],
-                                                  })),
-                                              builder: (context, luggage) {
-                                                if (luggage.hasData) {
-                                                  return Image.network(
-                                                    "http://luggage.vipgz2.idcfengye.com/luggage/image/${luggage.data['picture']}",
-                                                    width: ScreenUtil()
-                                                        .setWidth(300),
-                                                  );
-                                                } else {
-                                                  return Text("");
-                                                }
-                                              }),
-                                          SizedBox(
-                                            width: ScreenUtil().setWidth(20),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              FutureBuilder(
-                                                  future: postRequest(
-                                                      'getSaver',
-                                                      formData:
-                                                          new FormData.fromMap({
-                                                        'saverid':
-                                                            snapshot.data[index]
-                                                                ['saverid']
-                                                      })),
-                                                  builder: (context, saver) {
-                                                    if (saver.hasData) {
-                                                      return Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Text(
-                                                            "客户姓名:  ${saver.data['saverName']}",
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          40),
-                                                            ),
-                                                          ),
-                                                          Text(
-                                                            "客户电话:  ${saver.data['phonenumber']}",
-                                                            style: TextStyle(
-                                                              fontSize:
-                                                                  ScreenUtil()
-                                                                      .setSp(
-                                                                          40),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      );
-                                                    } else {
-                                                      return Text("");
-                                                    }
-                                                  }),
-                                              Text(
-                                                "寄存时间:  ${snapshot.data[index]['luggagesavetime']}",
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      ScreenUtil().setSp(40),
-                                                ),
-                                              ),
-                                              Text(
-                                                "寄存客服:  ${snapshot.data[index]['recievername']}",
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      ScreenUtil().setSp(40),
-                                                ),
-                                              ),
-                                              Text(
-                                                "预计领取:  ${snapshot.data[index]['luggagesavefortime']}",
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      ScreenUtil().setSp(40),
-                                                ),
-                                              ),
-                                              snapshot.data[index]
-                                                          ['luggageistoken'] ==
-                                                      1
-                                                  ? Text(
-                                                      "领取状态:  已领取",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40),
-                                                      ),
-                                                    )
-                                                  : Text(
-                                                      "领取状态:  未领取",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40),
-                                                      ),
-                                                    ),
-                                              snapshot.data[index]
-                                                          ['luggageistoken'] ==
-                                                      1
-                                                  ? Text(
-                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40),
-                                                      ),
-                                                    )
-                                                  : Text(
-                                                      "领取时间:",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40),
-                                                      ),
-                                                    ),
-                                              snapshot.data[index]
-                                                          ['luggageistoken'] ==
-                                                      1
-                                                  ? Text(
-                                                      "领取客服:  ${snapshot.data[index]['givername']}",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40),
-                                                      ),
-                                                    )
-                                                  : Text(
-                                                      "领取客服:",
-                                                      style: TextStyle(
-                                                        fontSize: ScreenUtil()
-                                                            .setSp(40),
-                                                      ),
-                                                    ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
-                      } else {
-                        return Text("");
-                      }
-                    }),
+                AspectRatio(
+                  aspectRatio: 1.2,
+                  child: Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    color: const Color(0xff2c4260),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "酒店领取订单数据",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        BarChart(
+                          BarChartData(
+                            alignment: BarChartAlignment.spaceBetween,
+                            maxY: 10,
+                            barTouchData: BarTouchData(
+                              enabled: false,
+                              touchTooltipData: BarTouchTooltipData(
+                                tooltipBgColor: Colors.transparent,
+                                tooltipPadding: const EdgeInsets.all(0),
+                                tooltipBottomMargin: 8,
+                                getTooltipItem: (
+                                    BarChartGroupData group,
+                                    int groupIndex,
+                                    BarChartRodData rod,
+                                    int rodIndex,
+                                    ) {
+                                  return BarTooltipItem(
+                                    rod.y.round().toString(),
+                                    TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            titlesData: FlTitlesData(
+                              show: true,
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                textStyle: TextStyle(
+                                    color: const Color(0xff7589a2),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                                margin: 20,
+                                getTitles: (double value) {
+                                  switch (value.toInt()) {
+                                    case 0:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 6)),
+                                          [m, '.', d]);
+                                    case 1:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 5)),
+                                          [m, '.', d]);
+                                    case 2:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 4)),
+                                          [m, '.', d]);
+                                    case 3:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 3)),
+                                          [m, '.', d]);
+                                    case 4:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 2)),
+                                          [m, '.', d]);
+                                    case 5:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 1)),
+                                          [m, '.', d]);
+                                    case 6:
+                                      return formatDate(
+                                          DateTime.now(), [m, '.', d]);
+                                    default:
+                                      return '';
+                                  }
+                                },
+                              ),
+                              leftTitles: const SideTitles(showTitles: false),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            barGroups: [
+                              BarChartGroupData(x: 0, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .hotelReceiveList[6] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 1, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .hotelReceiveList[5] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 2, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .hotelReceiveList[4] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .hotelReceiveList[3] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .hotelReceiveList[2] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .hotelReceiveList[1] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .hotelReceiveList[0] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                AspectRatio(
+                  aspectRatio: 1.2,
+                  child: Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    color: const Color(0xff2c4260),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "行李员寄存订单数据",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        BarChart(
+                          BarChartData(
+                            alignment: BarChartAlignment.spaceBetween,
+                            maxY: 10,
+                            barTouchData: BarTouchData(
+                              enabled: false,
+                              touchTooltipData: BarTouchTooltipData(
+                                tooltipBgColor: Colors.transparent,
+                                tooltipPadding: const EdgeInsets.all(0),
+                                tooltipBottomMargin: 8,
+                                getTooltipItem: (
+                                    BarChartGroupData group,
+                                    int groupIndex,
+                                    BarChartRodData rod,
+                                    int rodIndex,
+                                    ) {
+                                  return BarTooltipItem(
+                                    rod.y.round().toString(),
+                                    TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            titlesData: FlTitlesData(
+                              show: true,
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                textStyle: TextStyle(
+                                    color: const Color(0xff7589a2),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                                margin: 20,
+                                getTitles: (double value) {
+                                  switch (value.toInt()) {
+                                    case 0:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 6)),
+                                          [m, '.', d]);
+                                    case 1:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 5)),
+                                          [m, '.', d]);
+                                    case 2:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 4)),
+                                          [m, '.', d]);
+                                    case 3:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 3)),
+                                          [m, '.', d]);
+                                    case 4:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 2)),
+                                          [m, '.', d]);
+                                    case 5:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 1)),
+                                          [m, '.', d]);
+                                    case 6:
+                                      return formatDate(
+                                          DateTime.now(), [m, '.', d]);
+                                    default:
+                                      return '';
+                                  }
+                                },
+                              ),
+                              leftTitles: const SideTitles(showTitles: false),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            barGroups: [
+                              BarChartGroupData(x: 0, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkDepositList[6] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 1, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkDepositList[5] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 2, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkDepositList[4] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkDepositList[3] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkDepositList[2] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkDepositList[1] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkDepositList[0] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                AspectRatio(
+                  aspectRatio: 1.2,
+                  child: Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4)),
+                    color: const Color(0xff2c4260),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: Text(
+                            "行李员领取订单数据",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        BarChart(
+                          BarChartData(
+                            alignment: BarChartAlignment.spaceBetween,
+                            maxY: 10,
+                            barTouchData: BarTouchData(
+                              enabled: false,
+                              touchTooltipData: BarTouchTooltipData(
+                                tooltipBgColor: Colors.transparent,
+                                tooltipPadding: const EdgeInsets.all(0),
+                                tooltipBottomMargin: 8,
+                                getTooltipItem: (
+                                    BarChartGroupData group,
+                                    int groupIndex,
+                                    BarChartRodData rod,
+                                    int rodIndex,
+                                    ) {
+                                  return BarTooltipItem(
+                                    rod.y.round().toString(),
+                                    TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            titlesData: FlTitlesData(
+                              show: true,
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                textStyle: TextStyle(
+                                    color: const Color(0xff7589a2),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14),
+                                margin: 20,
+                                getTitles: (double value) {
+                                  switch (value.toInt()) {
+                                    case 0:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 6)),
+                                          [m, '.', d]);
+                                    case 1:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 5)),
+                                          [m, '.', d]);
+                                    case 2:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 4)),
+                                          [m, '.', d]);
+                                    case 3:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 3)),
+                                          [m, '.', d]);
+                                    case 4:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 2)),
+                                          [m, '.', d]);
+                                    case 5:
+                                      return formatDate(
+                                          DateTime.now()
+                                              .subtract(Duration(days: 1)),
+                                          [m, '.', d]);
+                                    case 6:
+                                      return formatDate(
+                                          DateTime.now(), [m, '.', d]);
+                                    default:
+                                      return '';
+                                  }
+                                },
+                              ),
+                              leftTitles: const SideTitles(showTitles: false),
+                            ),
+                            borderData: FlBorderData(
+                              show: false,
+                            ),
+                            barGroups: [
+                              BarChartGroupData(x: 0, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkReceiveList[6] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 1, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkReceiveList[5] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 2, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkReceiveList[4] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkReceiveList[3] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkReceiveList[2] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkReceiveList[1] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                              BarChartGroupData(x: 3, barRods: [
+                                BarChartRodData(
+                                    y: Provide.value<HomeOrder>(context)
+                                        .clerkReceiveList[0] *
+                                        1.0,
+                                    color: Colors.lightBlueAccent)
+                              ], showingTooltipIndicators: [
+                                0
+                              ]),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                //                Container(
+//                  margin: EdgeInsets.all(10.0),
+//                  child: Row(
+//                    children: <Widget>[
+//                      Text(MyLocalizations(MyAppState.setting.locale)
+//                          .HistoryOrder),
+//                    ],
+//                  ),
+//                ),
+//                行李员历史订单列表
+//                FutureBuilder(
+//                    future: postRequest('getClerkOrder',
+//                        formData: FormData.fromMap({
+//                          'recievername':
+//                              Provide.value<HomeDrawer>(context).clerkName,
+//                        })),
+//                    builder: (context, snapshot) {
+//                      if (snapshot.hasData) {
+//                        print("历史订单");
+//                        return ListView.builder(
+//                            reverse: true,
+//                            shrinkWrap: true,
+//                            physics: const NeverScrollableScrollPhysics(),
+//                            itemCount: snapshot.data.length,
+//                            itemBuilder: (BuildContext context, int index) {
+//                              return Card(
+//                                margin: EdgeInsets.all(10.0),
+//                                elevation: 5.0,
+//                                shape: RoundedRectangleBorder(
+//                                  borderRadius: BorderRadius.all(
+//                                    Radius.circular(5.0),
+//                                  ),
+//                                ),
+//                                child: Container(
+//                                  padding: EdgeInsets.only(
+//                                    top: 5,
+//                                  ),
+//                                  child: Column(
+//                                    crossAxisAlignment:
+//                                        CrossAxisAlignment.start,
+//                                    children: <Widget>[
+//                                      Row(
+//                                        children: <Widget>[
+//                                          SizedBox(
+//                                            width: 5,
+//                                          ),
+//                                          Expanded(
+//                                            child: Text(
+//                                              "订单编号:  ${snapshot.data[index]['orderid']}",
+//                                              style: TextStyle(
+//                                                fontWeight: FontWeight.bold,
+//                                                fontSize:
+//                                                    ScreenUtil().setSp(38),
+//                                              ),
+//                                              overflow: TextOverflow.ellipsis,
+//                                              maxLines: 1,
+//                                            ),
+//                                          ),
+//                                        ],
+//                                      ),
+//                                      Row(
+//                                        children: <Widget>[
+//                                          FutureBuilder(
+//                                              future: postRequest('getLuggage',
+//                                                  formData:
+//                                                      new FormData.fromMap({
+//                                                    'luggageid':
+//                                                        snapshot.data[index]
+//                                                            ['luggageid'],
+//                                                  })),
+//                                              builder: (context, luggage) {
+//                                                if (luggage.hasData) {
+//                                                  return Image.network(
+//                                                    "http://luggage.vipgz2.idcfengye.com/luggage/image/${luggage.data['picture']}",
+//                                                    width: ScreenUtil()
+//                                                        .setWidth(300),
+//                                                  );
+//                                                } else {
+//                                                  return Text("");
+//                                                }
+//                                              }),
+//                                          SizedBox(
+//                                            width: ScreenUtil().setWidth(20),
+//                                          ),
+//                                          Column(
+//                                            crossAxisAlignment:
+//                                                CrossAxisAlignment.start,
+//                                            children: <Widget>[
+//                                              FutureBuilder(
+//                                                  future: postRequest(
+//                                                      'getSaver',
+//                                                      formData:
+//                                                          new FormData.fromMap({
+//                                                        'saverid':
+//                                                            snapshot.data[index]
+//                                                                ['saverid']
+//                                                      })),
+//                                                  builder: (context, saver) {
+//                                                    if (saver.hasData) {
+//                                                      return Column(
+//                                                        crossAxisAlignment:
+//                                                            CrossAxisAlignment
+//                                                                .start,
+//                                                        children: <Widget>[
+//                                                          Text(
+//                                                            "客户姓名:  ${saver.data['saverName']}",
+//                                                            style: TextStyle(
+//                                                              fontSize:
+//                                                                  ScreenUtil()
+//                                                                      .setSp(
+//                                                                          40),
+//                                                            ),
+//                                                          ),
+//                                                          Text(
+//                                                            "客户电话:  ${saver.data['phonenumber']}",
+//                                                            style: TextStyle(
+//                                                              fontSize:
+//                                                                  ScreenUtil()
+//                                                                      .setSp(
+//                                                                          40),
+//                                                            ),
+//                                                          ),
+//                                                        ],
+//                                                      );
+//                                                    } else {
+//                                                      return Text("");
+//                                                    }
+//                                                  }),
+//                                              Text(
+//                                                "寄存时间:  ${snapshot.data[index]['luggagesavetime']}",
+//                                                style: TextStyle(
+//                                                  fontSize:
+//                                                      ScreenUtil().setSp(40),
+//                                                ),
+//                                              ),
+//                                              Text(
+//                                                "寄存客服:  ${snapshot.data[index]['recievername']}",
+//                                                style: TextStyle(
+//                                                  fontSize:
+//                                                      ScreenUtil().setSp(40),
+//                                                ),
+//                                              ),
+//                                              Text(
+//                                                "预计领取:  ${snapshot.data[index]['luggagesavefortime']}",
+//                                                style: TextStyle(
+//                                                  fontSize:
+//                                                      ScreenUtil().setSp(40),
+//                                                ),
+//                                              ),
+//                                              snapshot.data[index]
+//                                                          ['luggageistoken'] ==
+//                                                      1
+//                                                  ? Text(
+//                                                      "领取状态:  已领取",
+//                                                      style: TextStyle(
+//                                                        fontSize: ScreenUtil()
+//                                                            .setSp(40),
+//                                                      ),
+//                                                    )
+//                                                  : Text(
+//                                                      "领取状态:  未领取",
+//                                                      style: TextStyle(
+//                                                        fontSize: ScreenUtil()
+//                                                            .setSp(40),
+//                                                      ),
+//                                                    ),
+//                                              snapshot.data[index]
+//                                                          ['luggageistoken'] ==
+//                                                      1
+//                                                  ? Text(
+//                                                      "领取时间:  ${snapshot.data[index]['luggagegettime']}",
+//                                                      style: TextStyle(
+//                                                        fontSize: ScreenUtil()
+//                                                            .setSp(40),
+//                                                      ),
+//                                                    )
+//                                                  : Text(
+//                                                      "领取时间:",
+//                                                      style: TextStyle(
+//                                                        fontSize: ScreenUtil()
+//                                                            .setSp(40),
+//                                                      ),
+//                                                    ),
+//                                              snapshot.data[index]
+//                                                          ['luggageistoken'] ==
+//                                                      1
+//                                                  ? Text(
+//                                                      "领取客服:  ${snapshot.data[index]['givername']}",
+//                                                      style: TextStyle(
+//                                                        fontSize: ScreenUtil()
+//                                                            .setSp(40),
+//                                                      ),
+//                                                    )
+//                                                  : Text(
+//                                                      "领取客服:",
+//                                                      style: TextStyle(
+//                                                        fontSize: ScreenUtil()
+//                                                            .setSp(40),
+//                                                      ),
+//                                                    ),
+//                                            ],
+//                                          ),
+//                                        ],
+//                                      ),
+//                                    ],
+//                                  ),
+//                                ),
+//                              );
+//                            });
+//                      } else {
+//                        return Text("");
+//                      }
+//                    }),
               ],
             ),
             onRefresh: () async {
               print("下拉刷新");
               getOrderMsg(context);
             },
-            onLoad: () async {
-              await Future.delayed(Duration(seconds: 2), () {
-                print("上拉加载");
-              });
-            },
+//            onLoad: () async {
+//              await Future.delayed(Duration(seconds: 2), () {
+//                print("上拉加载");
+//              });
+//            },
             header: BallPulseHeader(),
-            footer: BallPulseFooter(
-              enableHapticFeedback: false,
-              enableInfiniteLoad: false,
-            ),
+//            footer: BallPulseFooter(
+//              enableHapticFeedback: false,
+//              enableInfiniteLoad: false,
+//            ),
           );
         },
       ),
@@ -416,8 +1083,11 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 Icon(
                   Icons.home,
-                  size: ScreenUtil().setSp(125),
+                  size: ScreenUtil().setSp(150),
                   color: Colors.deepPurpleAccent[100],
+                ),
+                SizedBox(
+                  height: ScreenUtil().setHeight(10),
                 ),
                 Text(
                   MyLocalizations(MyAppState.setting.locale).HotelOrder,
@@ -511,8 +1181,11 @@ class HomePage extends StatelessWidget {
               children: <Widget>[
                 Icon(
                   Icons.person,
-                  size: ScreenUtil().setSp(125),
+                  size: ScreenUtil().setSp(150),
                   color: Colors.deepPurpleAccent[100],
+                ),
+                SizedBox(
+                  height: ScreenUtil().setHeight(10),
                 ),
                 Text(
                   MyLocalizations(MyAppState.setting.locale).ClerkOrder,
@@ -706,19 +1379,19 @@ class HomePage extends StatelessWidget {
   //  获取订单统计信息
   getOrderMsg(BuildContext context) async {
     //  添加酒店订单数据
-    addHotelDeposit();
-    addHotelReceive();
-    //  取酒店订单统计数据
-    hotelWeekOrder(context);
+//    addHotelDeposit();
+//    addHotelReceive();
+//    //  取酒店订单统计数据
+//    hotelWeekOrder(context);
     getHotelDeposit(context);
-    getHotelReceive(context);
-    //  添加行李员订单数据
-    addClerkDeposit();
-    addClerkReceive();
-    //  取行李员订单数据
-    clerkWeekOrder(context);
-    getClerkDeposit(context);
-    getClerkReceive(context);
+//    getHotelReceive(context);
+//    //  添加行李员订单数据
+//    addClerkDeposit();
+//    addClerkReceive();
+//    //  取行李员订单数据
+//    clerkWeekOrder(context);
+//    getClerkDeposit(context);
+//    getClerkReceive(context);
   }
 
   //  验证Token失败弹窗
@@ -810,6 +1483,15 @@ class HomePage extends StatelessWidget {
       print(data);
       print("获取酒店订单每日寄存数");
       Provide.value<HomeOrder>(context).setHotelTodayDeposit(data['day1']);
+      List newList = [];
+      newList.add(data['day1']);
+      newList.add(data['day2']);
+      newList.add(data['day3']);
+      newList.add(data['day4']);
+      newList.add(data['day5']);
+      newList.add(data['day6']);
+      newList.add(data['day7']);
+      Provide.value<HomeOrder>(context).setHotelDepositList(newList);
     });
   }
 
@@ -824,6 +1506,15 @@ class HomePage extends StatelessWidget {
       print(data);
       print("获取酒店订单每日领取数");
       Provide.value<HomeOrder>(context).setHotelTodayReceive(data['day1']);
+      List newList = [];
+      newList.add(data['day1']);
+      newList.add(data['day2']);
+      newList.add(data['day3']);
+      newList.add(data['day4']);
+      newList.add(data['day5']);
+      newList.add(data['day6']);
+      newList.add(data['day7']);
+      Provide.value<HomeOrder>(context).setHotelReceiveList(newList);
     });
   }
 
@@ -874,7 +1565,7 @@ class HomePage extends StatelessWidget {
     });
   }
 
-  //  酒店业务-获取每日寄存数
+  //  个人业务-获取每日寄存数
   getClerkDeposit(BuildContext context) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String name = sharedPreferences.getString('clerkUserName');
@@ -885,10 +1576,19 @@ class HomePage extends StatelessWidget {
       print(data);
       print("获取行李员订单每日寄存数");
       Provide.value<HomeOrder>(context).setClerkTodayDeposit(data['day1']);
+      List newList = [];
+      newList.add(data['day1']);
+      newList.add(data['day2']);
+      newList.add(data['day3']);
+      newList.add(data['day4']);
+      newList.add(data['day5']);
+      newList.add(data['day6']);
+      newList.add(data['day7']);
+      Provide.value<HomeOrder>(context).setClerkDepositList(newList);
     });
   }
 
-  //  酒店业务-获取每日领取数
+  //  个人业务-获取每日领取数
   getClerkReceive(BuildContext context) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String name = sharedPreferences.getString('clerkUserName');
@@ -899,6 +1599,15 @@ class HomePage extends StatelessWidget {
       print(data);
       print("获取行李员订单每日领取数");
       Provide.value<HomeOrder>(context).setClerkTodayReceive(data['day1']);
+      List newList = [];
+      newList.add(data['day1']);
+      newList.add(data['day2']);
+      newList.add(data['day3']);
+      newList.add(data['day4']);
+      newList.add(data['day5']);
+      newList.add(data['day6']);
+      newList.add(data['day7']);
+      Provide.value<HomeOrder>(context).setClerkReceiveList(newList);
     });
   }
 
