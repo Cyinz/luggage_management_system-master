@@ -538,9 +538,10 @@ class ReceivePage extends StatelessWidget {
   //  扫描二维码
   Future scan(BuildContext context) async {
     try {
-      // 此处为扫码结果，barcode为二维码的内容
+      //  此处为扫码结果，barcode为二维码的内容
       String barcode = await BarcodeScanner.scan();
       Provide.value<ReceiveForm>(context).setGetNumber(barcode);
+      //  扫码成功获取订单信息
       checkReceiveOrder(context);
       print('扫码结果: ' + barcode);
     } on PlatformException catch (e) {
