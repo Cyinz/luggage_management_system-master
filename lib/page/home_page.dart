@@ -46,7 +46,7 @@ class HomePage extends StatelessWidget {
     }
     ScreenUtil.init(context, width: 1080, height: 1980);
     getClerk(context);
-//    getOrderMsg(context);
+    getOrderMsg(context);
 
     return Scaffold(
       appBar: AppBar(

@@ -1,5 +1,7 @@
 //  服务器地址
 const serviceUrl = 'http://luggage.vipgz2.idcfengye.com/';
+//  树莓派地址
+const raspiUrl = 'http://raspi.vipgz4.idcfengye.com/luggage/';
 //  Mock地址
 const testUrl =
     'http://mengxuegu.com:7300/mock/5dc61dbb8e0caf01d45a62eb/luggage/';
