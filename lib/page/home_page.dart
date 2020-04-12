@@ -1379,19 +1379,19 @@ class HomePage extends StatelessWidget {
   //  获取订单统计信息
   getOrderMsg(BuildContext context) async {
     //  添加酒店订单数据
-//    addHotelDeposit();
-//    addHotelReceive();
-//    //  取酒店订单统计数据
-//    hotelWeekOrder(context);
+    addHotelDeposit();
+    addHotelReceive();
+    //  取酒店订单统计数据
+    hotelWeekOrder(context);
     getHotelDeposit(context);
-//    getHotelReceive(context);
-//    //  添加行李员订单数据
-//    addClerkDeposit();
-//    addClerkReceive();
-//    //  取行李员订单数据
-//    clerkWeekOrder(context);
-//    getClerkDeposit(context);
-//    getClerkReceive(context);
+    getHotelReceive(context);
+    //  添加行李员订单数据
+    addClerkDeposit();
+    addClerkReceive();
+    //  取行李员订单数据
+    clerkWeekOrder(context);
+    getClerkDeposit(context);
+    getClerkReceive(context);
   }
 
   //  验证Token失败弹窗
