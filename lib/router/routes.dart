@@ -14,6 +14,9 @@ class Routes {
   static String update = '/update';
   static String reset = '/reset';
   static String search = '/search';
+  static String lose = '/lose';
+  static String search_by_phone = '/search_by_phone';
+  static String search_by_qrcode = '/search_by_qrcode';
 
   static void configureRouters(Router router) {
     // 出现不存在的路径时
@@ -33,5 +36,8 @@ class Routes {
     router.define(update, handler: updateHandler);
     router.define(reset, handler: resetHandler);
     router.define(search, handler: searchHandler);
+    router.define(lose, handler: loseHandler);
+    router.define(search_by_phone, handler: searchByPhoneHandler);
+    router.define(search_by_qrcode, handler: searchByQrcodeHandler);
   }
 }

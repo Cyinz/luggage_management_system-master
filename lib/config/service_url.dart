@@ -31,4 +31,7 @@ const servicePath = {
   'resetPassword': serviceUrl + 'user/updatepassword',  //修改密码接口
   'updateMsg': serviceUrl + 'user/update',  //用户修改信息接口
   'getApk': serviceUrl + 'ota/getOta',  //获取apk接口
+  'search_by_phone': serviceUrl + 'luggage/forget',  //凭证丢失通过手机号查找接口
+  'search_by_qrcode': serviceUrl + 'luggage/forgetwithQRcode',  //凭证丢失验证客户身份信息查找
+  'allOrder': serviceUrl + 'luggage/SelectAllOrder',  //查看所有订单
 };

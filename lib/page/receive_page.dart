@@ -40,6 +40,7 @@ class ReceivePage extends StatelessWidget {
       child: Column(
         children: <Widget>[
           _searchBar(context),
+          _forgetBtn(context),
           _orderMsg(context),
         ],
       ),
@@ -100,6 +101,27 @@ class ReceivePage extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  //  凭证丢失
+  Widget _forgetBtn(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Container(
+        child: FlatButton(
+          onPressed: (){
+            Application.router.navigateTo(context, '/lose');
+          },
+          child: Text(
+            "凭证丢失",
+            style: TextStyle(
+              fontSize: ScreenUtil().setSp(38.0),
+              color: Colors.grey,
+            ),
+          ),
         ),
       ),
     );

@@ -11,6 +11,8 @@ import 'package:luggagemanagementsystem/provide/login_form.dart';
 import 'package:luggagemanagementsystem/provide/me_form.dart';
 import 'package:luggagemanagementsystem/provide/receive_form.dart';
 import 'package:luggagemanagementsystem/provide/reset_form.dart';
+import 'package:luggagemanagementsystem/provide/search_by_phone_form.dart';
+import 'package:luggagemanagementsystem/provide/search_by_qrcode_form.dart';
 import 'package:luggagemanagementsystem/provide/search_form.dart';
 import 'package:luggagemanagementsystem/provide/update_form.dart';
 import 'package:luggagemanagementsystem/router/application.dart';
@@ -30,6 +32,8 @@ void main() {
   var updateForm = UpdateForm();
   var searchForm = SearchForm();
   var checkUpdate = CheckUpdate();
+  var searchByPhoneForm = SearchByPhoneForm();
+  var searchByQrcodeForm = SearchByQrcodeForm();
   providers
     ..provide(Provider<LoginForm>.value(loginForm))
     ..provide(Provider<ForgetForm>.value(forgetForm))
@@ -41,7 +45,9 @@ void main() {
     ..provide(Provider<ResetForm>.value(resetForm))
     ..provide(Provider<UpdateForm>.value(updateForm))
     ..provide(Provider<SearchForm>.value(searchForm))
-    ..provide(Provider<CheckUpdate>.value(checkUpdate));
+    ..provide(Provider<CheckUpdate>.value(checkUpdate))
+    ..provide(Provider<SearchByPhoneForm>.value(searchByPhoneForm))
+    ..provide(Provider<SearchByQrcodeForm>.value(searchByQrcodeForm));
   runApp(
     ProviderNode(
       child: MyApp(),
