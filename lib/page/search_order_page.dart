@@ -143,195 +143,183 @@ class SearchOrderPage extends StatelessWidget {
           ),
           builder: (context, order) {
             if (order.hasData) {
-              return FutureBuilder(
-                  future: postRequest(
-                    'getOrderByPhone',
-                    formData: new FormData.fromMap({
-                      'phonenumber': Provide.value<SearchForm>(context).searchMsg,
-                    }),
-                  ),
-                  builder: (context, order) {
-                    if (order.hasData) {
-                      return ListView.builder(
-                          reverse: true,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: order.data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Card(
-                              margin: EdgeInsets.all(10.0),
-                              elevation: 5.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(5.0),
-                                ),
+              return
+                ListView.builder(
+                    reverse: true,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: order.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Card(
+                        margin: EdgeInsets.all(10.0),
+                        elevation: 5.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(5.0),
+                          ),
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.only(
+                            top: 5,
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Image.network(
+                                "http://luggage.vipgz2.idcfengye.com/luggage/image/${order.data[index]['luggagePicture']}",
+                                width: ScreenUtil().setWidth(700),
                               ),
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                  top: 5,
-                                ),
-                                child: Column(
-                                  children: <Widget>[
-                                    Image.network(
-                                      "http://luggage.vipgz2.idcfengye.com/luggage/image/${order.data[index]['luggagePicture']}",
-                                      width: ScreenUtil().setWidth(700),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("客户姓名:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(
-                                                  order.data[index]['savername']),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("客户电话:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(
-                                                  order.data[index]['phonenumber']),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("寄存时间:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(
-                                                  order.data[index]['luggageSavetime']),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("寄存客服:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(
-                                                  order.data[index]['recievername']),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("预计领取:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(order.data[index]
-                                              ['luggagesavefortime']),
-                                            ),
-                                          ],
-                                        ),
-                                        order.data[index]['luggageistoken'] == 1
-                                            ? Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("领取状态:"),
-                                                )),
-                                            Expanded(
-                                              child: Text("已领取"),
-                                            ),
-                                          ],
-                                        )
-                                            : Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("领取状态:"),
-                                                )),
-                                            Expanded(
-                                              child: Text("未领取"),
-                                            ),
-                                          ],
-                                        ),
-                                        order.data[index]['luggageistoken'] == 1
-                                            ? Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("领取时间:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(order.data[index]
-                                              ['luggagegettime']),
-                                            ),
-                                          ],
-                                        )
-                                            : Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("领取时间:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(""),
-                                            ),
-                                          ],
-                                        ),
-                                        order.data[index]['luggageistoken'] == 1
-                                            ? Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("领取客服:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(
-                                                  order.data[index]['givername']),
-                                            ),
-                                          ],
-                                        )
-                                            : Row(
-                                          children: <Widget>[
-                                            Expanded(
-                                                child: Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text("领取客服:"),
-                                                )),
-                                            Expanded(
-                                              child: Text(""),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("客户姓名:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(
+                                            order.data[index]['savername']),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("客户电话:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(
+                                            order.data[index]['phonenumber']),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("寄存时间:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(
+                                            order.data[index]['luggageSavetime']),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("寄存客服:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(
+                                            order.data[index]['recievername']),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("预计领取:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(order.data[index]
+                                        ['luggagesavefortime']),
+                                      ),
+                                    ],
+                                  ),
+                                  order.data[index]['luggageistoken'] == 1
+                                      ? Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("领取状态:"),
+                                          )),
+                                      Expanded(
+                                        child: Text("已领取"),
+                                      ),
+                                    ],
+                                  )
+                                      : Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("领取状态:"),
+                                          )),
+                                      Expanded(
+                                        child: Text("未领取"),
+                                      ),
+                                    ],
+                                  ),
+                                  order.data[index]['luggageistoken'] == 1
+                                      ? Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("领取时间:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(order.data[index]
+                                        ['luggagegettime']),
+                                      ),
+                                    ],
+                                  )
+                                      : Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("领取时间:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(""),
+                                      ),
+                                    ],
+                                  ),
+                                  order.data[index]['luggageistoken'] == 1
+                                      ? Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("领取客服:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(
+                                            order.data[index]['givername']),
+                                      ),
+                                    ],
+                                  )
+                                      : Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text("领取客服:"),
+                                          )),
+                                      Expanded(
+                                        child: Text(""),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            );
-                          });
-                    } else {
-                      return Text("");
-                    }
-                  });
+                            ],
+                          ),
+                        ),
+                      );
+                    });
             } else {
               return Text("");
             }

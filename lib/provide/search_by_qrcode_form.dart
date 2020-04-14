@@ -10,10 +10,7 @@ class SearchByQrcodeForm with ChangeNotifier {
   //  日期
   String date = formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]);
 
-  //  按钮是否已点击
-  bool isDisabled = false;
-
-  //  查找是否成功
+  //  是否点击查找
   bool searchResult = false;
 
   setSaverName(value) {
@@ -23,11 +20,6 @@ class SearchByQrcodeForm with ChangeNotifier {
 
   setDate(value) {
     date = value;
-    notifyListeners();
-  }
-
-  setIsDisabled(value) {
-    isDisabled = value;
     notifyListeners();
   }
 
